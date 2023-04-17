@@ -65,8 +65,9 @@ rpg_df |>
   ggplot(aes(rspg, rapg)) +
   geom_point() +
   geom_abline() +
-  annotate("text", x = 6.5, y = 4, label = "these teams are\nreally good") +
-  annotate("text", x = 5, y = 7, label = "these teams \nkinda suck")
+  annotate("text", x = 6.5, y = 4, label = "these teams are\npretty good", col = "springgreen4") +
+  annotate("text", x = 5, y = 7, label = "these teams \nkinda suck", col = "indianred3") +
+  ggrepel::geom_text_repel(aes(label = team), size = 3, max.overlaps = 30)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
