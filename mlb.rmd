@@ -88,8 +88,37 @@ end_extended = end_games |>
 ```
 
 ```{r}
-end_extended
+get_off_cpr = function(team) {
+  home_cpr = end_extended |> filter(home_team == team) |> pull(home_off_cpr)
+  away_cpr = end_extended |> filter(away_team == team) |> pull(away_off_cpr)
+  return(round(mean(c(home_cpr, away_cpr)), 3))
+}
+
+get_def_cpr = function(team) {
+  home_cpr = end_extended |> filter(home_team == team) |> pull(home_def_cpr)
+  away_cpr = end_extended |> filter(away_team == team) |> pull(away_def_cpr)
+  return(round(mean(c(home_cpr, away_cpr)), 3))
+}
+
+team_cpr = data.frame(team = all_teams) |>
+  mutate(off_cpr = sapply(team, get_off_cpr),
+         def_cpr = sapply(team, get_def_cpr),
+         total_cpr = off_cpr + def_cpr)
 ```
+
+```{r}
+team_cpr |>
+  mutate(pos_lab = ifelse(total_cpr > 0, total_cpr, ""),
+         neg_lab = ifelse(total_cpr < 0, total_cpr, "")) |>
+  ggplot(aes(reorder(team, total_cpr), total_cpr)) +
+  geom_col(aes(fill = total_cpr), show.legend = F) +
+  geom_text(aes(label = pos_lab), size = 2.5, hjust = -0.25) +
+  geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
+  scale_fill_gradient(low = "indianred3", high = "springgreen4") +
+  coord_flip(ylim = c(-1.75, 1.75)) +
+  labs(x = NULL, y = "Composite Performance Rating", title = "MLB CPR Rankings as of 17 April 2023")
+```
+
 
 
 

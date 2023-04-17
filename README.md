@@ -87,44 +87,37 @@ end_extended = end_games |>
 ```
 
 ``` r
-end_extended
+get_off_cpr = function(team) {
+  home_cpr = end_extended |> filter(home_team == team) |> pull(home_off_cpr)
+  away_cpr = end_extended |> filter(away_team == team) |> pull(away_off_cpr)
+  return(round(mean(c(home_cpr, away_cpr)), 3))
+}
+
+get_def_cpr = function(team) {
+  home_cpr = end_extended |> filter(home_team == team) |> pull(home_def_cpr)
+  away_cpr = end_extended |> filter(away_team == team) |> pull(away_def_cpr)
+  return(round(mean(c(home_cpr, away_cpr)), 3))
+}
+
+team_cpr = data.frame(team = all_teams) |>
+  mutate(off_cpr = sapply(team, get_off_cpr),
+         def_cpr = sapply(team, get_def_cpr),
+         total_cpr = off_cpr + def_cpr)
 ```
 
-    ##            date            away_team away_score home_score            home_team
-    ##   1: 2023-03-30       Atlanta Braves          7          2 Washington Nationals
-    ##   2: 2023-03-30 San Francisco Giants          0          5     New York Yankees
-    ##   3: 2023-03-30    Baltimore Orioles         10          9       Boston Red Sox
-    ##   4: 2023-03-30    Milwaukee Brewers          0          4         Chicago Cubs
-    ##   5: 2023-03-30       Detroit Tigers          0          4       Tampa Bay Rays
-    ##  ---                                                                           
-    ## 232: 2023-04-16        New York Mets          4          3    Oakland Athletics
-    ## 233: 2023-04-16         Chicago Cubs          3          2  Los Angeles Dodgers
-    ## 234: 2023-04-16     Colorado Rockies          0          1     Seattle Mariners
-    ## 235: 2023-04-16    Milwaukee Brewers          1          0     San Diego Padres
-    ## 236: 2023-04-16        Texas Rangers          9          1       Houston Astros
-    ##      home_rspg home_rapg away_rspg away_rapg home_exp away_exp home_off_cpr
-    ##   1:     3.875     5.125     5.438     3.938    3.907    5.281       -1.907
-    ##   2:     4.625     3.062     4.929     5.357    4.991    3.995        0.009
-    ##   3:     5.438     5.250     5.875     5.438    5.438    5.562        3.562
-    ##   4:     5.214     4.071     4.812     3.062    4.138    4.441       -0.138
-    ##   5:     7.125     2.625     3.571     6.214    6.670    3.098       -2.670
-    ##  ---                                                                       
-    ## 232:     3.875     7.812     4.688     3.938    3.907    6.250       -0.907
-    ## 233:     5.312     4.188     5.214     4.071    4.691    4.701       -2.691
-    ## 234:     4.625     4.125     3.938     5.625    5.125    4.032       -4.125
-    ## 235:     4.176     4.294     4.812     3.062    3.619    4.553       -3.619
-    ## 236:     4.812     4.375     5.600     4.267    4.540    4.987       -3.540
-    ##      home_def_cpr away_off_cpr away_def_cpr
-    ##   1:       -1.719        1.719        1.907
-    ##   2:        3.995       -3.995       -0.009
-    ##   3:       -4.438        4.438       -3.562
-    ##   4:        4.441       -4.441        0.138
-    ##   5:        3.098       -3.098        2.670
-    ##  ---                                       
-    ## 232:        2.250       -2.250        0.907
-    ## 233:        1.701       -1.701        2.691
-    ## 234:        4.032       -4.032        4.125
-    ## 235:        3.553       -3.553        3.619
-    ## 236:       -4.013        4.013        3.540
+``` r
+team_cpr |>
+  mutate(pos_lab = ifelse(total_cpr > 0, total_cpr, ""),
+         neg_lab = ifelse(total_cpr < 0, total_cpr, "")) |>
+  ggplot(aes(reorder(team, total_cpr), total_cpr)) +
+  geom_col(aes(fill = total_cpr), show.legend = F) +
+  geom_text(aes(label = pos_lab), size = 2.5, hjust = -0.25) +
+  geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
+  scale_fill_gradient(low = "indianred3", high = "springgreen4") +
+  coord_flip(ylim = c(-1.75, 1.75)) +
+  labs(x = NULL, y = "Composite Performance Rating", title = "MLB CPR Rankings as of 17 April 2023")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ### MLB SCORIGAMI?
