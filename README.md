@@ -120,4 +120,70 @@ team_cpr |>
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
+``` r
+end_wl = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team))
+
+team_wins = end_wl |>
+  count(win_team) |>
+  rename(team = win_team, wins = n)
+
+team_losses = end_wl |>
+  count(lose_team) |>
+  rename(team = lose_team, losses = n)
+
+team_records = team_wins |>
+  left_join(team_losses, by = "team") |>
+  mutate(win_pct = round(wins / (wins + losses), 3),
+         record = paste0(wins, "-", losses))
+```
+
+``` r
+team_records |>
+  select(team, win_pct) |>
+  left_join(team_cpr, by = "team") |>
+  select(team, win_pct, total_cpr) |>
+  mutate(record_rank = rank(-win_pct, ties.method = "average"),
+         cpr_rank = rank(-total_cpr, ties.method = "average"),
+         xxx = case_when(cpr_rank > record_rank ~ "Not as Good as Record",
+                         cpr_rank < record_rank ~ "Better Than Record",
+                         cpr_rank == record_rank ~ "Accurate Record")) |>
+  ggplot(aes(cpr_rank, record_rank)) +
+  geom_point(aes(col = xxx), size = 3) +
+  geom_abline(linetype = "dashed", alpha = 0.5) +
+  ggrepel::geom_text_repel(aes(label = team), size = 3, alpha = 0.25) +
+  scale_color_manual(values = c("black", "springgreen4", "indianred3")) +
+  labs(x = "CPR Rank", y = "Record Rank", col = NULL,
+       title = "2023 MLB Records x CPR Ranks")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
 ### MLB SCORIGAMI?
+
+``` r
+gami_df = end_games |>
+  transmute(date, win_team = ifelse(home_score > away_score, home_team, away_team),
+            lose_team = ifelse(home_score > away_score, away_team, home_team),
+            win_score = ifelse(home_score > away_score, home_score, away_score),
+            lose_score = ifelse(home_score > away_score, away_score, home_score))
+
+score_counts = gami_df |>
+  mutate(win_score = factor(win_score),
+         lose_score = factor(lose_score)) |>
+  count(win_score, lose_score)
+
+gami_df |>
+  mutate(win_score = factor(win_score),
+         lose_score = factor(lose_score)) |>
+  left_join(score_counts, by = c("win_score", "lose_score")) |>
+  ggplot(aes(win_score, lose_score)) +
+  geom_point(shape = "square", size = 8, aes(col = n)) +
+  geom_text(aes(label = n), size = 3) +
+  scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
+  labs(x = "Winning Score", y = "Losing Score",
+       title = "2023 MLB Scorigami")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
