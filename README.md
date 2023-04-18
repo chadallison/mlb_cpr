@@ -15,6 +15,7 @@ library(baseballr)
 
 theme_custom = theme_avatar() +
   theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5, size = 9, vjust = 2.5, face = "italic"),
         panel.grid.major = element_line(linewidth = 0.5, colour = "#D6D0C4"),
         panel.grid.minor = element_line(linewidth = 0.5, colour = "#D6D0C4"))
 
@@ -115,7 +116,7 @@ team_cpr |>
   geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
   scale_fill_gradient(low = "indianred3", high = "springgreen4") +
   coord_flip(ylim = c(-1.75, 1.75)) +
-  labs(x = NULL, y = "Composite Performance Rating", title = "MLB CPR Rankings as of 17 April 2023")
+  labs(x = NULL, y = "Composite Performance Rating", title = "MLB CPR Rankings as of 18 April 2023")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -174,16 +175,38 @@ score_counts = gami_df |>
          lose_score = factor(lose_score)) |>
   count(win_score, lose_score)
 
+most_recent = gami_df |>
+  mutate(win_score = factor(win_score),
+         lose_score = factor(lose_score)) |>
+  left_join(score_counts, by = c("win_score", "lose_score")) |>
+  filter(n == 1) |>
+  slice_max(date, n = 1)
+
+last_gami = paste0("Last Scorigami: ", most_recent$win_team, " def. ", most_recent$lose_team, " ", most_recent$win_score, "-", most_recent$lose_score, " on ", most_recent$date)
+
+yesterday_gami = gami_df |>
+  mutate(win_score = factor(win_score),
+         lose_score = factor(lose_score)) |>
+  left_join(score_counts, by = c("win_score", "lose_score")) |>
+  filter(n == 1 & date == Sys.Date() - 1) |>
+  nrow()
+
+yesterday_text = case_when(yesterday_gami == 0 ~ "No Scorigami Yesterday :(",
+                           yesterday_gami == 1 ~ "One Scorigami Yesterday :)",
+                           yesterday_gami > 1 ~ paste0(yesterday_gami, " Scorigamis Yesterday :)"))
+
 gami_df |>
   mutate(win_score = factor(win_score),
          lose_score = factor(lose_score)) |>
   left_join(score_counts, by = c("win_score", "lose_score")) |>
   ggplot(aes(win_score, lose_score)) +
-  geom_point(shape = "square", size = 8, aes(col = n)) +
+  geom_point(shape = "square", size = 8, aes(col = n), show.legend = F) +
   geom_text(aes(label = n), size = 3) +
+  annotate("text", x = 4, y = 9.5, label = yesterday_text, size = 4) +
+  geom_rect(aes(xmin = 1, xmax = 7, ymin = 8.75, ymax = 10.25), col = "black", fill = "transparent") +
   scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
   labs(x = "Winning Score", y = "Losing Score",
-       title = "2023 MLB Scorigami")
+       title = "2023 MLB Scorigami", subtitle = last_gami)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
