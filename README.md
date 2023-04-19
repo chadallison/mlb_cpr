@@ -61,14 +61,31 @@ rpg_df = data.frame(team = all_teams) |>
 ```
 
 ``` r
+rpg_df = rpg_df |>
+  mutate(diff = rspg - rapg)
+
+top_teams = rpg_df |>
+  slice_max(diff, n = 3) |>
+  pull(team)
+
+bottom_teams = rpg_df |>
+  slice_min(diff, n = 3) |>
+  pull(team)
+
 rpg_df |>
-  mutate(diff = rspg - rapg) |>
+  mutate(top_lab = ifelse(team %in% top_teams, team, ""),
+         bot_lab = ifelse(team %in% bottom_teams, team, ""),
+         other_lab = ifelse(!team %in% top_teams & !team %in% bottom_teams, team, "")) |>
   ggplot(aes(rspg, rapg)) +
-  geom_point() +
-  geom_abline() +
-  annotate("text", x = 6.5, y = 4, label = "these teams are\npretty good", col = "springgreen4") +
-  annotate("text", x = 5, y = 7, label = "these teams \nkinda suck", col = "indianred3") +
-  ggrepel::geom_text_repel(aes(label = team), size = 3, max.overlaps = 30)
+  geom_point(aes(col = diff), size = 4, show.legend = F) +
+  geom_abline(linetype = "dashed", alpha = 0.5) +
+  scale_color_gradient(low = "indianred3", high = "springgreen4") +
+  ggrepel::geom_text_repel(aes(label = top_lab), size = 3.5) +
+  ggrepel::geom_text_repel(aes(label = bot_lab), size = 3.5) +
+  ggrepel::geom_text_repel(aes(label = other_lab), size = 3.5, alpha = 0.1, max.overlaps = 30) +
+  labs(x = "Runs Scored Per Game", y = "Runs Allowed Per Game",
+       title = "Runs Scored v. Runs Allowed in 2023",
+       subtitle = "Labeled Teams are Top or Bottom Three")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
