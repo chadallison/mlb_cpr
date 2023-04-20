@@ -134,7 +134,7 @@ team_cpr |>
   geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
   scale_fill_gradient(low = "indianred3", high = "springgreen4") +
   coord_flip(ylim = c(-1.75, 1.75)) +
-  labs(x = NULL, y = "Composite Performance Rating", title = "MLB CPR Rankings as of 18 April 2023")
+  labs(x = NULL, y = "Composite Performance Rating", title = "MLB CPR Rankings as of 19 April 2023")
 ```
 
 ```{r}
