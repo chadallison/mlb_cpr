@@ -125,6 +125,8 @@ team_cpr = data.frame(team = all_teams) |>
 ```
 
 ```{r}
+day_label = paste(day(Sys.Date()), month(Sys.Date(), label = T, abbr = F)[1], year(Sys.Date()))
+
 team_cpr |>
   mutate(pos_lab = ifelse(total_cpr > 0, total_cpr, ""),
          neg_lab = ifelse(total_cpr < 0, total_cpr, "")) |>
@@ -134,7 +136,7 @@ team_cpr |>
   geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
   scale_fill_gradient(low = "indianred3", high = "springgreen4") +
   coord_flip(ylim = c(-1.75, 1.75)) +
-  labs(x = NULL, y = "Composite Performance Rating", title = "MLB CPR Rankings as of 19 April 2023")
+  labs(x = NULL, y = "Composite Performance Rating", title = paste0("MLB CPR Rankings as of ", day_label))
 ```
 
 ```{r}
@@ -232,6 +234,74 @@ gami_df |>
 ```
 
 
+### xxx
+
+```{r}
+wbt_df = end_games |>
+  mutate(home_win = ifelse(home_score > away_score, 1, 0),
+         home_wb2 = ifelse(home_score > away_score + 1, 1, 0),
+         home_wb3 = ifelse(home_score > away_score + 2, 1, 0),
+         home_wb4 = ifelse(home_score > away_score + 3, 1, 0),
+         home_wb5 = ifelse(home_score > away_score + 4, 1, 0),
+         away_win = ifelse(away_score > home_score, 1, 0),
+         away_wb2 = ifelse(away_score > home_score + 1, 1, 0),
+         away_wb3 = ifelse(away_score > home_score + 2, 1, 0),
+         away_wb4 = ifelse(away_score > home_score + 3, 1, 0),
+         away_wb5 = ifelse(away_score > home_score + 4, 1, 0))
+
+get_wb2_rate = function(team) {
+  home_wb2 = wbt_df |> filter(home_team == team) |> pull(home_wb2)
+  away_wb2 = wbt_df |> filter(away_team == team) |> pull(away_wb2)
+  return(round(mean(c(home_wb2, away_wb2)), 3))
+}
+
+get_wb3_rate = function(team) {
+  home_wb3 = wbt_df |> filter(home_team == team) |> pull(home_wb3)
+  away_wb3 = wbt_df |> filter(away_team == team) |> pull(away_wb3)
+  return(round(mean(c(home_wb3, away_wb3)), 3))
+}
+
+get_wb4_rate = function(team) {
+  home_wb4 = wbt_df |> filter(home_team == team) |> pull(home_wb4)
+  away_wb4 = wbt_df |> filter(away_team == team) |> pull(away_wb4)
+  return(round(mean(c(home_wb4, away_wb4)), 3))
+}
+
+get_wb5_rate = function(team) {
+  home_wb5 = wbt_df |> filter(home_team == team) |> pull(home_wb5)
+  away_wb5 = wbt_df |> filter(away_team == team) |> pull(away_wb5)
+  return(round(mean(c(home_wb5, away_wb5)), 3))
+}
+
+best_record_teams = team_records |>
+  slice_max(win_pct, n = 3) |>
+  pull(team)
+
+team_wbt = data.frame(team = best_record_teams) |>
+  left_join(select(team_records, team, win_pct), by = "team") |>
+  mutate(wb2 = sapply(team, get_wb2_rate),
+         wb3 = sapply(team, get_wb3_rate),
+         wb4 = sapply(team, get_wb4_rate),
+         wb5 = sapply(team, get_wb5_rate))
+
+team_wbt |>
+  pivot_longer(cols = !team, names_to = "metric", values_to = "value") |>
+  mutate(metric = case_when(metric == "win_pct" ~ "Win Percentage",
+                            metric == "wb2" ~ "Win by 2+ Rate",
+                            metric == "wb3" ~ "Win by 3+ Rate",
+                            metric == "wb4" ~ "Win by 4+ Rate",
+                            metric == "wb5" ~ "Win by 5+ Rate"),
+         metric = factor(metric, levels = c("Win Percentage", "Win by 2+ Rate", "Win by 3+ Rate",
+                                            "Win by 4+ Rate", "Win by 5+ Rate")),
+         val_lab = paste0(value * 100, "%")) |>
+  ggplot(aes(metric, value)) +
+  geom_col(aes(fill = team), position = "dodge") +
+  geom_text(aes(label = val_lab, group = team), size = 3, vjust = -0.5, position = position_dodge2(width = 0.9)) +
+  scale_fill_manual(values = c("#CE1141", "#FFC52F", "#8FBCE6")) +
+  labs(x = NULL, y = "Rate", fill = NULL, title = "Rays Dominance",
+       subtitle = "Top Three Teams by Win Percentage Included") +
+  theme(axis.text.y = element_blank())
+```
 
 
 
