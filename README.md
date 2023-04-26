@@ -127,8 +127,8 @@ team_cpr = data.frame(team = all_teams) |>
 day_label = paste(day(Sys.Date()), month(Sys.Date(), label = T, abbr = F)[1], year(Sys.Date()))
 
 team_cpr |>
-  mutate(pos_lab = ifelse(total_cpr > 0, total_cpr, ""),
-         neg_lab = ifelse(total_cpr < 0, total_cpr, "")) |>
+  mutate(pos_lab = ifelse(total_cpr > 0, round(total_cpr, 3), ""),
+         neg_lab = ifelse(total_cpr < 0, round(total_cpr, 3), "")) |>
   ggplot(aes(reorder(team, total_cpr), total_cpr)) +
   geom_col(aes(fill = total_cpr), show.legend = F) +
   geom_text(aes(label = pos_lab), size = 2.5, hjust = -0.25) +
@@ -293,7 +293,7 @@ team_wbt |>
   ggplot(aes(metric, value)) +
   geom_col(aes(fill = team), position = "dodge") +
   geom_text(aes(label = val_lab, group = team), size = 3, vjust = -0.5, position = position_dodge2(width = 0.9)) +
-  scale_fill_manual(values = c("#CE1141", "#FFC52F", "#8FBCE6")) +
+  scale_fill_manual(values = c("#CE1141", "#FDB827", "#8FBCE6")) +
   labs(x = NULL, y = "Rate", fill = NULL, title = "Rays Dominance",
        subtitle = "Top Three Teams by Win Percentage Included") +
   theme(axis.text.y = element_blank())
