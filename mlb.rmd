@@ -75,7 +75,7 @@ bottom_teams = rpg_df |>
   slice_min(diff, n = 3) |>
   pull(team)
 
-rpg_df |>
+fig = rpg_df |>
   mutate(top_lab = ifelse(team %in% top_teams, team, ""),
          bot_lab = ifelse(team %in% bottom_teams, team, ""),
          other_lab = ifelse(!team %in% top_teams & !team %in% bottom_teams, team, "")) |>
@@ -89,6 +89,10 @@ rpg_df |>
   labs(x = "Runs Scored Per Game", y = "Runs Allowed Per Game",
        title = "Runs Scored v. Runs Allowed in 2023",
        subtitle = "Labeled Teams are Top or Bottom Three")
+
+fig
+ggsave("images/scored_v_allowed.png", plot = fig)
+message("Runs scored v. runs allowed by team in the #MLB so far this season. #baseball #analytics #dataviz")
 ```
 
 ```{r}
@@ -127,7 +131,7 @@ team_cpr = data.frame(team = all_teams) |>
 ```{r}
 day_label = paste(day(Sys.Date()), month(Sys.Date(), label = T, abbr = F)[1], year(Sys.Date()))
 
-team_cpr |>
+fig = team_cpr |>
   mutate(pos_lab = ifelse(total_cpr > 0, round(total_cpr, 3), ""),
          neg_lab = ifelse(total_cpr < 0, round(total_cpr, 3), "")) |>
   ggplot(aes(reorder(team, total_cpr), total_cpr)) +
@@ -137,6 +141,10 @@ team_cpr |>
   scale_fill_gradient(low = "indianred3", high = "springgreen4") +
   coord_flip(ylim = c(-1.75, 1.75)) +
   labs(x = NULL, y = "Composite Performance Rating", title = paste0("MLB CPR Rankings as of ", day_label))
+
+fig
+ggsave("images/cpr_rankings.png", plot = fig)
+message("My #MLB Composite Performance Ratings so far this season. #baseball #analytics #dataviz")
 ```
 
 ```{r}
@@ -159,7 +167,7 @@ team_records = team_wins |>
 ```
 
 ```{r}
-team_records |>
+fig = team_records |>
   select(team, win_pct) |>
   left_join(team_cpr, by = "team") |>
   select(team, win_pct, total_cpr) |>
@@ -175,6 +183,10 @@ team_records |>
   scale_color_manual(values = c("black", "springgreen4", "indianred3")) +
   labs(x = "CPR Rank", y = "Record Rank", col = NULL,
        title = "2023 MLB Records x CPR Ranks")
+
+fig
+ggsave("images/cpr_v_record.png", plot = fig)
+message("Here's how teams compare to their records this season in the #MLB based on my Composite Performance Ratings. #baseball #analytics #dataviz")
 ```
 
 
@@ -206,7 +218,10 @@ most_recent = gami_df |>
   filter(n == 1) |>
   slice_max(date, n = 1)
 
-last_gami = paste0("Last Scorigami: ", most_recent$win_team, " def. ", most_recent$lose_team, " ", most_recent$win_score, "-", most_recent$lose_score, " on ", most_recent$date)
+# THE MOST RECENT DATA ABOVE HAS THE GAME BY GAME DATA
+
+last_gami = paste0("Last Scorigami: ", most_recent$win_team, " def. ", most_recent$lose_team, " ",
+                   most_recent$win_score, "-", most_recent$lose_score, " on ", most_recent$date)
 
 yesterday_gami = gami_df |>
   mutate(win_score = factor(win_score),
@@ -219,7 +234,7 @@ yesterday_text = case_when(yesterday_gami == 0 ~ "No Scorigami Yesterday :(",
                            yesterday_gami == 1 ~ "One Scorigami Yesterday :)",
                            yesterday_gami > 1 ~ paste0(yesterday_gami, " Scorigamis Yesterday :)"))
 
-gami_df |>
+fig = gami_df |>
   mutate(win_score = factor(win_score),
          lose_score = factor(lose_score)) |>
   left_join(score_counts, by = c("win_score", "lose_score")) |>
@@ -231,6 +246,9 @@ gami_df |>
   scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
   labs(x = "Winning Score", y = "Losing Score",
        title = "2023 MLB Scorigami", subtitle = last_gami)
+
+fig
+ggsave("images/scorigami.png", plot = fig)
 ```
 
 
@@ -274,7 +292,7 @@ get_wb5_rate = function(team) {
 }
 
 best_record_teams = team_records |>
-  slice_max(win_pct, n = 3) |>
+  slice_max(win_pct, n = 3, with_ties = F) |>
   pull(team)
 
 team_wbt = data.frame(team = best_record_teams) |>
@@ -284,7 +302,7 @@ team_wbt = data.frame(team = best_record_teams) |>
          wb4 = sapply(team, get_wb4_rate),
          wb5 = sapply(team, get_wb5_rate))
 
-team_wbt |>
+fig = team_wbt |>
   pivot_longer(cols = !team, names_to = "metric", values_to = "value") |>
   mutate(metric = case_when(metric == "win_pct" ~ "Win Percentage",
                             metric == "wb2" ~ "Win by 2+ Rate",
@@ -297,13 +315,14 @@ team_wbt |>
   ggplot(aes(metric, value)) +
   geom_col(aes(fill = team), position = "dodge") +
   geom_text(aes(label = val_lab, group = team), size = 3, vjust = -0.5, position = position_dodge2(width = 0.9)) +
-  scale_fill_manual(values = c("#CE1141", "#FDB827", "#8FBCE6")) +
+  scale_fill_manual(values = c("#13274F", "#DF4601", "#8FBCE6")) +
   labs(x = NULL, y = "Rate", fill = NULL, title = "Rays Dominance",
        subtitle = "Top Three Teams by Win Percentage Included") +
   theme(axis.text.y = element_blank())
+
+fig
+ggsave("images/win_by_x.png", plot = fig)
 ```
-
-
 
 
 
