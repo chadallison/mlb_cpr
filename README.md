@@ -93,12 +93,6 @@ fig
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
-ggsave("images/scored_v_allowed.png", plot = fig)
-```
-
-    ## Saving 7 x 5 in image
-
-``` r
 message("Runs scored v. runs allowed by team in the #MLB so far this season. #baseball #analytics #dataviz")
 ```
 
@@ -157,12 +151,6 @@ fig
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
-ggsave("images/cpr_rankings.png", plot = fig)
-```
-
-    ## Saving 7 x 5 in image
-
-``` r
 message("My #MLB Composite Performance Ratings so far this season. #baseball #analytics #dataviz")
 ```
 
@@ -211,12 +199,6 @@ fig
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
-ggsave("images/cpr_v_record.png", plot = fig)
-```
-
-    ## Saving 7 x 5 in image
-
-``` r
 message("Here's how teams compare to their records this season in the #MLB based on my Composite Performance Ratings. #baseball #analytics #dataviz")
 ```
 
@@ -242,6 +224,8 @@ most_recent = gami_df |>
   left_join(score_counts, by = c("win_score", "lose_score")) |>
   filter(n == 1) |>
   slice_max(date, n = 1)
+
+# THE MOST RECENT DATA ABOVE HAS THE GAME BY GAME DATA
 
 last_gami = paste0("Last Scorigami: ", most_recent$win_team, " def. ", most_recent$lose_team, " ",
                    most_recent$win_score, "-", most_recent$lose_score, " on ", most_recent$date)
@@ -274,12 +258,6 @@ fig
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
-
-``` r
-ggsave("images/scorigami.png", plot = fig)
-```
-
-    ## Saving 7 x 5 in image
 
 ### xxx
 
@@ -353,9 +331,3 @@ fig
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
-``` r
-ggsave("images/win_by_x.png", plot = fig)
-```
-
-    ## Saving 7 x 5 in image

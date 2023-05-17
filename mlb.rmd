@@ -91,7 +91,6 @@ fig = rpg_df |>
        subtitle = "Labeled Teams are Top or Bottom Three")
 
 fig
-ggsave("images/scored_v_allowed.png", plot = fig)
 message("Runs scored v. runs allowed by team in the #MLB so far this season. #baseball #analytics #dataviz")
 ```
 
@@ -143,7 +142,6 @@ fig = team_cpr |>
   labs(x = NULL, y = "Composite Performance Rating", title = paste0("MLB CPR Rankings as of ", day_label))
 
 fig
-ggsave("images/cpr_rankings.png", plot = fig)
 message("My #MLB Composite Performance Ratings so far this season. #baseball #analytics #dataviz")
 ```
 
@@ -185,7 +183,6 @@ fig = team_records |>
        title = "2023 MLB Records x CPR Ranks")
 
 fig
-ggsave("images/cpr_v_record.png", plot = fig)
 message("Here's how teams compare to their records this season in the #MLB based on my Composite Performance Ratings. #baseball #analytics #dataviz")
 ```
 
@@ -248,7 +245,6 @@ fig = gami_df |>
        title = "2023 MLB Scorigami", subtitle = last_gami)
 
 fig
-ggsave("images/scorigami.png", plot = fig)
 ```
 
 
@@ -321,7 +317,6 @@ fig = team_wbt |>
   theme(axis.text.y = element_blank())
 
 fig
-ggsave("images/win_by_x.png", plot = fig)
 ```
 
 
