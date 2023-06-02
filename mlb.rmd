@@ -311,7 +311,7 @@ fig = team_wbt |>
   ggplot(aes(metric, value)) +
   geom_col(aes(fill = team), position = "dodge") +
   geom_text(aes(label = val_lab, group = team), size = 3, vjust = -0.5, position = position_dodge2(width = 0.9)) +
-  scale_fill_manual(values = c("#13274F", "#DF4601", "#8FBCE6")) +
+  scale_fill_manual(values = c("#DF4601", "#8FBCE6", "#C64040")) +
   labs(x = NULL, y = "Rate", fill = NULL, title = "Rays Dominance",
        subtitle = "Top Three Teams by Win Percentage Included") +
   theme(axis.text.y = element_blank())
