@@ -331,3 +331,100 @@ fig
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+### xxx
+
+``` r
+end_margins = end_games |>
+  mutate(home_margin = home_score - away_score,
+         away_margin = away_score - home_score)
+
+end_margins
+```
+
+    ##            date            away_team away_score home_score            home_team
+    ##   1: 2023-03-30       Atlanta Braves          7          2 Washington Nationals
+    ##   2: 2023-03-30 San Francisco Giants          0          5     New York Yankees
+    ##   3: 2023-03-30    Baltimore Orioles         10          9       Boston Red Sox
+    ##   4: 2023-03-30    Milwaukee Brewers          0          4         Chicago Cubs
+    ##   5: 2023-03-30       Detroit Tigers          0          4       Tampa Bay Rays
+    ##  ---                                                                           
+    ## 858: 2023-06-02       Detroit Tigers          0          3    Chicago White Sox
+    ## 859: 2023-06-02         Chicago Cubs          2          1     San Diego Padres
+    ## 860: 2023-06-02       Atlanta Braves          2          3 Arizona Diamondbacks
+    ## 861: 2023-06-02     New York Yankees          4          8  Los Angeles Dodgers
+    ## 862: 2023-06-02    Baltimore Orioles          3          2 San Francisco Giants
+    ##      home_margin away_margin
+    ##   1:          -5           5
+    ##   2:           5          -5
+    ##   3:          -1           1
+    ##   4:           4          -4
+    ##   5:           4          -4
+    ##  ---                        
+    ## 858:           3          -3
+    ## 859:          -1           1
+    ## 860:           1          -1
+    ## 861:           4          -4
+    ## 862:          -1           1
+
+``` r
+get_margin = function(team) {
+  home_margins = pull(filter(end_margins, home_team == team), home_margin)
+  away_margins = pull(filter(end_margins, away_team == team), away_margin)
+  return(round(mean(c(home_margins, away_margins)), 3))
+}
+
+team_margins = data.frame(team = all_teams) |>
+  mutate(margin = sapply(team, get_margin))
+
+team_margins |>
+  ggplot(aes(reorder(team, margin), margin)) +
+  geom_col(aes(fill = margin)) +
+  coord_flip() +
+  scale_fill_gradient(low = "indianred3", high = "springgreen4")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+### xxx
+
+``` r
+end_winners = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(away_score > home_score, home_team, away_team),
+         margin = abs(home_score - away_score))
+
+get_vmargin = function(team) {
+  wins = pull(filter(end_winners, win_team == team), margin)
+  return(round(mean(wins), 3))
+}
+
+get_dmargin = function(team) {
+  losses = pull(filter(end_winners, lose_team == team), margin)
+  return(-round(mean(losses), 3))
+}
+
+team_margins = data.frame(team = all_teams) |>
+  mutate(avg_margin = sapply(team, get_margin),
+         win_margin = sapply(team, get_vmargin),
+         def_margin = sapply(team, get_dmargin))
+```
+
+### xxx
+
+``` r
+vmarg_mean = mean(team_margins$win_margin)
+dmarg_mean = mean(team_margins$def_margin)
+
+team_margins |>
+  mutate(wl_diff = win_margin - def_margin) |>
+  ggplot(aes(win_margin, def_margin)) +
+  geom_point(size = 3, aes(col = avg_margin), show.legend = F) +
+  geom_hline(yintercept = dmarg_mean, linetype = "dashed") +
+  geom_vline(xintercept = vmarg_mean, linetype = "dashed") +
+  scale_color_gradient(low = "indianred3", high = "springgreen4") + # team color fills would be better
+  labs(x = "Avg. Margin of Victory", y = "Avg. Margin of Defeat",
+       title = "Scatterplot of Margins of Victory/Defeat (in progress plot)")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
