@@ -349,11 +349,11 @@ end_margins
     ##   4: 2023-03-30    Milwaukee Brewers          0          4         Chicago Cubs
     ##   5: 2023-03-30       Detroit Tigers          0          4       Tampa Bay Rays
     ##  ---                                                                           
-    ## 858: 2023-06-02       Detroit Tigers          0          3    Chicago White Sox
-    ## 859: 2023-06-02         Chicago Cubs          2          1     San Diego Padres
-    ## 860: 2023-06-02       Atlanta Braves          2          3 Arizona Diamondbacks
-    ## 861: 2023-06-02     New York Yankees          4          8  Los Angeles Dodgers
-    ## 862: 2023-06-02    Baltimore Orioles          3          2 San Francisco Giants
+    ## 874: 2023-06-03  Cleveland Guardians          4          2      Minnesota Twins
+    ## 875: 2023-06-03     New York Yankees          6          3  Los Angeles Dodgers
+    ## 876: 2023-06-03    Baltimore Orioles          0          4 San Francisco Giants
+    ## 877: 2023-06-03         Chicago Cubs          0          6     San Diego Padres
+    ## 878: 2023-06-03       Atlanta Braves          5          2 Arizona Diamondbacks
     ##      home_margin away_margin
     ##   1:          -5           5
     ##   2:           5          -5
@@ -361,11 +361,11 @@ end_margins
     ##   4:           4          -4
     ##   5:           4          -4
     ##  ---                        
-    ## 858:           3          -3
-    ## 859:          -1           1
-    ## 860:           1          -1
-    ## 861:           4          -4
-    ## 862:          -1           1
+    ## 874:          -2           2
+    ## 875:          -3           3
+    ## 876:           4          -4
+    ## 877:           6          -6
+    ## 878:          -3           3
 
 ``` r
 get_margin = function(team) {
@@ -410,21 +410,50 @@ team_margins = data.frame(team = all_teams) |>
          def_margin = sapply(team, get_dmargin))
 ```
 
+``` r
+team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
+                     "#27251F", "#C6011F", "#00385D", "#333366", "#0C2340",
+                     "#EB6E1F", "#004687", "#BA0021", "#005A9C", "#00A3E0",
+                     "#FFC52F", "#D31145", "#FF5910", "#003087", "#003831",
+                     "#E81828", "#FDB827", "#C41E3A", "#FFC425", "#FD5A1E",
+                     "#005C5C", "#8FBCE6", "#C0111F", "#134A8E", "#FFB7C5")
+
+team_colors = data.frame(team = all_teams, hex = team_color_codes)
+```
+
 ### xxx
 
 ``` r
+team_abbrevs = data.frame(team = all_teams,
+                          abb = c("ARI", "ATL", "BAL", "BOS", "CHC", "CHW",
+                                  "CIN", "CLE", "COL", "DET", "HOU", "KC",
+                                  "LAA", "LAD", "MIA", "MIL", "MIN", "NYM",
+                                  "NYY", "OAK", "PHI", "PIT", "SD", "SF",
+                                  "SEA", "STL", "TB", "TEX", "TOR", "WAS"))
+
 vmarg_mean = mean(team_margins$win_margin)
 dmarg_mean = mean(team_margins$def_margin)
 
 team_margins |>
   mutate(wl_diff = win_margin - def_margin) |>
+  left_join(team_abbrevs, by = "team") |>
   ggplot(aes(win_margin, def_margin)) +
-  geom_point(size = 3, aes(col = avg_margin), show.legend = F) +
-  geom_hline(yintercept = dmarg_mean, linetype = "dashed") +
-  geom_vline(xintercept = vmarg_mean, linetype = "dashed") +
-  scale_color_gradient(low = "indianred3", high = "springgreen4") + # team color fills would be better
+  geom_point(size = 4, aes(col = team), show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 4) +
+  geom_hline(yintercept = dmarg_mean, linetype = "dashed", alpha = 0.5) +
+  geom_vline(xintercept = vmarg_mean, linetype = "dashed", alpha = 0.5) +
+  scale_color_manual(values = team_color_codes) +
   labs(x = "Avg. Margin of Victory", y = "Avg. Margin of Defeat",
-       title = "Scatterplot of Margins of Victory/Defeat (in progress plot)")
+       title = "Scatterplot of Margins of Victory/Defeat") +
+  coord_cartesian(ylim = c(-5.25, -2)) + # need a way to auto-generate this
+  annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big") +
+  annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big") +
+  annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small") +
+  annotate("text", x = 5, y = -2.1, label = "Win Big, Lose Small") +
+  geom_rect(aes(xmin = 2, xmax = 3, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
+  geom_rect(aes(xmin = 2, xmax = 3, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") + 
+  geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
+  geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -5.25, ymax = -5), col = "black", fill = "transparent")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
