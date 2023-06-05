@@ -398,14 +398,12 @@ team_margins |>
   ggplot(aes(win_margin, def_margin)) +
   geom_point(size = 4, aes(col = team), show.legend = F) +
   ggrepel::geom_text_repel(aes(label = abb), size = 4) +
-  geom_hline(yintercept = dmarg_mean, linetype = "dashed", alpha = 0.5) +
-  geom_vline(xintercept = vmarg_mean, linetype = "dashed", alpha = 0.5) +
+  geom_hline(yintercept = dmarg_mean, linetype = "dashed", alpha = 0.4) +
+  geom_vline(xintercept = vmarg_mean, linetype = "dashed", alpha = 0.4) +
   scale_color_manual(values = team_color_codes) +
   labs(x = "Avg. Margin of Victory", y = "Avg. Margin of Defeat",
        title = "Scatterplot of Margins of Victory/Defeat",
        subtitle = "Dashed lines represent league averages") +
-  coord_cartesian(xlim = c(vmarg_mean - 1.5, vmarg_mean + 2),
-                  ylim = c(dmarg_mean - 1.75, dmarg_mean + 1.75)) +
   annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big") +
   annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big") +
   annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small") +
@@ -418,44 +416,21 @@ team_margins |>
 
 
 
+
 ```{r}
-team_colors |>
-  mutate(col = 1,
-         team = fct_rev(factor(team))) |>
-  ggplot(aes(team, col)) +
-  geom_col(aes(fill = team), show.legend = F) +
-  coord_flip() +
-  scale_fill_manual(values = rev(team_color_codes))
+nba = clean_names(read_csv("nba_player_stats.csv", col_types = cols()))
+
+nba |>
+  select(player, pos, age, tm, mp, pts, ast, orb, drb, trb) |>
+  mutate(credits = pts + ast * 2 + orb * 1.5 + drb,
+         xyz = ifelse(player == "Nikola Jokić", "Jokic", "Other")) |>
+  ggplot(aes(mp, credits)) +
+  geom_point(aes(col = xyz), size = 3) +
+  geom_smooth(formula = y ~ x, method = "loess", se = F, col = "black") +
+  scale_color_manual(values = c("springgreen3", "indianred3")) +
+  labs(x = "total minutes", y = "total points added",
+       title = "random NBA plot please ignore")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -349,11 +349,11 @@ end_margins
     ##   4: 2023-03-30    Milwaukee Brewers          0          4         Chicago Cubs
     ##   5: 2023-03-30       Detroit Tigers          0          4       Tampa Bay Rays
     ##  ---                                                                           
-    ## 874: 2023-06-03  Cleveland Guardians          4          2      Minnesota Twins
-    ## 875: 2023-06-03     New York Yankees          6          3  Los Angeles Dodgers
-    ## 876: 2023-06-03    Baltimore Orioles          0          4 San Francisco Giants
-    ## 877: 2023-06-03         Chicago Cubs          0          6     San Diego Padres
-    ## 878: 2023-06-03       Atlanta Braves          5          2 Arizona Diamondbacks
+    ## 889: 2023-06-04     Seattle Mariners          3         12        Texas Rangers
+    ## 890: 2023-06-04    Baltimore Orioles          8          3 San Francisco Giants
+    ## 891: 2023-06-04       Atlanta Braves          8          5 Arizona Diamondbacks
+    ## 892: 2023-06-04         Chicago Cubs          7          1     San Diego Padres
+    ## 893: 2023-06-04     New York Yankees          4          1  Los Angeles Dodgers
     ##      home_margin away_margin
     ##   1:          -5           5
     ##   2:           5          -5
@@ -361,11 +361,11 @@ end_margins
     ##   4:           4          -4
     ##   5:           4          -4
     ##  ---                        
-    ## 874:          -2           2
-    ## 875:          -3           3
-    ## 876:           4          -4
-    ## 877:           6          -6
-    ## 878:          -3           3
+    ## 889:           9          -9
+    ## 890:          -5           5
+    ## 891:          -3           3
+    ## 892:          -6           6
+    ## 893:          -3           3
 
 ``` r
 get_margin = function(team) {
@@ -415,8 +415,8 @@ team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
                      "#27251F", "#C6011F", "#00385D", "#333366", "#0C2340",
                      "#EB6E1F", "#004687", "#BA0021", "#005A9C", "#00A3E0",
                      "#FFC52F", "#D31145", "#FF5910", "#003087", "#003831",
-                     "#E81828", "#FDB827", "#C41E3A", "#FFC425", "#FD5A1E",
-                     "#005C5C", "#8FBCE6", "#C0111F", "#134A8E", "#FFB7C5")
+                     "#E81828", "#FDB827", "#FFC425", "#FD5A1E", "#005C5C",
+                     "#C41E3A", "#8FBCE6", "#C0111F", "#134A8E", "#FFB7C5")
 
 team_colors = data.frame(team = all_teams, hex = team_color_codes)
 ```
@@ -440,12 +440,12 @@ team_margins |>
   ggplot(aes(win_margin, def_margin)) +
   geom_point(size = 4, aes(col = team), show.legend = F) +
   ggrepel::geom_text_repel(aes(label = abb), size = 4) +
-  geom_hline(yintercept = dmarg_mean, linetype = "dashed", alpha = 0.5) +
-  geom_vline(xintercept = vmarg_mean, linetype = "dashed", alpha = 0.5) +
+  geom_hline(yintercept = dmarg_mean, linetype = "dashed", alpha = 0.4) +
+  geom_vline(xintercept = vmarg_mean, linetype = "dashed", alpha = 0.4) +
   scale_color_manual(values = team_color_codes) +
   labs(x = "Avg. Margin of Victory", y = "Avg. Margin of Defeat",
-       title = "Scatterplot of Margins of Victory/Defeat") +
-  coord_cartesian(ylim = c(-5.25, -2)) + # need a way to auto-generate this
+       title = "Scatterplot of Margins of Victory/Defeat",
+       subtitle = "Dashed lines represent league averages") +
   annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big") +
   annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big") +
   annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small") +
@@ -457,3 +457,20 @@ team_margins |>
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+``` r
+nba = clean_names(read_csv("nba_player_stats.csv", col_types = cols()))
+
+nba |>
+  select(player, pos, age, tm, mp, pts, ast, orb, drb, trb) |>
+  mutate(credits = pts + ast * 2 + orb * 1.5 + drb,
+         xyz = ifelse(player == "Nikola Jokić", "Jokic", "Other")) |>
+  ggplot(aes(mp, credits)) +
+  geom_point(aes(col = xyz), size = 3) +
+  geom_smooth(formula = y ~ x, method = "loess", se = F, col = "black") +
+  scale_color_manual(values = c("springgreen3", "indianred3")) +
+  labs(x = "total minutes", y = "total points added",
+       title = "random NBA plot please ignore")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
