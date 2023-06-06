@@ -349,11 +349,11 @@ end_margins
     ##   4: 2023-03-30    Milwaukee Brewers          0          4         Chicago Cubs
     ##   5: 2023-03-30       Detroit Tigers          0          4       Tampa Bay Rays
     ##  ---                                                                           
-    ## 889: 2023-06-04     Seattle Mariners          3         12        Texas Rangers
-    ## 890: 2023-06-04    Baltimore Orioles          8          3 San Francisco Giants
-    ## 891: 2023-06-04       Atlanta Braves          8          5 Arizona Diamondbacks
-    ## 892: 2023-06-04         Chicago Cubs          7          1     San Diego Padres
-    ## 893: 2023-06-04     New York Yankees          4          1  Los Angeles Dodgers
+    ## 897: 2023-06-05    Oakland Athletics          4          5   Pittsburgh Pirates
+    ## 898: 2023-06-05       Houston Astros         11          4    Toronto Blue Jays
+    ## 899: 2023-06-05    Milwaukee Brewers          0          2      Cincinnati Reds
+    ## 900: 2023-06-05  St. Louis Cardinals          3          4        Texas Rangers
+    ## 901: 2023-06-05         Chicago Cubs          0          5     San Diego Padres
     ##      home_margin away_margin
     ##   1:          -5           5
     ##   2:           5          -5
@@ -361,11 +361,11 @@ end_margins
     ##   4:           4          -4
     ##   5:           4          -4
     ##  ---                        
-    ## 889:           9          -9
-    ## 890:          -5           5
-    ## 891:          -3           3
-    ## 892:          -6           6
-    ## 893:          -3           3
+    ## 897:           1          -1
+    ## 898:          -7           7
+    ## 899:           2          -2
+    ## 900:           1          -1
+    ## 901:           5          -5
 
 ``` r
 get_margin = function(team) {
