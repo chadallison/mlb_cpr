@@ -446,14 +446,16 @@ team_margins |>
   labs(x = "Avg. Margin of Victory", y = "Avg. Margin of Defeat",
        title = "Scatterplot of Margins of Victory/Defeat",
        subtitle = "Dashed lines represent league averages") +
-  annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big") +
-  annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big") +
-  annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small") +
-  annotate("text", x = 5, y = -2.1, label = "Win Big, Lose Small") +
+  annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big", fontface = "italic") +
+  annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big", fontface = "italic") +
+  annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small", fontface = "italic") +
+  annotate("text", x = 5, y = -2.1, label = "Win Big, Lose Small", fontface = "italic") +
   geom_rect(aes(xmin = 2, xmax = 3, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
   geom_rect(aes(xmin = 2, xmax = 3, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") + 
   geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
-  geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -5.25, ymax = -5), col = "black", fill = "transparent")
+  geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") +
+  coord_cartesian(xlim = c(min(team_margins$win_margin), max(team_margins$win_margin)),
+                  ylim = c(min(team_margins$def_margin) - 0.5, max(team_margins$def_margin) + 0.5))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
