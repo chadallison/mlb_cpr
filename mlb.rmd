@@ -417,21 +417,6 @@ team_margins |>
 
 
 
-```{r}
-nba = clean_names(read_csv("nba_player_stats.csv", col_types = cols()))
-
-nba |>
-  select(player, pos, age, tm, mp, pts, ast, orb, drb, trb) |>
-  mutate(credits = pts + ast * 2 + orb * 1.5 + drb,
-         xyz = ifelse(player == "Nikola Jokić", "Jokic", "Other")) |>
-  ggplot(aes(mp, credits)) +
-  geom_point(aes(col = xyz), size = 3) +
-  geom_smooth(formula = y ~ x, method = "loess", se = F, col = "black") +
-  scale_color_manual(values = c("springgreen3", "indianred3")) +
-  labs(x = "total minutes", y = "total points added",
-       title = "random NBA plot please ignore")
-```
-
 
 
 

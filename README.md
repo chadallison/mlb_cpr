@@ -349,11 +349,11 @@ end_margins
     ##   4: 2023-03-30    Milwaukee Brewers          0          4         Chicago Cubs
     ##   5: 2023-03-30       Detroit Tigers          0          4       Tampa Bay Rays
     ##  ---                                                                           
-    ## 897: 2023-06-05    Oakland Athletics          4          5   Pittsburgh Pirates
-    ## 898: 2023-06-05       Houston Astros         11          4    Toronto Blue Jays
-    ## 899: 2023-06-05    Milwaukee Brewers          0          2      Cincinnati Reds
-    ## 900: 2023-06-05  St. Louis Cardinals          3          4        Texas Rangers
-    ## 901: 2023-06-05         Chicago Cubs          0          5     San Diego Padres
+    ## 912: 2023-06-06    Baltimore Orioles          3          4    Milwaukee Brewers
+    ## 913: 2023-06-06  St. Louis Cardinals          4          6        Texas Rangers
+    ## 914: 2023-06-06 San Francisco Giants         10          4     Colorado Rockies
+    ## 915: 2023-06-06         Chicago Cubs          4          7   Los Angeles Angels
+    ## 916: 2023-06-06     Seattle Mariners          4          1     San Diego Padres
     ##      home_margin away_margin
     ##   1:          -5           5
     ##   2:           5          -5
@@ -361,11 +361,11 @@ end_margins
     ##   4:           4          -4
     ##   5:           4          -4
     ##  ---                        
-    ## 897:           1          -1
-    ## 898:          -7           7
-    ## 899:           2          -2
-    ## 900:           1          -1
-    ## 901:           5          -5
+    ## 912:           1          -1
+    ## 913:           2          -2
+    ## 914:          -6           6
+    ## 915:           3          -3
+    ## 916:          -3           3
 
 ``` r
 get_margin = function(team) {
@@ -457,20 +457,3 @@ team_margins |>
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
-
-``` r
-nba = clean_names(read_csv("nba_player_stats.csv", col_types = cols()))
-
-nba |>
-  select(player, pos, age, tm, mp, pts, ast, orb, drb, trb) |>
-  mutate(credits = pts + ast * 2 + orb * 1.5 + drb,
-         xyz = ifelse(player == "Nikola Jokić", "Jokic", "Other")) |>
-  ggplot(aes(mp, credits)) +
-  geom_point(aes(col = xyz), size = 3) +
-  geom_smooth(formula = y ~ x, method = "loess", se = F, col = "black") +
-  scale_color_manual(values = c("springgreen3", "indianred3")) +
-  labs(x = "total minutes", y = "total points added",
-       title = "random NBA plot please ignore")
-```
-
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
