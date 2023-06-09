@@ -1,14 +1,21 @@
 ---
-title: "mlb cpr"
+title: "MLB EDA"
 output: github_document
 knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md", envir = globalenv()) })
 ---
 
-# *this is very much a work in progress*
+# Contents
+- [Runs Scored v. Runs Allowed]
+- [Composite Performance Rating  (CPR) Rankings]
+- [Records x CPR Ranks]
+- [Scorigami]
+- [Top Team Analysis]
+- [Team Margins Plot]
+- [Scatterplot of Margins of Victory and Defeat]
 
-### setup
+<!-- ### setup -->
 
-```{r message = F, warning = F}
+```{r message = F, warning = F, include = F}
 library(tidyverse)
 library(tidymodels)
 library(tvthemes)
@@ -25,9 +32,9 @@ theme_custom = theme_avatar() +
 theme_set(theme_custom)
 ```
 
-### data import
+<!-- ### data import -->
 
-```{r}
+```{r include = F}
 loop_dates = seq.Date(from = as_date("2023-03-30"), to = Sys.Date() - 1, by = 1)
 end_games = data.frame(date = NULL, away_team = NULL, away_score = NULL, home_score = NULL, home_team = NULL)
 
@@ -43,7 +50,7 @@ for (i in 1:length(loop_dates)) {
 end_games = na.omit(end_games)
 ```
 
-```{r}
+```{r include = F}
 all_teams = sort(unique(end_games$home_team))
 
 get_team_rspg = function(team) {
@@ -63,7 +70,9 @@ rpg_df = data.frame(team = all_teams) |>
          rapg = sapply(team, get_team_rapg))
 ```
 
-```{r}
+### Runs Scored v. Runs Allowed
+
+```{r echo = F}
 rpg_df = rpg_df |>
   mutate(diff = rspg - rapg)
 
@@ -94,7 +103,7 @@ fig
 message("Runs scored v. runs allowed by team in the #MLB so far this season. #baseball #analytics #dataviz")
 ```
 
-```{r}
+```{r  include = F}
 end_extended = end_games |>
   left_join(rpg_df, by = c("home_team" = "team")) |>
   rename(home_rspg = rspg, home_rapg = rapg) |>
@@ -108,7 +117,7 @@ end_extended = end_games |>
          away_def_cpr = home_exp - home_score)
 ```
 
-```{r}
+```{r include = F}
 get_off_cpr = function(team) {
   home_cpr = end_extended |> filter(home_team == team) |> pull(home_off_cpr)
   away_cpr = end_extended |> filter(away_team == team) |> pull(away_off_cpr)
@@ -127,7 +136,9 @@ team_cpr = data.frame(team = all_teams) |>
          total_cpr = off_cpr + def_cpr)
 ```
 
-```{r}
+### Composite Performance Rating  (CPR) Rankings
+
+```{r echo = F}
 day_label = paste(day(Sys.Date()), month(Sys.Date(), label = T, abbr = F)[1], year(Sys.Date()))
 
 fig = team_cpr |>
@@ -145,7 +156,7 @@ fig
 message("My #MLB Composite Performance Ratings so far this season. #baseball #analytics #dataviz")
 ```
 
-```{r}
+```{r include = F}
 end_wl = end_games |>
   mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
          lose_team = ifelse(home_score > away_score, away_team, home_team))
@@ -164,7 +175,9 @@ team_records = team_wins |>
          record = paste0(wins, "-", losses))
 ```
 
-```{r}
+### Records x CPR Ranks
+
+```{r echo = F}
 fig = team_records |>
   select(team, win_pct) |>
   left_join(team_cpr, by = "team") |>
@@ -194,9 +207,9 @@ message("Here's how teams compare to their records this season in the #MLB based
 
 
 
-### MLB SCORIGAMI?
+### Scorigami
 
-```{r}
+```{r echo = F}
 gami_df = end_games |>
   transmute(date, win_team = ifelse(home_score > away_score, home_team, away_team),
             lose_team = ifelse(home_score > away_score, away_team, home_team),
@@ -248,9 +261,9 @@ fig
 ```
 
 
-### xxx
+### Top Team Analysis
 
-```{r}
+```{r echo = F}
 wbt_df = end_games |>
   mutate(home_win = ifelse(home_score > away_score, 1, 0),
          home_wb2 = ifelse(home_score > away_score + 1, 1, 0),
@@ -312,21 +325,19 @@ fig = team_wbt |>
   geom_col(aes(fill = team), position = "dodge") +
   geom_text(aes(label = val_lab, group = team), size = 3, vjust = -0.5, position = position_dodge2(width = 0.9)) +
   scale_fill_manual(values = c("#DF4601", "#8FBCE6", "#C64040")) +
-  labs(x = NULL, y = "Rate", fill = NULL, title = "Rays Dominance",
+  labs(x = NULL, y = "Rate", fill = NULL, title = "Top Team Win Rates",
        subtitle = "Top Three Teams by Win Percentage Included") +
   theme(axis.text.y = element_blank())
 
 fig
 ```
 
-### xxx
+### Team Margins Plot
 
-```{r}
+```{r echo = F}
 end_margins = end_games |>
   mutate(home_margin = home_score - away_score,
          away_margin = away_score - home_score)
-
-end_margins
 
 get_margin = function(team) {
   home_margins = pull(filter(end_margins, home_team == team), home_margin)
@@ -339,14 +350,15 @@ team_margins = data.frame(team = all_teams) |>
 
 team_margins |>
   ggplot(aes(reorder(team, margin), margin)) +
-  geom_col(aes(fill = margin)) +
+  geom_col(aes(fill = margin), show.legend = F) +
   coord_flip() +
-  scale_fill_gradient(low = "indianred3", high = "springgreen4")
+  scale_fill_gradient(low = "indianred3", high = "springgreen4") +
+  labs(x = "Average Margin", y = NULL, title = "Average Margins by Team")
 ```
 
-### xxx
+<!-- ### xxx -->
 
-```{r}
+```{r  include = F}
 end_winners = end_games |>
   mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
          lose_team = ifelse(away_score > home_score, home_team, away_team),
@@ -368,7 +380,7 @@ team_margins = data.frame(team = all_teams) |>
          def_margin = sapply(team, get_dmargin))
 ```
 
-```{r}
+```{r  include = F}
 team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
                      "#27251F", "#C6011F", "#00385D", "#333366", "#0C2340",
                      "#EB6E1F", "#004687", "#BA0021", "#005A9C", "#00A3E0",
@@ -379,9 +391,9 @@ team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
 team_colors = data.frame(team = all_teams, hex = team_color_codes)
 ```
 
-### xxx
+### Scatterplot of Margins of Victory and Defeat
 
-```{r}
+```{r echo = F}
 team_abbrevs = data.frame(team = all_teams,
                           abb = c("ARI", "ATL", "BAL", "BOS", "CHC", "CHW",
                                   "CIN", "CLE", "COL", "DET", "HOU", "KC",
@@ -414,6 +426,8 @@ team_margins |>
   geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") +
   coord_cartesian(xlim = c(min(team_margins$win_margin), max(team_margins$win_margin)),
                   ylim = c(min(team_margins$def_margin) - 0.5, max(team_margins$def_margin) + 0.5))
+
+message("As of x June 2023: Scatterplot of teams' margins of victory and defeat so far in the #MLB this season. @MLB #baseball #analytics #dataviz #ggplot")
 ```
 
 
