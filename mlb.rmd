@@ -12,6 +12,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Top Team Analysis]
 - [Team Margins Plot]
 - [Scatterplot of Margins of Victory and Defeat]
+- [One-Run Games]
 
 <!-- ### setup -->
 
@@ -429,6 +430,40 @@ team_margins |>
 
 message("As of x June 2023: Scatterplot of teams' margins of victory and defeat so far in the #MLB this season. @MLB #baseball #analytics #dataviz #ggplot")
 ```
+
+### One-Run Games
+
+```{r echo = F}
+one_runs = end_games |>
+  filter(abs(home_score - away_score) == 1) |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         home_win = ifelse(win_team == home_team, 1, 0))
+
+or_wins = rename(count(one_runs, win_team), wins = n)
+or_losses = rename(count(one_runs, lose_team), losses = n)
+
+left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
+  mutate(gp = wins + losses,
+         win_per = round(wins / gp, 3)) |>
+  left_join(team_abbrevs, by = c("win_team" = "team")) |>
+  ggplot(aes(gp, win_per)) +
+  geom_point(aes(col = win_team), size = 4, show.legend = F) +
+  scale_color_manual(values = team_color_codes) +
+  ggrepel::geom_text_repel(aes(label = abb)) +
+  labs(x = "One-Run Games Played", y = "Win Percentage in One-Run Games",
+       title = "How are MLB teams performing in one-run games?")
+```
+
+
+
+
+
+
+
+
+
+
 
 
 

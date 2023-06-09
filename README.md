@@ -12,6 +12,7 @@ MLB EDA
 - [Team Margins Plot](#team-margins-plot)
 - [Scatterplot of Margins of Victory and
   Defeat](#scatterplot-of-margins-of-victory-and-defeat)
+- [One-Run Games](#one-run-games)
 
 <!-- ### setup -->
 <!-- ### data import -->
@@ -53,3 +54,7 @@ MLB EDA
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
     ## As of x June 2023: Scatterplot of teams' margins of victory and defeat so far in the #MLB this season. @MLB #baseball #analytics #dataviz #ggplot
+
+### One-Run Games
+
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
