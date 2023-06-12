@@ -435,6 +435,7 @@ team_margins |>
 
 message("As of x June 2023: Scatterplot of teams' margins of victory and defeat so far in the #MLB this season. @MLB #baseball #analytics #dataviz #ggplot")
 ```
+
 ### Margins of Victory and Defeat
 
 ```{r echo = F}
@@ -442,12 +443,15 @@ team_margins |>
   mutate(marg_diff = abs(win_margin - def_margin)) |>
   ggplot() +
   geom_col(aes(reorder(team, marg_diff), win_margin, fill = team), show.legend = F) +
-  geom_col(aes(reorder(team, marg_diff), def_margin, fill = team), show.legend = F) +
+  geom_col(aes(reorder(team, marg_diff), def_margin, fill = team), show.legend = F, alpha = 0.75) +
+  geom_text(aes(reorder(team, marg_diff), win_margin, label = round(win_margin, 2)), size = 2.5, hjust = -0.25) +
+  geom_text(aes(reorder(team, marg_diff), def_margin, label = round(def_margin, 2)), size = 2.5, hjust = 1.25) +
   geom_hline(yintercept = 0, linetype = "dashed") +
   scale_fill_manual(values = team_color_codes) +
   coord_flip() +
   labs(x = NULL, y = "← Avg. Margin of Defeat | Avg. Margin of Victory →",
-       title = "Team Margins of Victory and Defeat", subtitle = "Ordered by Largest to Smallest Range")
+       title = "Team Margins of Victory and Defeat", subtitle = "Ordered by Largest to Smallest Range") +
+  theme(axis.text.x = element_blank())
 ```
 
 
