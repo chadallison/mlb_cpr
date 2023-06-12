@@ -12,6 +12,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Top Team Analysis]
 - [Team Margins Plot]
 - [Scatterplot of Margins of Victory and Defeat]
+- [Margins of Victory and Defeat]
 - [One-Run Games]
 
 <!-- ### setup -->
@@ -350,11 +351,15 @@ team_margins = data.frame(team = all_teams) |>
   mutate(margin = sapply(team, get_margin))
 
 team_margins |>
+  mutate(pos_lab = ifelse(margin >= 0, margin, ""),
+         neg_lab = ifelse(margin < 0, margin, "")) |>
   ggplot(aes(reorder(team, margin), margin)) +
   geom_col(aes(fill = margin), show.legend = F) +
-  coord_flip() +
+  geom_text(aes(label = pos_lab), size = 2.5, hjust = -0.25) +
+  geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
+  coord_flip(ylim = c(-3.25, 3.25)) +
   scale_fill_gradient(low = "indianred3", high = "springgreen4") +
-  labs(x = "Average Margin", y = NULL, title = "Average Margins by Team")
+  labs(y = "Average Margin", x = NULL, title = "Average Margins by Team")
 ```
 
 <!-- ### xxx -->
@@ -422,14 +427,29 @@ team_margins |>
   annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small", fontface = "italic") +
   annotate("text", x = 5, y = -2.1, label = "Win Big, Lose Small", fontface = "italic") +
   geom_rect(aes(xmin = 2, xmax = 3, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
-  geom_rect(aes(xmin = 2, xmax = 3, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") + 
+  geom_rect(aes(xmin = 2, xmax = 3, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") +
   geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
   geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") +
-  coord_cartesian(xlim = c(min(team_margins$win_margin), max(team_margins$win_margin)),
-                  ylim = c(min(team_margins$def_margin) - 0.5, max(team_margins$def_margin) + 0.5))
+  coord_cartesian(xlim = c(min(team_margins$win_margin) - 0.25, max(team_margins$win_margin) + 0.25),
+                  ylim = c(min(team_margins$def_margin) - 0.75, max(team_margins$def_margin) + 0.75))
 
 message("As of x June 2023: Scatterplot of teams' margins of victory and defeat so far in the #MLB this season. @MLB #baseball #analytics #dataviz #ggplot")
 ```
+### Margins of Victory and Defeat
+
+```{r echo = F}
+team_margins |>
+  mutate(marg_diff = abs(win_margin - def_margin)) |>
+  ggplot() +
+  geom_col(aes(reorder(team, marg_diff), win_margin, fill = team), show.legend = F) +
+  geom_col(aes(reorder(team, marg_diff), def_margin, fill = team), show.legend = F) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip() +
+  labs(x = NULL, y = "← Avg. Margin of Defeat | Avg. Margin of Victory →",
+       title = "Team Margins of Victory and Defeat", subtitle = "Ordered by Largest to Smallest Range")
+```
+
 
 ### One-Run Games
 
