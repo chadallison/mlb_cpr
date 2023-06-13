@@ -15,26 +15,17 @@ MLB EDA
 - [Margins of Victory and Defeat](#margins-of-victory-and-defeat)
 - [One-Run Games](#one-run-games)
 
-<!-- ### setup -->
-<!-- ### data import -->
-
 ### Runs Scored v. Runs Allowed
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-    ## Runs scored v. runs allowed by team in the #MLB so far this season. #baseball #analytics #dataviz
 
 ### Composite Performance Rating (CPR) Rankings
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-    ## My #MLB Composite Performance Ratings so far this season. #baseball #analytics #dataviz
-
 ### Records x CPR Ranks
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
-
-    ## Here's how teams compare to their records this season in the #MLB based on my Composite Performance Ratings. #baseball #analytics #dataviz
 
 ### Scorigami
 
@@ -48,13 +39,9 @@ MLB EDA
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
-<!-- ### xxx -->
-
 ### Scatterplot of Margins of Victory and Defeat
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
-
-    ## As of x June 2023: Scatterplot of teams' margins of victory and defeat so far in the #MLB this season. @MLB #baseball #analytics #dataviz #ggplot
 
 ### Margins of Victory and Defeat
 

@@ -15,8 +15,6 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Margins of Victory and Defeat]
 - [One-Run Games]
 
-<!-- ### setup -->
-
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
 library(tidymodels)
@@ -33,8 +31,6 @@ theme_custom = theme_avatar() +
 
 theme_set(theme_custom)
 ```
-
-<!-- ### data import -->
 
 ```{r include = F}
 loop_dates = seq.Date(from = as_date("2023-03-30"), to = Sys.Date() - 1, by = 1)
@@ -72,7 +68,7 @@ rpg_df = data.frame(team = all_teams) |>
          rapg = sapply(team, get_team_rapg))
 ```
 
-```{r  include = F}
+```{r include = F}
 team_abbrevs = data.frame(team = all_teams,
                           abb = c("ARI", "ATL", "BAL", "BOS", "CHC", "CHW",
                                   "CIN", "CLE", "COL", "DET", "HOU", "KC",
@@ -120,11 +116,9 @@ rpg_df |>
   labs(x = "Runs Scored Per Game", y = "Runs Allowed Per Game",
        title = "Runs Scored v. Runs Allowed in 2023",
        subtitle = "Labeled Teams are Top or Bottom Three")
-
-message("Runs scored v. runs allowed by team in the #MLB so far this season. #baseball #analytics #dataviz")
 ```
 
-```{r  include = F}
+```{r include = F}
 end_extended = end_games |>
   left_join(rpg_df, by = c("home_team" = "team")) |>
   rename(home_rspg = rspg, home_rapg = rapg) |>
@@ -172,8 +166,6 @@ team_cpr |>
   scale_fill_manual(values = team_color_codes) +
   coord_flip(ylim = c(-1.75, 1.75)) +
   labs(x = NULL, y = "Composite Performance Rating", title = paste0("MLB CPR Rankings as of ", day_label))
-
-message("My #MLB Composite Performance Ratings so far this season. #baseball #analytics #dataviz")
 ```
 
 ```{r include = F}
@@ -214,17 +206,7 @@ team_records |>
   scale_color_manual(values = c("black", "springgreen4", "indianred3")) +
   labs(x = "CPR Rank", y = "Record Rank", col = NULL,
        title = "2023 MLB Records x CPR Ranks")
-
-message("Here's how teams compare to their records this season in the #MLB based on my Composite Performance Ratings. #baseball #analytics #dataviz")
 ```
-
-
-
-
-
-
-
-
 
 ### Scorigami
 
@@ -276,7 +258,6 @@ gami_df |>
   labs(x = "Winning Score", y = "Losing Score",
        title = "2023 MLB Scorigami", subtitle = last_gami)
 ```
-
 
 ### Top Team Analysis
 
@@ -375,8 +356,6 @@ team_margins |>
   labs(y = "Average Margin", x = NULL, title = "Average Margins by Team")
 ```
 
-<!-- ### xxx -->
-
 ```{r  include = F}
 end_winners = end_games |>
   mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
@@ -427,8 +406,6 @@ team_margins |>
   geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") +
   coord_cartesian(xlim = c(min(team_margins$win_margin) - 0.25, max(team_margins$win_margin) + 0.25),
                   ylim = c(min(team_margins$def_margin) - 0.75, max(team_margins$def_margin) + 0.75))
-
-message("As of x June 2023: Scatterplot of teams' margins of victory and defeat so far in the #MLB this season. @MLB #baseball #analytics #dataviz #ggplot")
 ```
 
 ### Margins of Victory and Defeat
@@ -448,7 +425,6 @@ team_margins |>
        title = "Team Margins of Victory and Defeat", subtitle = "Ordered by Largest to Smallest Range") +
   theme(axis.text.x = element_blank())
 ```
-
 
 ### One-Run Games
 
@@ -473,14 +449,6 @@ left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
   labs(x = "One-Run Games Played", y = "Win Percentage in One-Run Games",
        title = "How are MLB teams performing in one-run games?")
 ```
-
-
-
-
-
-
-
-
 
 
 
