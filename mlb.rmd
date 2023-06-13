@@ -72,6 +72,24 @@ rpg_df = data.frame(team = all_teams) |>
          rapg = sapply(team, get_team_rapg))
 ```
 
+```{r  include = F}
+team_abbrevs = data.frame(team = all_teams,
+                          abb = c("ARI", "ATL", "BAL", "BOS", "CHC", "CHW",
+                                  "CIN", "CLE", "COL", "DET", "HOU", "KC",
+                                  "LAA", "LAD", "MIA", "MIL", "MIN", "NYM",
+                                  "NYY", "OAK", "PHI", "PIT", "SD", "SF",
+                                  "SEA", "STL", "TB", "TEX", "TOR", "WAS"))
+
+team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
+                     "#27251F", "#C6011F", "#00385D", "#333366", "#0C2340",
+                     "#EB6E1F", "#004687", "#BA0021", "#005A9C", "#00A3E0",
+                     "#FFC52F", "#D31145", "#FF5910", "#003087", "#003831",
+                     "#E81828", "#FDB827", "#FFC425", "#FD5A1E", "#005C5C",
+                     "#C41E3A", "#8FBCE6", "#C0111F", "#134A8E", "#FFB7C5")
+
+team_colors = data.frame(team = all_teams, hex = team_color_codes)
+```
+
 ### Runs Scored v. Runs Allowed
 
 ```{r echo = F}
@@ -86,22 +104,23 @@ bottom_teams = rpg_df |>
   slice_min(diff, n = 3) |>
   pull(team)
 
-fig = rpg_df |>
-  mutate(top_lab = ifelse(team %in% top_teams, team, ""),
-         bot_lab = ifelse(team %in% bottom_teams, team, ""),
-         other_lab = ifelse(!team %in% top_teams & !team %in% bottom_teams, team, "")) |>
+rpg_df |>
+  left_join(team_abbrevs, by = "team") |>
+  mutate(top_lab = ifelse(team %in% top_teams, abb, ""),
+         bot_lab = ifelse(team %in% bottom_teams, abb, ""),
+         other_lab = ifelse(!team %in% top_teams & !team %in% bottom_teams, abb, "")) |>
   ggplot(aes(rspg, rapg)) +
-  geom_point(aes(col = diff), size = 4, show.legend = F) +
-  geom_abline(linetype = "dashed", alpha = 0.5) +
-  scale_color_gradient(low = "indianred3", high = "springgreen4") +
+  geom_point(aes(col = team), size = 5, show.legend = F) +
+  geom_vline(xintercept = mean(rpg_df$rspg), linetype = "dashed", alpha = 0.5) +
+  geom_hline(yintercept = mean(rpg_df$rapg), linetype = "dashed", alpha = 0.5) +
+  scale_color_manual(values = team_color_codes) +
   ggrepel::geom_text_repel(aes(label = top_lab), size = 3.5) +
   ggrepel::geom_text_repel(aes(label = bot_lab), size = 3.5) +
-  ggrepel::geom_text_repel(aes(label = other_lab), size = 3.5, alpha = 0.1, max.overlaps = 30) +
+  ggrepel::geom_text_repel(aes(label = other_lab), size = 3.5, alpha = 0.25, max.overlaps = 30) +
   labs(x = "Runs Scored Per Game", y = "Runs Allowed Per Game",
        title = "Runs Scored v. Runs Allowed in 2023",
        subtitle = "Labeled Teams are Top or Bottom Three")
 
-fig
 message("Runs scored v. runs allowed by team in the #MLB so far this season. #baseball #analytics #dataviz")
 ```
 
@@ -143,18 +162,17 @@ team_cpr = data.frame(team = all_teams) |>
 ```{r echo = F}
 day_label = paste(day(Sys.Date()), month(Sys.Date(), label = T, abbr = F)[1], year(Sys.Date()))
 
-fig = team_cpr |>
+team_cpr |>
   mutate(pos_lab = ifelse(total_cpr > 0, round(total_cpr, 3), ""),
          neg_lab = ifelse(total_cpr < 0, round(total_cpr, 3), "")) |>
   ggplot(aes(reorder(team, total_cpr), total_cpr)) +
-  geom_col(aes(fill = total_cpr), show.legend = F) +
+  geom_col(aes(fill = team), show.legend = F) +
   geom_text(aes(label = pos_lab), size = 2.5, hjust = -0.25) +
   geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
-  scale_fill_gradient(low = "indianred3", high = "springgreen4") +
+  scale_fill_manual(values = team_color_codes) +
   coord_flip(ylim = c(-1.75, 1.75)) +
   labs(x = NULL, y = "Composite Performance Rating", title = paste0("MLB CPR Rankings as of ", day_label))
 
-fig
 message("My #MLB Composite Performance Ratings so far this season. #baseball #analytics #dataviz")
 ```
 
@@ -180,7 +198,7 @@ team_records = team_wins |>
 ### Records x CPR Ranks
 
 ```{r echo = F}
-fig = team_records |>
+team_records |>
   select(team, win_pct) |>
   left_join(team_cpr, by = "team") |>
   select(team, win_pct, total_cpr) |>
@@ -197,7 +215,6 @@ fig = team_records |>
   labs(x = "CPR Rank", y = "Record Rank", col = NULL,
        title = "2023 MLB Records x CPR Ranks")
 
-fig
 message("Here's how teams compare to their records this season in the #MLB based on my Composite Performance Ratings. #baseball #analytics #dataviz")
 ```
 
@@ -246,7 +263,7 @@ yesterday_text = case_when(yesterday_gami == 0 ~ "No Scorigami Yesterday :(",
                            yesterday_gami == 1 ~ "One Scorigami Yesterday :)",
                            yesterday_gami > 1 ~ paste0(yesterday_gami, " Scorigamis Yesterday :)"))
 
-fig = gami_df |>
+gami_df |>
   mutate(win_score = factor(win_score),
          lose_score = factor(lose_score)) |>
   left_join(score_counts, by = c("win_score", "lose_score")) |>
@@ -258,8 +275,6 @@ fig = gami_df |>
   scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
   labs(x = "Winning Score", y = "Losing Score",
        title = "2023 MLB Scorigami", subtitle = last_gami)
-
-fig
 ```
 
 
@@ -313,7 +328,7 @@ team_wbt = data.frame(team = best_record_teams) |>
          wb4 = sapply(team, get_wb4_rate),
          wb5 = sapply(team, get_wb5_rate))
 
-fig = team_wbt |>
+team_wbt |>
   pivot_longer(cols = !team, names_to = "metric", values_to = "value") |>
   mutate(metric = case_when(metric == "win_pct" ~ "Win Percentage",
                             metric == "wb2" ~ "Win by 2+ Rate",
@@ -330,8 +345,6 @@ fig = team_wbt |>
   labs(x = NULL, y = "Rate", fill = NULL, title = "Top Team Win Rates",
        subtitle = "Top Three Teams by Win Percentage Included") +
   theme(axis.text.y = element_blank())
-
-fig
 ```
 
 ### Team Margins Plot
@@ -354,11 +367,11 @@ team_margins |>
   mutate(pos_lab = ifelse(margin >= 0, margin, ""),
          neg_lab = ifelse(margin < 0, margin, "")) |>
   ggplot(aes(reorder(team, margin), margin)) +
-  geom_col(aes(fill = margin), show.legend = F) +
+  geom_col(aes(fill = team), show.legend = F) +
   geom_text(aes(label = pos_lab), size = 2.5, hjust = -0.25) +
   geom_text(aes(label = neg_lab), size = 2.5, hjust = 1.25) +
   coord_flip(ylim = c(-3.25, 3.25)) +
-  scale_fill_gradient(low = "indianred3", high = "springgreen4") +
+  scale_fill_manual(values = team_color_codes) +
   labs(y = "Average Margin", x = NULL, title = "Average Margins by Team")
 ```
 
@@ -386,27 +399,9 @@ team_margins = data.frame(team = all_teams) |>
          def_margin = sapply(team, get_dmargin))
 ```
 
-```{r  include = F}
-team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
-                     "#27251F", "#C6011F", "#00385D", "#333366", "#0C2340",
-                     "#EB6E1F", "#004687", "#BA0021", "#005A9C", "#00A3E0",
-                     "#FFC52F", "#D31145", "#FF5910", "#003087", "#003831",
-                     "#E81828", "#FDB827", "#FFC425", "#FD5A1E", "#005C5C",
-                     "#C41E3A", "#8FBCE6", "#C0111F", "#134A8E", "#FFB7C5")
-
-team_colors = data.frame(team = all_teams, hex = team_color_codes)
-```
-
 ### Scatterplot of Margins of Victory and Defeat
 
 ```{r echo = F}
-team_abbrevs = data.frame(team = all_teams,
-                          abb = c("ARI", "ATL", "BAL", "BOS", "CHC", "CHW",
-                                  "CIN", "CLE", "COL", "DET", "HOU", "KC",
-                                  "LAA", "LAD", "MIA", "MIL", "MIN", "NYM",
-                                  "NYY", "OAK", "PHI", "PIT", "SD", "SF",
-                                  "SEA", "STL", "TB", "TEX", "TOR", "WAS"))
-
 vmarg_mean = mean(team_margins$win_margin)
 dmarg_mean = mean(team_margins$def_margin)
 
@@ -448,7 +443,7 @@ team_margins |>
   geom_text(aes(reorder(team, marg_diff), def_margin, label = round(def_margin, 2)), size = 2.5, hjust = 1.25) +
   geom_hline(yintercept = 0, linetype = "dashed") +
   scale_fill_manual(values = team_color_codes) +
-  coord_flip() +
+  coord_flip(ylim = c(min(team_margins$def_margin) - 0.25, max(team_margins$win_margin) + 0.25)) +
   labs(x = NULL, y = "← Avg. Margin of Defeat | Avg. Margin of Victory →",
        title = "Team Margins of Victory and Defeat", subtitle = "Ordered by Largest to Smallest Range") +
   theme(axis.text.x = element_blank())
