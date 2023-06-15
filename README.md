@@ -1,5 +1,3 @@
-MLB EDA
-================
 
 # Contents
 
