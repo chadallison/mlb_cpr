@@ -12,6 +12,7 @@
   Defeat](#scatterplot-of-margins-of-victory-and-defeat)
 - [Margins of Victory and Defeat](#margins-of-victory-and-defeat)
 - [One-Run Games](#one-run-games)
+- [Yesterday’s Highest-Scoring Game](#yesterdays-highest-scoring-game)
 
 ### Runs Scored v. Runs Allowed
 
@@ -48,3 +49,7 @@
 ### One-Run Games
 
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+### Yesterday’s Highest-Scoring Game
+
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->

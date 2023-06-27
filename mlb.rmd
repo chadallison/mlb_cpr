@@ -13,6 +13,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Scatterplot of Margins of Victory and Defeat]
 - [Margins of Victory and Defeat]
 - [One-Run Games]
+- [Yesterday's Highest-Scoring Game]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -449,12 +450,54 @@ left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
        title = "How are MLB teams performing in one-run games?")
 ```
 
-```{r include = F}
-baseballr::mlb_pbp(game_pk = 717686) |>
+### Yesterday's Highest-Scoring Game
+
+```{r message = F, warning = F, echo = F}
+get_date_pks = function(fdate) {
+  df = mlb_game_pks(date = fdate) |>
+    select(game_pk, date = officialDate, away_team = teams.away.team.name, home_team = teams.home.team.name) |>
+    mutate(date = as_date(date))
+  
+  return(df)
+}
+
+all_game_pks = data.frame(game_pk = NULL, date = NULL, away_team = NULL, home_team = NULL)
+
+for (i in 1:length(loop_dates)) {
+  df = get_date_pks(loop_dates[i])
+  all_game_pks = rbind(all_game_pks, df)
+}
+
+max_home_team = end_games |>
+  filter(date == Sys.Date() - 1) |>
+  mutate(total_score = home_score + away_score) |>
+  slice_max(total_score, n = 1) |>
+  pull(home_team)
+
+max_pk = all_game_pks |>
+  filter(date == Sys.Date() - 1) |>
+  filter(home_team == max_home_team) |>
+  pull(game_pk)
+
+vis_df = mlb_pbp(game_pk = max_pk) |>
+  filter(count.outs.end == 3) |>
   select(inning = about.inning, away_team, away_score = result.awayScore, home_score = result.homeScore, home_team) |>
-  pivot_longer(c(away_score, home_score), names_to = "home_away", values_to = "score") |>
+  pivot_longer(c(home_score, away_score), names_to = "team", values_to = "score") |>
+  mutate(team = ifelse(team == "home_score", home_team, away_team))
+
+max_teams = sort(unique(vis_df$team))
+max_colors = c(team_color_codes[which(team_colors$team == max_teams[1])],
+               team_color_codes[which(team_colors$team == max_teams[2])])
+
+vis_df |>
   ggplot(aes(inning, score)) +
-  geom_line(aes(col = home_away))
+  geom_line(aes(col = team), linewidth = 2) +
+  scale_x_continuous(breaks = 1:25) +
+  scale_y_continuous(breaks = 1:25) +
+  scale_color_manual(values = max_colors) +
+  labs(x = "Inning", y = "Score", col = NULL,
+       title = "Scoring Trends for Yesterday's Highest-Scoring Game") +
+  theme(legend.position = "right")
 ```
 
 
