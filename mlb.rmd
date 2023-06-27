@@ -449,6 +449,13 @@ left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
        title = "How are MLB teams performing in one-run games?")
 ```
 
+```{r include = F}
+baseballr::mlb_pbp(game_pk = 717686) |>
+  select(inning = about.inning, away_team, away_score = result.awayScore, home_score = result.homeScore, home_team) |>
+  pivot_longer(c(away_score, home_score), names_to = "home_away", values_to = "score") |>
+  ggplot(aes(inning, score)) +
+  geom_line(aes(col = home_away))
+```
 
 
 
