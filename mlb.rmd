@@ -249,12 +249,16 @@ gami_df |>
   mutate(win_score = factor(win_score),
          lose_score = factor(lose_score)) |>
   left_join(score_counts, by = c("win_score", "lose_score")) |>
+  mutate(win_score = as.numeric(win_score),
+         lose_score = as.numeric(lose_score)) |>
   ggplot(aes(win_score, lose_score)) +
   geom_point(shape = "square", size = 8, aes(col = n), show.legend = F) +
   geom_text(aes(label = n), size = 3) +
   annotate("text", x = 4, y = 9.5, label = yesterday_text, size = 4) +
   geom_rect(aes(xmin = 1, xmax = 7, ymin = 8.75, ymax = 10.25), col = "black", fill = "transparent") +
   scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
+  scale_x_continuous(breaks = 1:25) +
+  scale_y_continuous(breaks = 1:25) +
   labs(x = "Winning Score", y = "Losing Score",
        title = "2023 MLB Scorigami", subtitle = last_gami)
 ```
@@ -309,7 +313,7 @@ team_wbt = data.frame(team = best_record_teams) |>
          wb4 = sapply(team, get_wb4_rate),
          wb5 = sapply(team, get_wb5_rate))
 
-team_wbt |>
+vis_df = team_wbt |>
   pivot_longer(cols = !team, names_to = "metric", values_to = "value") |>
   mutate(metric = case_when(metric == "win_pct" ~ "Win Percentage",
                             metric == "wb2" ~ "Win by 2+ Rate",
@@ -318,11 +322,18 @@ team_wbt |>
                             metric == "wb5" ~ "Win by 5+ Rate"),
          metric = factor(metric, levels = c("Win Percentage", "Win by 2+ Rate", "Win by 3+ Rate",
                                             "Win by 4+ Rate", "Win by 5+ Rate")),
-         val_lab = paste0(value * 100, "%")) |>
+         val_lab = paste0(value * 100, "%"))
+
+rec_teams = sort(unique(vis_df$team))
+max_colors = c(team_color_codes[which(team_colors$team == rec_teams[1])],
+               team_color_codes[which(team_colors$team == rec_teams[2])],
+               team_color_codes[which(team_colors$team == rec_teams[3])])
+
+vis_df |>
   ggplot(aes(metric, value)) +
   geom_col(aes(fill = team), position = "dodge") +
   geom_text(aes(label = val_lab, group = team), size = 3, vjust = -0.5, position = position_dodge2(width = 0.9)) +
-  scale_fill_manual(values = c("#13274F", "#DF4601", "#8FBCE6")) +
+  scale_fill_manual(values = max_colors) +
   labs(x = NULL, y = "Rate", fill = NULL, title = "Top Team Win Rates",
        subtitle = "Top Three Teams by Win Percentage Included") +
   theme(axis.text.y = element_blank())
@@ -489,15 +500,25 @@ max_teams = sort(unique(vis_df$team))
 max_colors = c(team_color_codes[which(team_colors$team == max_teams[1])],
                team_color_codes[which(team_colors$team == max_teams[2])])
 
+high_df = end_games |>
+  filter(date == Sys.Date() - 1) |>
+  mutate(total_score = home_score + away_score,
+         win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         win_score = ifelse(home_score > away_score, home_score, away_score),
+         lose_score = ifelse(home_score > away_score, away_score, home_score)) |>
+  slice_max(total_score, n = 1)
+
+high_lab = paste0(high_df$win_team, " def. ", high_df$lose_team, " ", high_df$win_score, "-", high_df$lose_score)
+
 vis_df |>
   ggplot(aes(inning, score)) +
   geom_line(aes(col = team), linewidth = 2) +
   scale_x_continuous(breaks = 1:25) +
   scale_y_continuous(breaks = 1:25) +
   scale_color_manual(values = max_colors) +
-  labs(x = "Inning", y = "Score", col = NULL,
-       title = "Scoring Trends for Yesterday's Highest-Scoring Game") +
-  theme(legend.position = "right")
+  labs(x = "Inning", y = "Score", col = NULL, subtitle = high_lab,
+       title = "Scoring Trends for Yesterday's Highest-Scoring Game")
 ```
 
 
