@@ -494,7 +494,9 @@ vis_df = mlb_pbp(game_pk = max_pk) |>
   filter(count.outs.end == 3) |>
   select(inning = about.inning, away_team, away_score = result.awayScore, home_score = result.homeScore, home_team) |>
   pivot_longer(c(home_score, away_score), names_to = "team", values_to = "score") |>
-  mutate(team = ifelse(team == "home_score", home_team, away_team))
+  mutate(team = ifelse(team == "home_score", home_team, away_team)) |>
+  group_by(inning, team) |>
+  slice_max(score, n = 1)
 
 max_teams = sort(unique(vis_df$team))
 max_colors = c(team_color_codes[which(team_colors$team == max_teams[1])],
