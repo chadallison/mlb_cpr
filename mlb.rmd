@@ -3,23 +3,6 @@ output: github_document
 knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md", envir = globalenv()) })
 ---
 
-```{r include = F}
-knitr::knit_hooks$set(source = function(x, options) {
-    hook.r = function(x, options) {
-      fence = "```"
-      language = tolower(options$engine)
-      if (language == "node") language = "javascript"
-      if (!options$highlight) language = "text"
-      if (!is.null(options$fold_code)) {
-        paste0("\n\n", "<details><summary>View Code</summary>\n", fence, language,
-               "\n", x, fence, "\n\n", "</details>\n")
-      } else paste0('\n\n', fence, language, '\n', x, fence,  '\n\n')
-    }
-    x = knitr:::hilight_source(x, "markdown", options)
-    hook.r(paste(c(x, ""), collapse = "\n"), options)
-})
-```
-
 # Contents
 
 - [Runs Scored v. Runs Allowed]
@@ -106,7 +89,7 @@ team_colors = data.frame(team = all_teams, hex = team_color_codes)
 
 ### Runs Scored v. Runs Allowed
 
-```{r fold_code = T}
+```{r echo = F}
 rpg_df = rpg_df |>
   mutate(diff = rspg - rapg)
 
@@ -171,7 +154,7 @@ team_cpr = data.frame(team = all_teams) |>
 
 ### Composite Performance Rating  (CPR) Rankings
 
-```{r fold_code = T}
+```{r echo = F}
 day_label = paste(day(Sys.Date()), month(Sys.Date(), label = T, abbr = F)[1], year(Sys.Date()))
 
 team_cpr |>
@@ -207,7 +190,7 @@ team_records = team_wins |>
 
 ### Records x CPR Ranks
 
-```{r fold_code = T}
+```{r echo = F}
 team_records |>
   select(team, win_pct) |>
   left_join(team_cpr, by = "team") |>
@@ -228,7 +211,7 @@ team_records |>
 
 ### Scorigami
 
-```{r fold_code = T}
+```{r echo = F}
 gami_df = end_games |>
   transmute(date, win_team = ifelse(home_score > away_score, home_team, away_team),
             lose_team = ifelse(home_score > away_score, away_team, home_team),
@@ -283,7 +266,7 @@ gami_df |>
 
 ### Top Team Analysis
 
-```{r fold_code = T}
+```{r echo = F}
 wbt_df = end_games |>
   mutate(home_win = ifelse(home_score > away_score, 1, 0),
          home_wb2 = ifelse(home_score > away_score + 1, 1, 0),
@@ -359,7 +342,7 @@ vis_df |>
 
 ### Team Margins Plot
 
-```{r fold_code = T}
+```{r echo = F}
 end_margins = end_games |>
   mutate(home_margin = home_score - away_score,
          away_margin = away_score - home_score)
@@ -385,7 +368,7 @@ team_margins |>
   labs(y = "Average Margin", x = NULL, title = "Average Margins by Team")
 ```
 
-```{r  include = F, fold_code = T}
+```{r  include = F, echo = F}
 end_winners = end_games |>
   mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
          lose_team = ifelse(away_score > home_score, home_team, away_team),
@@ -409,7 +392,7 @@ team_margins = data.frame(team = all_teams) |>
 
 ### Scatterplot of Margins of Victory and Defeat
 
-```{r fold_code = T}
+```{r echo = F}
 vmarg_mean = mean(team_margins$win_margin)
 dmarg_mean = mean(team_margins$def_margin)
 
@@ -439,7 +422,7 @@ team_margins |>
 
 ### Margins of Victory and Defeat
 
-```{r fold_code = T}
+```{r echo = F}
 team_margins |>
   mutate(marg_diff = abs(win_margin - def_margin)) |>
   ggplot() +
@@ -457,7 +440,7 @@ team_margins |>
 
 ### One-Run Games
 
-```{r fold_code = T}
+```{r echo = F}
 one_runs = end_games |>
   filter(abs(home_score - away_score) == 1) |>
   mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
@@ -481,7 +464,7 @@ left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
 
 ### Yesterday's Highest-Scoring Game
 
-```{r message = F, warning = F, fold_code = T}
+```{r message = F, warning = F, echo = F}
 get_date_pks = function(fdate) {
   df = mlb_game_pks(date = fdate) |>
     select(game_pk, date = officialDate, away_team = teams.away.team.name, home_team = teams.home.team.name) |>
