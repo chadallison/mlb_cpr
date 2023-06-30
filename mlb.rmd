@@ -221,7 +221,8 @@ gami_df = end_games |>
 score_counts = gami_df |>
   mutate(win_score = factor(win_score),
          lose_score = factor(lose_score)) |>
-  count(win_score, lose_score)
+  count(win_score, lose_score) |>
+  mutate(final_score = paste0(win_score, "-", lose_score))
 
 most_recent = gami_df |>
   mutate(win_score = factor(win_score),
@@ -248,20 +249,20 @@ yesterday_text = case_when(yesterday_gami == 0 ~ "No Scorigami Yesterday :(",
 
 gami_df |>
   mutate(win_score = factor(win_score),
-         lose_score = factor(lose_score)) |>
-  left_join(score_counts, by = c("win_score", "lose_score")) |>
-  mutate(win_score = as.numeric(win_score),
-         lose_score = as.numeric(lose_score)) |>
+         lose_score = factor(lose_score),
+         final_score = paste0(win_score, "-", lose_score)) |>
+  left_join(score_counts, by = c("win_score", "lose_score", "final_score")) |>
+  mutate(win_score = as.numeric(as.character(win_score)),
+         lose_score = as.numeric(as.character(lose_score))) |>
+  distinct(win_score, lose_score, n) |>
   ggplot(aes(win_score, lose_score)) +
-  geom_point(shape = "square", size = 8, aes(col = n), show.legend = F) +
+  geom_point(shape = "square", size = 7, aes(col = n), show.legend = F) +
   geom_text(aes(label = n), size = 3) +
-  annotate("text", x = 4, y = 9.5, label = yesterday_text, size = 4) +
-  geom_rect(aes(xmin = 1, xmax = 7, ymin = 8.75, ymax = 10.25), col = "black", fill = "transparent") +
   scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
-  scale_x_continuous(breaks = 1:25) +
-  scale_y_continuous(breaks = 1:25) +
-  labs(x = "Winning Score", y = "Losing Score",
-       title = "2023 MLB Scorigami", subtitle = last_gami)
+  scale_x_continuous(breaks = 1:30) +
+  scale_y_continuous(breaks = 1:30) +
+  labs(x = "Winning Score", y = "Losing Score", subtitle = last_gami,
+       title = paste0("2023 MLB Scorigami: ", yesterday_text))
 ```
 
 ### Top Team Analysis
