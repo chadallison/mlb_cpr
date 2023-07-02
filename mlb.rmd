@@ -5,7 +5,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 
 # Contents
 
-- [Runs Scored v. Runs Allowed]
+- [Runs Scored v Runs Allowed]
 - [Composite Performance Rating  (CPR) Rankings]
 - [Records x CPR Ranks]
 - [Scorigami]
@@ -15,6 +15,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Margins of Victory and Defeat]
 - [One-Run Games]
 - [Yesterday's Highest-Scoring Game]
+- [Most Wins in a Single Month]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -87,7 +88,7 @@ team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
 team_colors = data.frame(team = all_teams, hex = team_color_codes)
 ```
 
-### Runs Scored v. Runs Allowed
+### Runs Scored v Runs Allowed
 
 ```{r echo = F}
 rpg_df = rpg_df |>
@@ -524,6 +525,39 @@ vis_df |>
   labs(x = "Inning", y = "Score", col = NULL, subtitle = high_lab,
        title = "Scoring Trends for Yesterday's Highest-Scoring Game")
 ```
+
+### Most Wins in a Single Month
+
+```{r echo = F}
+vis_df = end_games |>
+  mutate(win_score = ifelse(home_score > away_score, home_score, away_score),
+         lose_score = ifelse(home_score > away_team, away_score, home_score),
+         win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         month = month(date, label = T, abbr = F)) |>
+  group_by(month) |>
+  count(win_team) |>
+  ungroup() |>
+  arrange(desc(n)) |>
+  mutate(team_lab = paste0(win_team, " (", month, ")")) |>
+  rename(wins = n) |>
+  slice_max(wins, n = 25) |>
+  head(25)
+
+vis_fills = vis_df |>
+  left_join(team_colors, by = c("win_team" = "team")) |>
+  pull(hex)
+
+vis_df |>
+  ggplot(aes(reorder(team_lab, wins), wins)) +
+  geom_col(aes(fill = team_lab), show.legend = F) +
+  geom_text(aes(label = wins), size = 3, hjust = -0.25) +
+  coord_flip() +
+  scale_fill_manual(values = vis_fills) +
+  labs(x = NULL, y = "Number of Wins", title = "Most Wins in a Single Month, 2023 Season") +
+  theme(axis.text.x = element_blank())
+```
+
 
 
 

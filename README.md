@@ -1,7 +1,7 @@
 
 # Contents
 
-- [Runs Scored v. Runs Allowed](#runs-scored-v.-runs-allowed)
+- [Runs Scored v Runs Allowed](#runs-scored-v-runs-allowed)
 - [Composite Performance Rating (CPR)
   Rankings](#composite-performance-rating-cpr-rankings)
 - [Records x CPR Ranks](#records-x-cpr-ranks)
@@ -13,8 +13,9 @@
 - [Margins of Victory and Defeat](#margins-of-victory-and-defeat)
 - [One-Run Games](#one-run-games)
 - [Yesterday’s Highest-Scoring Game](#yesterdays-highest-scoring-game)
+- [Most Wins in a Single Month](#most-wins-in-a-single-month)
 
-### Runs Scored v. Runs Allowed
+### Runs Scored v Runs Allowed
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -53,3 +54,7 @@
 ### Yesterday’s Highest-Scoring Game
 
 ![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+### Most Wins in a Single Month
+
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
