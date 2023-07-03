@@ -5,6 +5,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 
 # Contents
 
+- [Team Rankings]
 - [Runs Scored v Runs Allowed]
 - [Composite Performance Rating  (CPR) Rankings]
 - [Records x CPR Ranks]
@@ -16,7 +17,6 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Margins of Victory and Defeat]
 - [One-Run Games]
 - [Yesterday's Highest-Scoring Game]
-- [Most Wins in a Single Month]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -88,6 +88,33 @@ team_color_codes = c("#A71930", "#CE1141", "#DF4601", "#BD3039", "#0E3386",
                      "#C41E3A", "#8FBCE6", "#C0111F", "#134A8E", "#FFB7C5")
 
 team_colors = data.frame(team = all_teams, hex = team_color_codes)
+```
+
+### Team Rankings
+
+```{r echo = F}
+wl_df = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team))
+
+team_records = wl_df |>
+  count(win_team) |>
+  rename(team = win_team, wins = n) |>
+  left_join(count(wl_df, lose_team), by = c("team" = "lose_team")) |>
+  rename(losses = n) |>
+  mutate(pct = round(wins / (wins + losses), 3),
+         record = paste0(wins, "-", losses)) |>
+  arrange(desc(pct))
+
+team_records |>
+  ggplot(aes(reorder(team, pct), pct)) +
+  geom_col(aes(fill = team), show.legend = F) +
+  geom_text(aes(label = record), size = 3, hjust = -0.25) +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip(ylim = c(0, 0.7)) +
+  labs(x = NULL, y = "Win Percentage", title = "2023 MLB Rankings",
+       subtitle = "Sorted by Highest to Lowest Win Percentage") +
+  theme(axis.text.x = element_blank())
 ```
 
 ### Runs Scored v Runs Allowed
@@ -568,37 +595,6 @@ vis_df |>
        title = "Scoring Trends for Yesterday's Highest-Scoring Game")
 ```
 
-### Most Wins in a Single Month
-
-```{r echo = F}
-vis_df = end_games |>
-  mutate(win_score = ifelse(home_score > away_score, home_score, away_score),
-         lose_score = ifelse(home_score > away_team, away_score, home_score),
-         win_team = ifelse(home_score > away_score, home_team, away_team),
-         lose_team = ifelse(home_score > away_score, away_team, home_team),
-         month = month(date, label = T, abbr = F)) |>
-  group_by(month) |>
-  count(win_team) |>
-  ungroup() |>
-  arrange(desc(n)) |>
-  mutate(team_lab = paste0(win_team, " (", month, ")")) |>
-  rename(wins = n) |>
-  slice_max(wins, n = 25) |>
-  head(25)
-
-vis_fills = vis_df |>
-  left_join(team_colors, by = c("win_team" = "team")) |>
-  pull(hex)
-
-vis_df |>
-  ggplot(aes(reorder(team_lab, wins), wins)) +
-  geom_col(aes(fill = team_lab), show.legend = F) +
-  geom_text(aes(label = wins), size = 3, hjust = -0.25) +
-  coord_flip() +
-  scale_fill_manual(values = vis_fills) +
-  labs(x = NULL, y = "Number of Wins", title = "Most Wins in a Single Month, 2023 Season") +
-  theme(axis.text.x = element_blank())
-```
 
 
 
