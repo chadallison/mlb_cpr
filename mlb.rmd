@@ -8,7 +8,8 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Runs Scored v Runs Allowed]
 - [Composite Performance Rating  (CPR) Rankings]
 - [Records x CPR Ranks]
-- [Scorigami]
+- [Scorigami (2023 Only)]
+- [Historic MLB Scorigami (Since 1901)]
 - [Top Team Analysis]
 - [Team Margins Plot]
 - [Scatterplot of Margins of Victory and Defeat]
@@ -24,6 +25,7 @@ library(tvthemes)
 library(janitor)
 library(patchwork)
 library(baseballr)
+library(retrosheet)
 
 theme_custom = theme_avatar() +
   theme(plot.title = element_text(hjust = 0.5),
@@ -210,7 +212,7 @@ team_records |>
        title = "2023 MLB Records x CPR Ranks")
 ```
 
-### Scorigami
+### Scorigami (2023 Only)
 
 ```{r echo = F}
 gami_df = end_games |>
@@ -260,10 +262,50 @@ gami_df |>
   geom_point(shape = "square", size = 7, aes(col = n), show.legend = F) +
   geom_text(aes(label = n), size = 3) +
   scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
-  scale_x_continuous(breaks = 1:30) +
-  scale_y_continuous(breaks = 1:30) +
+  scale_x_continuous(breaks = 0:30) +
+  scale_y_continuous(breaks = 0:30) +
   labs(x = "Winning Score", y = "Losing Score", subtitle = last_gami,
        title = paste0("2023 MLB Scorigami: ", yesterday_text))
+```
+
+### Historic MLB Scorigami (Since 1901)
+
+```{r echo = F}
+# all_retro_teams = get_retrosheet(type = "game", year = 2022) |>
+#   pull(HmTm) |> unique() |> sort()
+# 
+# retro_abbr_matches = data.frame(all_retro_teams) |>
+#   mutate(new_team = c("LAA", "ARI", "ATL", "BAL", "BOS", "CHC", "CHW", "CIN", "CLE", "COL",
+#                       "DET", "HOU", "KC", "LAD", "MIA", "MIL", "MIN", "NYM", "NYY", "OAK",
+#                       "PHI", "PIT", "SD", "SEA", "SF", "STL", "TB", "TEX", "TOR", "WAS"))
+
+# big_ole_results = data.frame(year = NULL, win_score = NULL, lose_score = NULL)
+# 
+# for (i in 1901:2022) {
+#   fdf = get_retrosheet(type = "game", year = i) |>
+#     select(HmRuns, VisRuns) |>
+#     transmute(year = i, win_score = ifelse(HmRuns > VisRuns, HmRuns, VisRuns),
+#               lose_score = ifelse(HmRuns > VisRuns, VisRuns, HmRuns))
+#   
+#   big_ole_results = rbind(big_ole_results, fdf)
+# }
+
+big_ole_results = read_csv("historic_results.csv", col_types = cols())
+
+this_year_res = end_games |>
+  transmute(year = 2023, win_score = ifelse(home_score > away_score, home_score, away_score),
+            lose_score = ifelse(home_score > away_score, away_score, home_score))
+
+big_ole_results = rbind(big_ole_results, this_year_res)
+
+big_ole_results |>
+  count(win_score, lose_score) |>
+  arrange(desc(n)) |>
+  ggplot(aes(win_score, lose_score)) +
+  geom_point(shape = "square", size = 4, aes(col = n), show.legend = F) +
+  scale_color_gradient(high = "#5B7E54", low = "#97BA90") +
+  scale_x_continuous(breaks = 0:50) + scale_y_continuous(breaks = 0:50) +
+  labs(x = "Winning Score", y = "Losing Score", title = "Historic MLB Scorigami (Since 1901)")
 ```
 
 ### Top Team Analysis

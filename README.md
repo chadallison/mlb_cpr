@@ -5,7 +5,9 @@
 - [Composite Performance Rating (CPR)
   Rankings](#composite-performance-rating-cpr-rankings)
 - [Records x CPR Ranks](#records-x-cpr-ranks)
-- [Scorigami](#scorigami)
+- [Scorigami (2023 Only)](#scorigami-2023-only)
+- [Historic MLB Scorigami (Since
+  1901)](#historic-mlb-scorigami-since-1901)
 - [Top Team Analysis](#top-team-analysis)
 - [Team Margins Plot](#team-margins-plot)
 - [Scatterplot of Margins of Victory and
@@ -27,34 +29,38 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-### Scorigami
+### Scorigami (2023 Only)
 
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-### Top Team Analysis
+### Historic MLB Scorigami (Since 1901)
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-### Team Margins Plot
+### Top Team Analysis
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
+### Team Margins Plot
+
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
 ### Scatterplot of Margins of Victory and Defeat
-
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
-
-### Margins of Victory and Defeat
 
 ![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
-### One-Run Games
+### Margins of Victory and Defeat
 
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-### Yesterday’s Highest-Scoring Game
+### One-Run Games
 
 ![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
-### Most Wins in a Single Month
+### Yesterday’s Highest-Scoring Game
 
 ![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+### Most Wins in a Single Month
+
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
