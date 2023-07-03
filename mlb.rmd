@@ -17,6 +17,9 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Margins of Victory and Defeat]
 - [One-Run Games]
 - [Yesterday's Highest-Scoring Game]
+- [Best Records This Month]
+- [Runs Scored This Month]
+- [Runs Allowed This Month]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -594,6 +597,83 @@ vis_df |>
   labs(x = "Inning", y = "Score", col = NULL, subtitle = high_lab,
        title = "Scoring Trends for Yesterday's Highest-Scoring Game")
 ```
+
+### Best Records This Month
+
+```{r echo = F}
+this_month = as.character(month(Sys.Date(), label = T, abbr = F))
+
+this_month_end_games = end_games |>
+  filter(month(date, label = T, abbr = F) == this_month) |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         win_score = ifelse(home_score > away_score, home_score, away_score),
+         lose_score = ifelse(home_score > away_score, away_score, home_score))
+
+this_month_records = this_month_end_games |>
+  count(win_team) |>
+  rename(team = win_team, wins = n) |>
+  full_join(count(this_month_end_games, lose_team), by = c("team" = "lose_team")) |>
+  rename(losses = n) |>
+  mutate(wins = replace_na(wins, 0),
+         losses = replace_na(losses, 0),
+         pct = round(wins / (wins + losses), 3),
+         record = paste0(wins, "-", losses)) |>
+  arrange(team)
+
+this_month_records |>
+  ggplot(aes(reorder(team, pct), pct)) +
+  geom_col(aes(fill = team), show.legend = F) +
+  geom_text(aes(label = record), size = 3, hjust = -0.25) +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip(ylim = c(0, 1)) +
+  labs(x = NULL, y = "Win Percentage", title = paste0("Best Records This Month (", this_month, ")")) +
+  theme(axis.text.x = element_blank())
+```
+
+### Runs Scored This Month
+
+```{r echo = F}
+get_month_rspg = function(team) {
+  home_scores = pull(filter(this_month_end_games, home_team == team), home_score)
+  away_scores = pull(filter(this_month_end_games, away_team == team), away_score)
+  return(sum(c(home_scores, away_scores)))
+}
+
+get_month_rapg = function(team) {
+  home_scores = pull(filter(this_month_end_games, home_team == team), away_score)
+  away_scores = pull(filter(this_month_end_games, away_team == team), home_score)
+  return(sum(c(home_scores, away_scores)))
+}
+
+this_month_scored_allowed = data.frame(team = all_teams) |>
+  mutate(scored = sapply(team, get_month_rspg),
+         allowed = sapply(team, get_month_rapg),
+         diff = scored - allowed)
+
+this_month_scored_allowed |>
+  ggplot(aes(reorder(team, scored), scored)) +
+  geom_col(aes(fill = team), show.legend = F) +
+  geom_text(aes(label = scored), size = 3, hjust = -0.25) +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip() +
+  labs(x = NULL, y = "Runs Scored", title = paste0("Most Runs Scored This Month (", this_month, ")")) +
+  theme(axis.text.x = element_blank())
+```
+
+### Runs Allowed This Month
+
+```{r echo = F}
+this_month_scored_allowed |>
+  ggplot(aes(reorder(team, allowed), allowed)) +
+  geom_col(aes(fill = team), show.legend = F) +
+  geom_text(aes(label = allowed), size = 3, hjust = -0.25) +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip() +
+  labs(x = NULL, y = "Runs Allowed", title = paste0("Most Runs Allowed This Month (", this_month, ")")) +
+  theme(axis.text.x = element_blank())
+```
+
 
 
 

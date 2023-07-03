@@ -16,6 +16,9 @@
 - [Margins of Victory and Defeat](#margins-of-victory-and-defeat)
 - [One-Run Games](#one-run-games)
 - [Yesterday’s Highest-Scoring Game](#yesterdays-highest-scoring-game)
+- [Best Records This Month](#best-records-this-month)
+- [Runs Scored This Month](#runs-scored-this-month)
+- [Runs Allowed This Month](#runs-allowed-this-month)
 
 ### Team Rankings
 
@@ -64,3 +67,15 @@
 ### Yesterday’s Highest-Scoring Game
 
 ![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+### Best Records This Month
+
+![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+
+### Runs Scored This Month
+
+![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
+### Runs Allowed This Month
+
+![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
