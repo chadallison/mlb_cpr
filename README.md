@@ -19,6 +19,8 @@
 - [Best Records This Month](#best-records-this-month)
 - [Runs Scored This Month](#runs-scored-this-month)
 - [Runs Allowed This Month](#runs-allowed-this-month)
+- [Best Home Records](#best-home-records)
+- [Best Away Records](#best-away-records)
 
 ### Team Rankings
 
@@ -79,3 +81,11 @@
 ### Runs Allowed This Month
 
 ![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+### Best Home Records
+
+![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+
+### Best Away Records
+
+![](README_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->

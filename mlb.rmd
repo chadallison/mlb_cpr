@@ -20,6 +20,8 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Best Records This Month]
 - [Runs Scored This Month]
 - [Runs Allowed This Month]
+- [Best Home Records]
+- [Best Away Records]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -675,6 +677,56 @@ this_month_scored_allowed |>
   theme(axis.text.x = element_blank())
 ```
 
+### Best Home Records
+
+```{r echo = F}
+end_wl = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         home_win = ifelse(home_score > away_score, 1, 0),
+         home_loss = ifelse(home_score > away_score, 0, 1),
+         away_win = ifelse(home_score > away_score, 0, 1),
+         away_loss = ifelse(home_score > away_score, 1, 0))
+
+home_away_records = end_wl |>
+  group_by(team = home_team) |>
+  summarise(wins = sum(home_win),
+            losses = sum(home_loss)) |>
+  mutate(win_pct = round(wins / (wins + losses), 3),
+         record = paste0(wins, "-", losses)) |>
+  arrange(desc(win_pct)) |>
+  select(team, home_win_pct = win_pct, home_record = record) |>
+  left_join(end_wl |>
+          group_by(team = away_team) |>
+          summarise(wins = sum(away_win),
+                    losses = sum(away_loss)) |>
+          mutate(win_pct = round(wins / (wins + losses), 3),
+                 record = paste0(wins, "-", losses)) |>
+          arrange(desc(win_pct)) |>
+          select(team, away_win_pct = win_pct, away_record = record), by = "team")
+
+home_away_records |>
+  ggplot(aes(reorder(team, home_win_pct), home_win_pct)) +
+  geom_col(aes(fill = team), show.legend = F) +
+  geom_text(aes(label = home_record), size = 3, hjust = -0.25) +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip(ylim = c(0, 0.8)) +
+  labs(x = NULL, y = "Home Win Percentage", title = "Best Home Records") +
+  theme(axis.text.x = element_blank())
+```
+
+### Best Away Records
+
+```{r echo = F}
+home_away_records |>
+  ggplot(aes(reorder(team, away_win_pct), away_win_pct)) +
+  geom_col(aes(fill = team), show.legend = F) +
+  geom_text(aes(label = away_record), size = 3, hjust = -0.25) +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip(ylim = c(0, 0.8)) +
+  labs(x = NULL, y = "Away Win Percentage", title = "Best Away Records") +
+  theme(axis.text.x = element_blank())
+```
 
 
 
