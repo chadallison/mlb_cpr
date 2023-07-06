@@ -22,6 +22,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Runs Allowed This Month]
 - [Best Home Records]
 - [Best Away Records]
+- [Runs Scored v Runs Allowed This Month]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -728,6 +729,34 @@ home_away_records |>
   theme(axis.text.x = element_blank())
 ```
 
+### Runs Scored v Runs Allowed This Month
+
+```{r echo = F}
+get_n_games_month = function(team) {
+  return(end_games |> filter(month(date) == month(Sys.Date()) & (home_team == team | away_team == team)) |> nrow())
+}
+
+msas = this_month_scored_allowed |>
+  mutate(n_games = sapply(team, get_n_games_month),
+         rspg = scored / n_games, rapg = allowed / n_games) |>
+  left_join(team_abbrevs, by = "team")
+
+mean_s = mean(msas$rspg)
+mean_a = mean(msas$rapg)
+
+msas |>
+  ggplot(aes(rspg, rapg)) +
+  geom_point(aes(col = team), show.legend = F, size = 4) +
+  ggrepel::geom_text_repel(aes(label = abb)) +
+  scale_color_manual(values = team_color_codes) +
+  geom_vline(xintercept = mean_s, linetype = "dashed", alpha = 0.5) +
+  geom_hline(yintercept = mean_a, linetype = "dashed", alpha = 0.5) +
+  scale_x_continuous(breaks = seq(0, 10, by = 1)) +
+  scale_y_continuous(breaks = seq(0, 10, by = 1)) +
+  labs(x = "Runs Scored Per Game", y = "Runs Allowed Per Game",
+       title = paste0("Scatterplot of Runs Scored v. Runs Allowed This Month (", this_month, ")"),
+       subtitle = paste0("League Averages: ", round(mean_s, 2), " Runs Scored / ", round(mean_a, 2), " Runs Allowed"))
+```
 
 
 
