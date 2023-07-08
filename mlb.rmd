@@ -23,6 +23,7 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 - [Best Home Records]
 - [Best Away Records]
 - [Runs Scored v Runs Allowed This Month]
+- [What if Games Were Decided by Hits?]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -36,6 +37,7 @@ library(retrosheet)
 theme_custom = theme_avatar() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5, size = 9, vjust = 2.5, face = "italic"),
+        plot.caption = element_text(face = "italic"),
         panel.grid.major = element_line(linewidth = 0.5, colour = "#D6D0C4"),
         panel.grid.minor = element_line(linewidth = 0.5, colour = "#D6D0C4"))
 
@@ -766,9 +768,9 @@ msas |>
                          round(mean_a, 2), " Runs Allowed"))
 ```
 
-<!-- ### what if hits won games? -->
+### What if Games Were Decided by Hits?
 
-```{r message = F, warning = F, eval = F}
+```{r message = F, warning = F, echo = F}
 end_with_pks = end_games |> left_join(all_game_pks, by = c("date", "home_team", "away_team"))
 hit_criteria = c("Single", "Double", "Triple", "Home Run")
 
@@ -781,21 +783,67 @@ get_pk_hits = function(fpk) {
     transmute(game_pk = fpk, home_hits, away_hits))
 }
 
-bind_pk_set = data.frame(game_pk = NULL, home_hits = NULL, away_hits = NULL)
-bad_pks = c(718700, 718558, 718371)
+# bind_pk_set = data.frame(game_pk = NULL, home_hits = NULL, away_hits = NULL)
+# bad_pks = c(718700, 718558, 718371, 717664, 717579)
+# 
+# for (i in 1:length(all_game_pks$game_pk)) {
+#   if (all_game_pks$game_pk[i] %in% bad_pks) {
+#     print("bad pk")
+#     f_data = data.frame(game_pk = all_game_pks$game_pk[i], home_hits = NA, away_hits = NA)
+#   } else {
+#   f_data = get_pk_hits(all_game_pks$game_pk[i])
+#   }
+#   bind_pk_set = rbind(bind_pk_set, f_data)
+#   if (i %% 25 == 0) print(i)
+# }
 
-for (i in 1:length(all_game_pks$game_pk)) {
-  if (all_game_pks$game_pk[i] %in% bad_pks) {
-    print("bad pk")
-    f_data = data.frame(game_pk = all_game_pks$game_pk[i], home_hits = NA, away_hits = NA)
-  } else {
-  f_data = get_pk_hits(all_game_pks$game_pk[i])
-  }
-  bind_pk_set = rbind(bind_pk_set, f_data)
-  if (i %% 5 == 0) print(i)
-}
+# write_csv(bind_pk_set, "pk_hits_8_july_2023.csv")
+bind_pk_set = read_csv("pk_hits_8_july_2023.csv", col_types = cols())
 
-bind_pk_set
+pk_hits_joined = all_game_pks |>
+  left_join(bind_pk_set, by = "game_pk") |>
+  filter(date < Sys.Date() & !is.na(home_hits) & !is.na(away_hits)) |>
+  mutate(hits_winner = case_when(home_hits > away_hits ~ home_team,
+                                 home_hits < away_hits ~ away_team,
+                                 home_hits == away_hits ~ "Tie"),
+         hits_loser = case_when(home_hits > away_hits ~ away_team,
+                                 home_hits < away_hits ~ home_team,
+                                 home_hits == away_hits ~ "Tie"))
+
+hits_ties = pk_hits_joined |> filter(hits_winner == "Tie")
+hits_non_ties = pk_hits_joined |> filter(hits_winner != "Tie")
+
+hit_records = hits_non_ties |>
+  count(hits_winner) |>
+  rename(team = hits_winner, hit_wins = n) |>
+  left_join(hits_non_ties |>
+              count(hits_loser) |>
+              rename(team = hits_loser, hit_losses = n), by = "team") |>
+  left_join(hits_ties |>
+              count(home_team) |>
+              rename(team = home_team, home_ties = n), by = "team") |>
+  left_join(hits_ties |>
+              count(away_team) |>
+              rename(team = away_team, away_ties = n), by = "team") |>
+  transmute(team, hit_wins, hit_losses, hit_ties = home_ties + away_ties) |>
+  mutate(hit_win_pct = round(hit_wins / (hit_wins + hit_losses), 3),
+         hit_record = paste0(hit_wins, "-", hit_losses, "-", hit_ties))
+
+hit_records |>
+  left_join(team_records, by = "team") |>
+  left_join(team_abbrevs, by = "team") |>
+  select(abb, win_pct, hit_win_pct) |>
+  ggplot(aes(win_pct, hit_win_pct)) +
+  geom_point(aes(col = abb), show.legend = F, size = 4) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 4) +
+  geom_abline(linetype = "dashed", alpha = 0.5) +
+  scale_color_manual(values = team_color_codes) +
+  labs(x = "Win Percentage", y = "Win Percentage if Games Were Decided by Hits",
+       title = "What if game outcomes were decided by hits instead of runs?",
+       subtitle = "Teams above the dashed line would benefit",
+       caption = "Win Percentage by Hits Data as of 7 July 2023") +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.05)) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05))
 ```
 
 
