@@ -25,6 +25,8 @@
   Month](#runs-scored-v-runs-allowed-this-month)
 - [What if Games Were Decided by
   Hits?](#what-if-games-were-decided-by-hits)
+- [What if Games Were Decided by Total
+  Bases?](#what-if-games-were-decided-by-total-bases)
 
 ### Team Rankings
 
@@ -101,3 +103,7 @@
 ### What if Games Were Decided by Hits?
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+
+### What if Games Were Decided by Total Bases?
+
+![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
