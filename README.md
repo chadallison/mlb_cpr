@@ -27,6 +27,7 @@
   Hits?](#what-if-games-were-decided-by-hits)
 - [What if Games Were Decided by Total
   Bases?](#what-if-games-were-decided-by-total-bases)
+- [Eras Records](#eras-records)
 
 ### Team Rankings
 
@@ -109,3 +110,7 @@
 ![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 ![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-29-2.png)<!-- -->
+
+### Eras Records
+
+![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
