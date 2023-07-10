@@ -107,3 +107,5 @@
 ### What if Games Were Decided by Total Bases?
 
 ![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-29-2.png)<!-- -->

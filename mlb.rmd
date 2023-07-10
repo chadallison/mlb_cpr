@@ -774,6 +774,7 @@ msas |>
 ```{r message = F, warning = F, echo = F}
 end_with_pks = end_games |> left_join(all_game_pks, by = c("date", "home_team", "away_team"))
 hit_criteria = c("Single", "Double", "Triple", "Home Run")
+bad_pks = c(718700, 718558, 718371, 717664, 717579)
 
 get_pk_hits = function(fpk) {
   f_data = mlb_pbp(fpk) |> filter(details.isInPlay == T & result.event %in% hit_criteria)
@@ -785,7 +786,6 @@ get_pk_hits = function(fpk) {
 }
 
 # bind_pk_set = data.frame(game_pk = NULL, home_hits = NULL, away_hits = NULL)
-# bad_pks = c(718700, 718558, 718371, 717664, 717579)
 # 
 # for (i in 1:length(all_game_pks$game_pk)) {
 #   if (all_game_pks$game_pk[i] %in% bad_pks) {
@@ -931,7 +931,7 @@ bases_records |>
   left_join(team_abbrevs, by = "team") |>
   ggplot(aes(win_pct, b_win_pct)) +
   geom_point(aes(col = abb), show.legend = F, size = 4) +
-  ggrepel::geom_text_repel(aes(label = abb), size = 3) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 4) +
   scale_color_manual(values = team_color_codes) +
   geom_abline(linetype = "dashed", alpha = 0.5) +
   scale_x_continuous(breaks = seq(0, 1, by = 0.05)) +
@@ -942,6 +942,60 @@ bases_records |>
        caption = "Total Bases Data as of 8 July 2023")
 ```
 
+```{r message = F, warning = F, echo = F}
+who_scored_first = function(fpk) {
+  return(mlb_pbp(fpk) |>
+    filter(isPitch & about.isScoringPlay) |>
+    mutate(startTime = as_datetime(startTime)) |>
+    arrange(startTime) |>
+    head(1) |>
+    pull(batting_team))
+}
+
+# pks_with_scored_first = all_game_pks |>
+#   filter(!game_pk %in% bad_pks & date < Sys.Date()) |>
+#   mutate(first_score = sapply(game_pk, who_scored_first))
+
+# write_csv(pks_with_scored_first, "first_score_winners_9july2023.csv")
+pks_with_scored_first = read_csv("first_score_winners_9july2023.csv", col_types = cols())
+
+scored_first_records = pks_with_scored_first |>
+  mutate(loser = ifelse(first_score == home_team, away_team, home_team)) |>
+  count(loser) |>
+  rename(team = loser, losses = n) |>
+  left_join(pks_with_scored_first |>
+  count(first_score) |>
+  rename(team = first_score, wins = n), by = "team") |>
+  select(team, wins, losses) |>
+  mutate(win_pct = round(wins / (wins + losses), 3),
+         record = paste0(wins, "-", losses))
+
+scored_first_records |>
+  ggplot(aes(reorder(team, win_pct), win_pct)) +
+  geom_col(aes(fill = team), show.legend = F) +
+  geom_text(aes(label = record), size = 3, hjust = -0.25) +
+  scale_fill_manual(values = team_color_codes) +
+  coord_flip(ylim = c(0, 0.75)) +
+  labs(x = NULL, y = "Win Percentage", title = "MLB Rankings if First Score Won") +
+  theme(axis.text.x = element_blank())
+
+scored_first_records |>
+  select(team, fs_pct = win_pct) |>
+  left_join(team_records, by = "team") |>
+  select(team, win_pct, fs_pct) |>
+  left_join(team_abbrevs, by = "team") |>
+  ggplot(aes(win_pct, fs_pct)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 4) +
+  scale_color_manual(values = team_color_codes) +
+  geom_abline(linetype = "dashed", alpha = 0.5) +
+  labs(x = "Win Percentage", y = "Win Percentage if First Score Won",
+       title = "What if MLB games were sudden death?",
+       subtitle = "Teams above/left of the dashed line would benefit",
+       caption = "First Score Data as of 9 July 2023") +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.05)) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05))
+```
 
 
 
