@@ -48,6 +48,8 @@ theme_set(theme_custom)
 
 ```{r include = F}
 loop_dates = seq.Date(from = as_date("2023-03-30"), to = Sys.Date() - 1, by = 1)
+bad_dates = seq.Date(from = as_date("2023-07-10"), to = as_date("2023-07-13"), by = 1)
+loop_dates = loop_dates[!loop_dates %in% bad_dates]
 end_games = data.frame(date = NULL, away_team = NULL, away_score = NULL, home_score = NULL, home_team = NULL)
 
 for (i in 1:length(loop_dates)) {
