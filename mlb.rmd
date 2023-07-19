@@ -29,6 +29,7 @@ ___
 - [Runs Scored v Runs Allowed This Month]
 - [What if Games Were Decided by Hits?]
 - [What if Games Were Decided by Total Bases?]
+- [Sudden Death Records]
 - [Eras Records]
 
 ```{r message = F, warning = F, include = F}
@@ -53,12 +54,7 @@ theme_set(theme_custom)
 ```{r include = F}
 asg_dates = seq.Date(from = as_date("2023-07-10"), to = as_date("2023-07-13"), by = 1)
 loop_dates = seq.Date(from = as_date("2023-03-30"), to = Sys.Date() - 1, by = 1)
-<<<<<<< HEAD
 loop_dates = loop_dates[!loop_dates %in% asg_dates]
-=======
-bad_dates = seq.Date(from = as_date("2023-07-10"), to = as_date("2023-07-13"), by = 1)
-loop_dates = loop_dates[!loop_dates %in% bad_dates]
->>>>>>> a6d266d7fade2adce89a33c6e796377f54c9bfde
 end_games = data.frame(date = NULL, away_team = NULL, away_score = NULL, home_score = NULL, home_team = NULL)
 
 for (i in 1:length(loop_dates)) {
@@ -507,14 +503,10 @@ team_margins |>
   labs(x = "Avg. Margin of Victory", y = "Avg. Margin of Defeat",
        title = "Scatterplot of Margins of Victory/Defeat",
        subtitle = "Dashed lines represent league averages") +
-  annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big", fontface = "italic") +
-  annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big", fontface = "italic") +
-  annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small", fontface = "italic") +
-  annotate("text", x = 5, y = -2.1, label = "Win Big, Lose Small", fontface = "italic") +
-  geom_rect(aes(xmin = 2, xmax = 3, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
-  geom_rect(aes(xmin = 2, xmax = 3, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") +
-  geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -2.25, ymax = -2), col = "black", fill = "transparent") +
-  geom_rect(aes(xmin = 4.5, xmax = 5.5, ymin = -5.25, ymax = -5), col = "black", fill = "transparent") +
+  annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big", fontface = "italic", alpha = 0.5) +
+  annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big", fontface = "italic", alpha = 0.5) +
+  annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small", fontface = "italic", alpha = 0.5) +
+  annotate("text", x = 5, y = -2.1, label = "Win Big, Lose Small", fontface = "italic", alpha = 0.5) +
   coord_cartesian(xlim = c(min(team_margins$win_margin) - 0.25, max(team_margins$win_margin) + 0.25),
                   ylim = c(min(team_margins$def_margin) - 0.75, max(team_margins$def_margin) + 0.75)) +
   scale_x_continuous(breaks = seq(-10, 10, by = 0.5)) + scale_y_continuous(breaks = seq(-10, 10, by = 0.5))
@@ -550,14 +542,18 @@ one_runs = end_games |>
 or_wins = rename(count(one_runs, win_team), wins = n)
 or_losses = rename(count(one_runs, lose_team), losses = n)
 
-left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
+or_df = left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
   mutate(gp = wins + losses,
          win_per = round(wins / gp, 3)) |>
-  left_join(team_abbrevs, by = c("win_team" = "team")) |>
+  left_join(team_abbrevs, by = c("win_team" = "team"))
+
+or_df |>
   ggplot(aes(gp, win_per)) +
   geom_point(aes(col = win_team), size = 4, show.legend = F) +
   scale_color_manual(values = team_color_codes) +
   ggrepel::geom_text_repel(aes(label = abb)) +
+  geom_hline(aes(yintercept = mean(or_df$win_per)), linetype = "dashed", alpha = 0.5) +
+  geom_vline(aes(xintercept = mean(or_df$gp)), linetype = "dashed", alpha = 0.5) +
   labs(x = "One-Run Games Played", y = "Win Percentage in One-Run Games",
        title = "How are MLB teams performing in one-run games?")
 ```
@@ -785,7 +781,7 @@ msas |>
 
 ### What if Games Were Decided by Hits?
 
-```{r message = F, warning = F, echo = F, eval = F}
+```{r message = F, warning = F, echo = F}
 end_with_pks = end_games |> left_join(all_game_pks, by = c("date", "home_team", "away_team"))
 hit_criteria = c("Single", "Double", "Triple", "Home Run")
 bad_pks = c(718700, 718558, 718371, 717664, 717579)
@@ -863,7 +859,7 @@ hit_records |>
 
 ### What if Games Were Decided by Total Bases?
 
-```{r message = F, warning = F}
+```{r message = F, warning = F, echo = F}
 pk_total_bases = function(fpk) {
   f_data = mlb_pbp(fpk) |>
     filter(details.isInPlay == T & result.event %in% c("Single", "Double", "Triple", "Home Run", "Walk"))
@@ -956,6 +952,8 @@ bases_records |>
        caption = "Total Bases Data as of 8 July 2023")
 ```
 
+### Sudden Death Records
+
 ```{r message = F, warning = F, echo = F}
 who_scored_first = function(fpk) {
   return(mlb_pbp(fpk) |>
@@ -984,14 +982,14 @@ scored_first_records = pks_with_scored_first |>
   mutate(win_pct = round(wins / (wins + losses), 3),
          record = paste0(wins, "-", losses))
 
-scored_first_records |>
-  ggplot(aes(reorder(team, win_pct), win_pct)) +
-  geom_col(aes(fill = team), show.legend = F) +
-  geom_text(aes(label = record), size = 3, hjust = -0.25) +
-  scale_fill_manual(values = team_color_codes) +
-  coord_flip(ylim = c(0, 0.75)) +
-  labs(x = NULL, y = "Win Percentage", title = "MLB Rankings if First Score Won") +
-  theme(axis.text.x = element_blank())
+# scored_first_records |>
+#   ggplot(aes(reorder(team, win_pct), win_pct)) +
+#   geom_col(aes(fill = team), show.legend = F) +
+#   geom_text(aes(label = record), size = 3, hjust = -0.25) +
+#   scale_fill_manual(values = team_color_codes) +
+#   coord_flip(ylim = c(0, 0.75)) +
+#   labs(x = NULL, y = "Win Percentage", title = "MLB Rankings if First Score Won") +
+#   theme(axis.text.x = element_blank())
 
 scored_first_records |>
   select(team, fs_pct = win_pct) |>
