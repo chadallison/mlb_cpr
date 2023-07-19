@@ -3,6 +3,10 @@ output: github_document
 knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md", envir = globalenv()) })
 ---
 
+___
+
+**Data: MLB.com via {baseballr}**
+
 # Contents
 
 - [Team Rankings]
@@ -47,7 +51,9 @@ theme_set(theme_custom)
 ```
 
 ```{r include = F}
+asg_dates = seq.Date(from = as_date("2023-07-10"), to = as_date("2023-07-13"), by = 1)
 loop_dates = seq.Date(from = as_date("2023-03-30"), to = Sys.Date() - 1, by = 1)
+loop_dates = loop_dates[!loop_dates %in% asg_dates]
 end_games = data.frame(date = NULL, away_team = NULL, away_score = NULL, home_score = NULL, home_team = NULL)
 
 for (i in 1:length(loop_dates)) {
@@ -554,6 +560,8 @@ left_join(or_wins, or_losses, by = c("win_team" = "lose_team")) |>
 ### Yesterday's Highest-Scoring Game
 
 ```{r message = F, warning = F, echo = F}
+last_game_date = end_games |> slice_max(date, n = 1) |> sample_n(1) |> pull(date)
+
 get_date_pks = function(fdate) {
   df = mlb_game_pks(date = fdate) |>
     select(game_pk, date = officialDate, away_team = teams.away.team.name, home_team = teams.home.team.name) |>
@@ -772,7 +780,7 @@ msas |>
 
 ### What if Games Were Decided by Hits?
 
-```{r message = F, warning = F, echo = F}
+```{r message = F, warning = F, echo = F, eval = F}
 end_with_pks = end_games |> left_join(all_game_pks, by = c("date", "home_team", "away_team"))
 hit_criteria = c("Single", "Double", "Triple", "Home Run")
 bad_pks = c(718700, 718558, 718371, 717664, 717579)
@@ -850,7 +858,7 @@ hit_records |>
 
 ### What if Games Were Decided by Total Bases?
 
-```{r message = F, warning = F, echo = F}
+```{r message = F, warning = F}
 pk_total_bases = function(fpk) {
   f_data = mlb_pbp(fpk) |>
     filter(details.isInPlay == T & result.event %in% c("Single", "Double", "Triple", "Home Run", "Walk"))
