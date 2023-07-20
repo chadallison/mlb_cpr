@@ -32,6 +32,11 @@
   Bases?](#what-if-games-were-decided-by-total-bases)
 - [Sudden Death Records](#sudden-death-records)
 - [Eras Records](#eras-records)
+- [First Inning Runs Scored v
+  Allowed](#first-inning-runs-scored-v-allowed)
+- [First Inning Runs Scored v Allowed
+  Rates](#first-inning-runs-scored-v-allowed-rates)
+- [First Inning Scoring](#first-inning-scoring)
 
 ### Team Rankings
 
@@ -120,3 +125,15 @@
 ### Eras Records
 
 ![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+
+### First Inning Runs Scored v Allowed
+
+![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+
+### First Inning Runs Scored v Allowed Rates
+
+![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+
+### First Inning Scoring
+
+![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->

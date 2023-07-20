@@ -31,6 +31,9 @@ ___
 - [What if Games Were Decided by Total Bases?]
 - [Sudden Death Records]
 - [Eras Records]
+- [First Inning Runs Scored v Allowed]
+- [First Inning Runs Scored v Allowed Rates]
+- [First Inning Scoring]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -1056,6 +1059,136 @@ eras_res |>
        subtitle = "Which MLB team is the ultimate group of Swifties?") +
   theme(axis.text.x = element_blank())
 ```
+
+### First Inning Runs Scored v Allowed
+
+```{r message = F, warning = F, echo = F}
+all_fir = read_csv("first_inning_runs.csv")
+
+get_home_first_inning_runs = function(fpk) {
+  return(mlb_pbp(fpk) |>
+    filter(about.inning == 1 & !is.na(details.homeScore)) |>
+    summarise(home_score = max(details.homeScore)) |>
+    pull(home_score))
+}
+
+get_away_first_inning_runs = function(fpk) {
+  return(mlb_pbp(fpk) |>
+    filter(about.inning == 1 & !is.na(details.awayScore)) |>
+    summarise(away_score = max(details.awayScore)) |>
+    pull(away_score))
+}
+
+new_fir = all_game_pks |>
+  filter(!game_pk %in% bad_pks & !game_pk %in% all_fir$game_pk) |>
+  mutate(home_fir = sapply(game_pk, get_home_first_inning_runs),
+         away_fir = sapply(game_pk, get_away_first_inning_runs))
+
+all_fir = rbind(all_fir, new_fir)
+write_csv(all_fir, "first_inning_runs.csv")
+
+get_total_fir = function(team) {
+  home_fir = all_fir |> filter(home_team == team) |> pull(home_fir)
+  away_fir = all_fir |> filter(away_team == team) |> pull(away_fir)
+  return(sum(c(home_fir, away_fir)))
+}
+
+get_total_fira = function(team) {
+  home_fir = all_fir |> filter(home_team == team) |> pull(away_fir)
+  away_fir = all_fir |> filter(away_team == team) |> pull(home_fir)
+  return(sum(c(home_fir, away_fir)))
+}
+
+get_fir_rate = function(team) {
+  home_fir = all_fir |> filter(home_team == team) |> mutate(fir = ifelse(home_fir > 0, 1, 0)) |> pull(fir)
+  away_fir = all_fir |> filter(away_team == team) |> mutate(fir = ifelse(away_fir > 0, 1, 0)) |> pull(fir)
+  return(round(mean(c(home_fir, away_fir)), 3))
+}
+
+get_fira_rate = function(team) {
+  home_fir = all_fir |> filter(home_team == team) |> mutate(fir = ifelse(away_fir > 0, 1, 0)) |> pull(fir)
+  away_fir = all_fir |> filter(away_team == team) |> mutate(fir = ifelse(home_fir > 0, 1, 0)) |> pull(fir)
+  return(round(mean(c(home_fir, away_fir)), 3))
+}
+
+team_fir_metrics = data.frame(team = all_teams) |>
+  mutate(total_fir = sapply(team, get_total_fir),
+         total_fira = sapply(team, get_total_fira),
+         fir_rate = sapply(team, get_fir_rate),
+         fira_rate = sapply(team, get_fira_rate))
+
+team_fir_metrics |>
+  left_join(team_abbrevs, by = "team") |>
+  ggplot(aes(total_fir, total_fira)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb)) +
+  scale_color_manual(values = team_color_codes) +
+  geom_hline(aes(yintercept = mean(team_fir_metrics$total_fira)), linetype = "dashed", alpha = 0.5) +
+  geom_vline(aes(xintercept = mean(team_fir_metrics$total_fir)), linetype = "dashed", alpha = 0.5) +
+  scale_x_continuous(breaks = seq(0, 100, by = 5)) +
+  scale_y_continuous(breaks = seq(0, 100, by = 5)) +
+  labs(x = "Total First Inning Runs Scored", y = "Total First Inning Runs Allowed",
+       title = "First Inning Runs Scored v. Allowed")
+```
+
+### First Inning Runs Scored v Allowed Rates
+
+```{r echo = F}
+team_fir_metrics |>
+  left_join(team_abbrevs, by = "team") |>
+  ggplot(aes(fir_rate, fira_rate)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb)) +
+  scale_color_manual(values = team_color_codes) +
+  geom_hline(aes(yintercept = mean(team_fir_metrics$fira_rate)), linetype = "dashed", alpha = 0.5) +
+  geom_vline(aes(xintercept = mean(team_fir_metrics$fir_rate)), linetype = "dashed", alpha = 0.5) +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.025), labels = scales::percent) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.025), labels = scales::percent) +
+  labs(x = "First Inning Score Rate", y = "First Inning Score Allowance Rate",
+       title = "First Inning Runs Scored v. Allowed Rate")
+```
+
+### First Inning Scoring
+
+```{r echo = F}
+team_fir_metrics |>
+  left_join(team_abbrevs, by = "team") |>
+  ggplot(aes(fir_rate, total_fir)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb)) +
+  scale_color_manual(values = team_color_codes) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.025), label = scales::percent) +
+  scale_y_continuous(breaks = seq(0, 100, by = 5)) +
+  labs(x = "First Inning Score Rate", y = "Total First Inning Runs Scored",
+       title = "Which teams are scoring the most in the first inning?")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
