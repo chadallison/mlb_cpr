@@ -27,13 +27,12 @@ ___
 - [Best Home Records]
 - [Best Away Records]
 - [Runs Scored v Runs Allowed This Month]
-- [What if Games Were Decided by Hits?]
-- [What if Games Were Decided by Total Bases?]
 - [Sudden Death Records]
 - [Eras Records]
 - [First Inning Runs Scored v Allowed]
 - [First Inning Runs Scored v Allowed Rates]
 - [First Inning Scoring]
+- [Home and Away Performance]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -782,179 +781,6 @@ msas |>
                          round(mean_a, 2), " Runs Allowed"))
 ```
 
-### What if Games Were Decided by Hits?
-
-```{r message = F, warning = F, echo = F}
-end_with_pks = end_games |> left_join(all_game_pks, by = c("date", "home_team", "away_team"))
-hit_criteria = c("Single", "Double", "Triple", "Home Run")
-bad_pks = c(718700, 718558, 718371, 717664, 717579)
-
-get_pk_hits = function(fpk) {
-  f_data = mlb_pbp(fpk) |> filter(details.isInPlay == T & result.event %in% hit_criteria)
-  home_team = unique(f_data$home_team)
-  return(f_data |> mutate(is_hit = 1) |> group_by(batting_team) |> summarise(n_hits = sum(is_hit)) |>
-    mutate(batting_team = ifelse(batting_team == home_team, "home_hits", "away_hits")) |>
-    pivot_wider(names_from = "batting_team", values_from = "n_hits") |>
-    transmute(game_pk = fpk, home_hits, away_hits))
-}
-
-# bind_pk_set = data.frame(game_pk = NULL, home_hits = NULL, away_hits = NULL)
-# 
-# for (i in 1:length(all_game_pks$game_pk)) {
-#   if (all_game_pks$game_pk[i] %in% bad_pks) {
-#     print("bad pk")
-#     f_data = data.frame(game_pk = all_game_pks$game_pk[i], home_hits = NA, away_hits = NA)
-#   } else {
-#   f_data = get_pk_hits(all_game_pks$game_pk[i])
-#   }
-#   bind_pk_set = rbind(bind_pk_set, f_data)
-#   if (i %% 25 == 0) print(i)
-# }
-
-# write_csv(bind_pk_set, "pk_hits_8_july_2023.csv")
-bind_pk_set = read_csv("pk_hits_8_july_2023.csv", col_types = cols())
-
-pk_hits_joined = all_game_pks |>
-  left_join(bind_pk_set, by = "game_pk") |>
-  filter(date < Sys.Date() & !is.na(home_hits) & !is.na(away_hits)) |>
-  mutate(hits_winner = case_when(home_hits > away_hits ~ home_team,
-                                 home_hits < away_hits ~ away_team,
-                                 home_hits == away_hits ~ "Tie"),
-         hits_loser = case_when(home_hits > away_hits ~ away_team,
-                                 home_hits < away_hits ~ home_team,
-                                 home_hits == away_hits ~ "Tie"))
-
-hits_ties = pk_hits_joined |> filter(hits_winner == "Tie")
-hits_non_ties = pk_hits_joined |> filter(hits_winner != "Tie")
-
-hit_records = hits_non_ties |>
-  count(hits_winner) |>
-  rename(team = hits_winner, hit_wins = n) |>
-  left_join(hits_non_ties |>
-              count(hits_loser) |>
-              rename(team = hits_loser, hit_losses = n), by = "team") |>
-  left_join(hits_ties |>
-              count(home_team) |>
-              rename(team = home_team, home_ties = n), by = "team") |>
-  left_join(hits_ties |>
-              count(away_team) |>
-              rename(team = away_team, away_ties = n), by = "team") |>
-  transmute(team, hit_wins, hit_losses, hit_ties = home_ties + away_ties) |>
-  mutate(hit_win_pct = round(hit_wins / (hit_wins + hit_losses), 3),
-         hit_record = paste0(hit_wins, "-", hit_losses, "-", hit_ties))
-
-hit_records |>
-  left_join(team_records, by = "team") |>
-  left_join(team_abbrevs, by = "team") |>
-  select(abb, win_pct, hit_win_pct) |>
-  ggplot(aes(win_pct, hit_win_pct)) +
-  geom_point(aes(col = abb), show.legend = F, size = 4) +
-  ggrepel::geom_text_repel(aes(label = abb), size = 4) +
-  geom_abline(linetype = "dashed", alpha = 0.5) +
-  scale_color_manual(values = team_color_codes) +
-  labs(x = "Win Percentage", y = "Win Percentage if Games Were Decided by Hits",
-       title = "What if game outcomes were decided by hits instead of runs?",
-       subtitle = "Teams above the dashed line would benefit",
-       caption = "Win Percentage by Hits Data as of 7 July 2023") +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.05)) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.05))
-```
-
-### What if Games Were Decided by Total Bases?
-
-```{r message = F, warning = F, echo = F}
-pk_total_bases = function(fpk) {
-  f_data = mlb_pbp(fpk) |>
-    filter(details.isInPlay == T & result.event %in% c("Single", "Double", "Triple", "Home Run", "Walk"))
-  
-  home_team = unique(f_data$home_team)
-  
-  return(f_data |>
-    mutate(total_bases = case_when(result.event == "Single" ~ 1,
-                                   result.event == "Double" ~ 2,
-                                   result.event == "Triple" ~ 3,
-                                   result.event == "Home Run" ~ 4)) |>
-    group_by(batting_team) |>
-    summarise(total_bases = sum(total_bases)) |>
-    mutate(batting_team = ifelse(batting_team == home_team, "home_bases", "away_bases")) |>
-    pivot_wider(names_from = "batting_team", values_from = "total_bases") |>
-    transmute(game_pk = fpk, home_bases, away_bases))
-}
-
-pk_list = all_game_pks$game_pk
-# bases_df = data.frame(game_pk = NULL, home_bases = NULL, away_bases = NULL)
-# 
-# for (i in 1:length(pk_list)) {
-#   if (pk_list[i] %in% bad_pks) {
-#     loop_data = data.frame(game_pk = fpk, home_bases = NA, away_bases = NA)
-#   } else {
-#     loop_data = pk_total_bases(pk_list[i])
-#   }
-#   bases_df = rbind(bases_df, loop_data)
-#   if (i %% 25 == 0) print(paste0(i, " of ", length(pk_list)))
-# }
-
-bases_df = read_csv("bases_8july2023.csv", col_types = cols())
-
-bases_wl = all_game_pks |>
-  left_join(bases_df, by = "game_pk") |>
-  filter(!is.na(home_bases) & !is.na(away_bases)) |>
-  mutate(bases_winner = case_when(home_bases > away_bases ~ home_team,
-                                  home_bases < away_bases ~ away_team,
-                                  home_bases == away_bases ~ "Tie"),
-         bases_loser = case_when(home_bases > away_bases ~ away_team,
-                                  home_bases < away_bases ~ home_team,
-                                  home_bases == away_bases ~ "Tie"))
-
-bases_ties = bases_wl |> filter(bases_winner == "Tie")
-bases_nontie = bases_wl |> filter(bases_winner != "Tie")
-
-bases_records = bases_nontie |>
-  count(bases_winner) |>
-  rename(team = bases_winner, wins = n) |>
-  left_join(bases_nontie |>
-  count(bases_loser) |>
-  rename(team = bases_loser, losses = n), by = "team") |>
-  left_join(bases_ties |>
-  count(home_team) |>
-  rename(team = home_team, home_ties = n), by = "team") |>
-  left_join(bases_ties |>
-  count(away_team) |>
-  rename(team = away_team, away_ties = n), by = "team") |>
-  mutate(home_ties = replace_na(home_ties, 0),
-         away_ties = replace_na(away_ties, 0)) |>
-  transmute(team, wins, losses, ties = home_ties + away_ties) |>
-  mutate(win_pct = round(wins / (wins + losses), 3),
-         record = paste0(wins, "-", losses, "-", ties))
-
-# bases_records |>
-#   ggplot(aes(reorder(team, win_pct), win_pct)) +
-#   geom_col(aes(fill = team), show.legend = F) +
-#   geom_text(aes(label = record), size = 3, hjust = -0.25) +
-#   scale_fill_manual(values = team_color_codes) +
-#   coord_flip(ylim = c(0, 0.8)) +
-#   labs(x = NULL, y = "Win Percentage",
-#        title = "Team Records if Games Were Decided by Total Bases",
-#        caption = "Data as of 8 July 2023") +
-#   theme(axis.text.x = element_blank())
-
-bases_records |>
-  select(team, b_win_pct = win_pct) |>
-  left_join(team_records, by = "team") |>
-  left_join(team_abbrevs, by = "team") |>
-  ggplot(aes(win_pct, b_win_pct)) +
-  geom_point(aes(col = abb), show.legend = F, size = 4) +
-  ggrepel::geom_text_repel(aes(label = abb), size = 4) +
-  scale_color_manual(values = team_color_codes) +
-  geom_abline(linetype = "dashed", alpha = 0.5) +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.05)) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.05)) +
-  labs(x = "Win Percentage", y = "Win Percentage if Wins Determined by Total Bases",
-       title = "What if game outcomes were decided by total bases instead of runs?",
-       subtitle = "Teams above dashed line would benefit",
-       caption = "Total Bases Data as of 8 July 2023")
-```
-
 ### Sudden Death Records
 
 ```{r message = F, warning = F, echo = F}
@@ -1064,6 +890,7 @@ eras_res |>
 
 ```{r message = F, warning = F, echo = F}
 all_fir = read_csv("first_inning_runs.csv")
+bad_pks = c(718700, 718558, 718371, 717664, 717579)
 
 get_home_first_inning_runs = function(fpk) {
   return(mlb_pbp(fpk) |>
@@ -1164,11 +991,21 @@ team_fir_metrics |>
        title = "Which teams are scoring the most in the first inning?")
 ```
 
+### Home and Away Performance
 
-
-
-
-
+```{r echo = F}
+home_away_records |>
+  left_join(team_abbrevs, by = "team") |>
+  ggplot(aes(home_win_pct, away_win_pct)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb)) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  scale_color_manual(values = team_color_codes) +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
+  labs(x = "Home Win Percentage", y = "Away Win Percentage", title = "Scatterplot of Home and Away Win Percentages",
+       subtitle = "Teams above dashed line perform better on the road")
+```
 
 
 

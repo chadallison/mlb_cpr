@@ -26,10 +26,6 @@
 - [Best Away Records](#best-away-records)
 - [Runs Scored v Runs Allowed This
   Month](#runs-scored-v-runs-allowed-this-month)
-- [What if Games Were Decided by
-  Hits?](#what-if-games-were-decided-by-hits)
-- [What if Games Were Decided by Total
-  Bases?](#what-if-games-were-decided-by-total-bases)
 - [Sudden Death Records](#sudden-death-records)
 - [Eras Records](#eras-records)
 - [First Inning Runs Scored v
@@ -37,6 +33,7 @@
 - [First Inning Runs Scored v Allowed
   Rates](#first-inning-runs-scored-v-allowed-rates)
 - [First Inning Scoring](#first-inning-scoring)
+- [Home and Away Performance](#home-and-away-performance)
 
 ### Team Rankings
 
@@ -110,30 +107,26 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-### What if Games Were Decided by Hits?
+### Sudden Death Records
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
-### What if Games Were Decided by Total Bases?
+### Eras Records
 
 ![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
-### Sudden Death Records
+### First Inning Runs Scored v Allowed
 
 ![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
-### Eras Records
+### First Inning Runs Scored v Allowed Rates
 
 ![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
-### First Inning Runs Scored v Allowed
+### First Inning Scoring
 
 ![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
-### First Inning Runs Scored v Allowed Rates
+### Home and Away Performance
 
 ![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
-
-### First Inning Scoring
-
-![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
