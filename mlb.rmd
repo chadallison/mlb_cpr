@@ -506,9 +506,9 @@ team_margins |>
        title = "Scatterplot of Margins of Victory/Defeat",
        subtitle = "Dashed lines represent league averages") +
   annotate("text", x = 2.5, y = -5.1, label = "Win Small, Lose Big", fontface = "italic", alpha = 0.5) +
-  annotate("text", x = 5, y = -5.1, label = "Win Big, Lose Big", fontface = "italic", alpha = 0.5) +
+  annotate("text", x = 4.75, y = -5.1, label = "Win Big, Lose Big", fontface = "italic", alpha = 0.5) +
   annotate("text", x = 2.5, y = -2.1, label = "Win Small, Lose Small", fontface = "italic", alpha = 0.5) +
-  annotate("text", x = 5, y = -2.1, label = "Win Big, Lose Small", fontface = "italic", alpha = 0.5) +
+  annotate("text", x = 4.75, y = -2.1, label = "Win Big, Lose Small", fontface = "italic", alpha = 0.5) +
   coord_cartesian(xlim = c(min(team_margins$win_margin) - 0.25, max(team_margins$win_margin) + 0.25),
                   ylim = c(min(team_margins$def_margin) - 0.75, max(team_margins$def_margin) + 0.75)) +
   scale_x_continuous(breaks = seq(-10, 10, by = 0.5)) + scale_y_continuous(breaks = seq(-10, 10, by = 0.5))
