@@ -784,6 +784,9 @@ msas |>
 ### Sudden Death Records
 
 ```{r message = F, warning = F, echo = F}
+pks_with_scored_first = read_csv("first_score_winners.csv", col_types = cols())
+bad_pks = c(718700, 718558, 718371, 717664, 717579)
+
 who_scored_first = function(fpk) {
   return(mlb_pbp(fpk) |>
     filter(isPitch & about.isScoringPlay) |>
@@ -793,12 +796,12 @@ who_scored_first = function(fpk) {
     pull(batting_team))
 }
 
-# pks_with_scored_first = all_game_pks |>
-#   filter(!game_pk %in% bad_pks & date < Sys.Date()) |>
-#   mutate(first_score = sapply(game_pk, who_scored_first))
+new_first_scores = all_game_pks |>
+  filter(!game_pk %in% bad_pks & date < Sys.Date() & !game_pk %in% pks_with_scored_first$game_pk) |>
+  mutate(first_score = sapply(game_pk, who_scored_first))
 
-# write_csv(pks_with_scored_first, "first_score_winners_9july2023.csv")
-pks_with_scored_first = read_csv("first_score_winners_9july2023.csv", col_types = cols())
+pks_with_scored_first = rbind(pks_with_scored_first, new_first_scores)
+write_csv(pks_with_scored_first, "first_score_winners.csv")
 
 scored_first_records = pks_with_scored_first |>
   mutate(loser = ifelse(first_score == home_team, away_team, home_team)) |>
@@ -810,15 +813,6 @@ scored_first_records = pks_with_scored_first |>
   select(team, wins, losses) |>
   mutate(win_pct = round(wins / (wins + losses), 3),
          record = paste0(wins, "-", losses))
-
-# scored_first_records |>
-#   ggplot(aes(reorder(team, win_pct), win_pct)) +
-#   geom_col(aes(fill = team), show.legend = F) +
-#   geom_text(aes(label = record), size = 3, hjust = -0.25) +
-#   scale_fill_manual(values = team_color_codes) +
-#   coord_flip(ylim = c(0, 0.75)) +
-#   labs(x = NULL, y = "Win Percentage", title = "MLB Rankings if First Score Won") +
-#   theme(axis.text.x = element_blank())
 
 scored_first_records |>
   select(team, fs_pct = win_pct) |>
@@ -832,8 +826,7 @@ scored_first_records |>
   geom_abline(linetype = "dashed", alpha = 0.5) +
   labs(x = "Win Percentage", y = "Win Percentage if First Score Won",
        title = "What if MLB games were sudden death?",
-       subtitle = "Teams above/left of the dashed line would benefit",
-       caption = "First Score Data as of 9 July 2023") +
+       subtitle = "Teams above/left of the dashed line would benefit") +
   scale_x_continuous(breaks = seq(0, 1, by = 0.05)) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.05))
 ```
@@ -890,7 +883,6 @@ eras_res |>
 
 ```{r message = F, warning = F, echo = F}
 all_fir = read_csv("first_inning_runs.csv")
-bad_pks = c(718700, 718558, 718371, 717664, 717579)
 
 get_home_first_inning_runs = function(fpk) {
   return(mlb_pbp(fpk) |>
