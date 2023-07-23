@@ -20,10 +20,6 @@
 - [One-Run Games](#one-run-games)
 - [Yesterday’s Highest-Scoring Game](#yesterdays-highest-scoring-game)
 - [Best Records This Month](#best-records-this-month)
-- [Runs Scored This Month](#runs-scored-this-month)
-- [Runs Allowed This Month](#runs-allowed-this-month)
-- [Best Home Records](#best-home-records)
-- [Best Away Records](#best-away-records)
 - [Runs Scored v Runs Allowed This
   Month](#runs-scored-v-runs-allowed-this-month)
 - [Sudden Death Records](#sudden-death-records)
@@ -87,46 +83,30 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
-### Runs Scored This Month
+### Runs Scored v Runs Allowed This Month
 
 ![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
-### Runs Allowed This Month
+### Sudden Death Records
 
 ![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
-### Best Home Records
+### Eras Records
 
 ![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
-### Best Away Records
+### First Inning Runs Scored v Allowed
 
 ![](README_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
-### Runs Scored v Runs Allowed This Month
+### First Inning Runs Scored v Allowed Rates
 
 ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-### Sudden Death Records
+### First Inning Scoring
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
-### Eras Records
-
-![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
-
-### First Inning Runs Scored v Allowed
-
-![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
-
-### First Inning Runs Scored v Allowed Rates
-
-![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
-
-### First Inning Scoring
-
-![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
-
 ### Home and Away Performance
 
-![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
