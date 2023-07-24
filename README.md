@@ -30,6 +30,7 @@
   Rates](#first-inning-runs-scored-v-allowed-rates)
 - [First Inning Scoring](#first-inning-scoring)
 - [Home and Away Performance](#home-and-away-performance)
+- [Monthly v Season Win Percentages](#monthly-v-season-win-percentages)
 
 ### Team Rankings
 
@@ -110,3 +111,7 @@
 ### Home and Away Performance
 
 ![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+
+### Monthly v Season Win Percentages
+
+![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
