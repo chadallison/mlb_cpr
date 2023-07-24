@@ -746,12 +746,12 @@ scored_first_records |>
   geom_point(aes(col = team), size = 4, show.legend = F) +
   ggrepel::geom_text_repel(aes(label = abb), size = 4) +
   scale_color_manual(values = team_color_codes) +
-  geom_abline(linetype = "dashed", alpha = 0.5) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
   labs(x = "Win Percentage", y = "Win Percentage if First Score Won",
        title = "What if MLB games were sudden death?",
        subtitle = "Teams above/left of the dashed line would benefit") +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.05)) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.05))
+  scale_x_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
 ```
 
 ### Eras Records
@@ -959,6 +959,7 @@ team_records |>
   ggplot(aes(win_pct, month_pct)) +
   geom_point(aes(col = team), size = 4, show.legend = F) +
   geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  # geom_abline(linetype = "dashed", alpha = 0.5) +
   ggrepel::geom_text_repel(aes(label = abb)) +
   scale_color_manual(values = team_color_codes) +
   scale_x_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
