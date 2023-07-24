@@ -563,7 +563,8 @@ last_game_date = end_games |> slice_max(date, n = 1) |> sample_n(1) |> pull(date
 
 get_date_pks = function(fdate) {
   df = mlb_game_pks(date = fdate) |>
-    select(game_pk, date = officialDate, away_team = teams.away.team.name, home_team = teams.home.team.name) |>
+    select(game_pk, date = officialDate, away_team = teams.away.team.name,
+           home_team = teams.home.team.name) |>
     mutate(date = as_date(date))
   
   return(df)
@@ -579,7 +580,7 @@ for (i in 1:length(loop_dates)) {
 max_home_team = end_games |>
   filter(date == Sys.Date() - 1) |>
   mutate(total_score = home_score + away_score) |>
-  slice_max(total_score, n = 1) |>
+  slice_max(total_score, n = 1, with_ties = F) |>
   pull(home_team)
 
 max_pk = all_game_pks |>
@@ -589,7 +590,8 @@ max_pk = all_game_pks |>
 
 vis_df = mlb_pbp(game_pk = max_pk) |>
   filter(count.outs.end == 3) |>
-  select(inning = about.inning, away_team, away_score = result.awayScore, home_score = result.homeScore, home_team) |>
+  select(inning = about.inning, away_team, away_score = result.awayScore,
+         home_score = result.homeScore, home_team) |>
   pivot_longer(c(home_score, away_score), names_to = "team", values_to = "score") |>
   mutate(team = ifelse(team == "home_score", home_team, away_team)) |>
   group_by(inning, team) |>
@@ -608,7 +610,8 @@ high_df = end_games |>
          lose_score = ifelse(home_score > away_score, away_score, home_score)) |>
   slice_max(total_score, n = 1)
 
-high_lab = paste0(high_df$win_team, " def. ", high_df$lose_team, " ", high_df$win_score, "-", high_df$lose_score)
+high_lab = paste0(high_df$win_team, " def. ", high_df$lose_team, " ",
+                  high_df$win_score, "-", high_df$lose_score)
 
 vis_df |>
   ggplot(aes(inning, score)) +
@@ -939,9 +942,12 @@ home_away_records |>
   scale_color_manual(values = team_color_codes) +
   scale_x_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
-  labs(x = "Home Win Percentage", y = "Away Win Percentage", title = "Scatterplot of Home and Away Win Percentages",
+  labs(x = "Home Win Percentage", y = "Away Win Percentage",
+       title = "Scatterplot of Home and Away Win Percentages",
        subtitle = "Teams above dashed line perform better on the road")
 ```
+
+
 
 
 
