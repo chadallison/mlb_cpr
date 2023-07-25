@@ -44,8 +44,8 @@ theme_custom = theme_avatar() +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5, size = 9, vjust = 2.5, face = "italic"),
         plot.caption = element_text(face = "italic"),
-        panel.grid.major = element_line(linewidth = 0.5, colour = "#D6D0C4"),
-        panel.grid.minor = element_line(linewidth = 0.5, colour = "#D6D0C4"))
+        panel.grid.major = element_line(linewidth = 0.5, colour = "#DFDAD1"),
+        panel.grid.minor = element_line(linewidth = 0.5, colour = "#DFDAD1"))
 
 theme_set(theme_custom)
 ```
