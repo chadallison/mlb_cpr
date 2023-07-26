@@ -147,27 +147,16 @@ team_records |>
 rpg_df = rpg_df |>
   mutate(diff = rspg - rapg)
 
-top_teams = rpg_df |>
-  slice_max(diff, n = 3) |>
-  pull(team)
-
-bottom_teams = rpg_df |>
-  slice_min(diff, n = 3) |>
-  pull(team)
-
 rpg_df |>
   left_join(team_abbrevs, by = "team") |>
-  mutate(top_lab = ifelse(team %in% top_teams, abb, ""),
-         bot_lab = ifelse(team %in% bottom_teams, abb, ""),
-         other_lab = ifelse(!team %in% top_teams & !team %in% bottom_teams, abb, "")) |>
   ggplot(aes(rspg, rapg)) +
   geom_point(aes(col = team), size = 5, show.legend = F) +
   geom_vline(xintercept = mean(rpg_df$rspg), linetype = "dashed", alpha = 0.5) +
   geom_hline(yintercept = mean(rpg_df$rapg), linetype = "dashed", alpha = 0.5) +
   scale_color_manual(values = team_color_codes) +
-  ggrepel::geom_text_repel(aes(label = top_lab), size = 3.5) +
-  ggrepel::geom_text_repel(aes(label = bot_lab), size = 3.5) +
-  ggrepel::geom_text_repel(aes(label = other_lab), size = 3.5, alpha = 0.25, max.overlaps = 30) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
+  scale_x_continuous(breaks = seq(0, 10, by = 0.25)) +
+  scale_y_continuous(breaks = seq(0, 10, by = 0.25)) +
   labs(x = "Runs Scored Per Game", y = "Runs Allowed Per Game",
        title = "Runs Scored v. Runs Allowed in 2023")
 ```
