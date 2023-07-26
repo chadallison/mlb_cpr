@@ -30,6 +30,7 @@ ___
 - [First Inning Scoring]
 - [Home and Away Performance]
 - [Monthly v Season Win Percentages]
+- [Win Percentage v Run Differential]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -967,6 +968,42 @@ team_records |>
        subtitle = "Teams above dashed line are doing better this month")
 ```
 
+### Win Percentage v Run Differential
+
+```{r echo = F}
+get_runs_scored = function(team) {
+  home = end_games |> filter(home_team == team) |> pull(home_score) |> sum()
+  away = end_games |> filter(away_team == team) |> pull(away_score) |> sum()
+  return(home + away)
+}
+
+get_runs_allowed = function(team) {
+  home = end_games |> filter(home_team == team) |> pull(away_score) |> sum()
+  away = end_games |> filter(away_team == team) |> pull(home_score) |> sum()
+  return(home + away)
+}
+
+scored_allowed_df = data.frame(team = all_teams) |>
+  mutate(scored = sapply(team, get_runs_scored),
+         allowed = sapply(team, get_runs_allowed),
+         diff = scored - allowed)
+
+scored_allowed_df |>
+  inner_join(team_records |>
+  select(team, win_pct), by = "team") |>
+  inner_join(team_abbrevs, by = "team") |>
+  ggplot(aes(diff, win_pct)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5, max.overlaps = 30) +
+  scale_color_manual(values = team_color_codes) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  geom_vline(aes(xintercept = 0), alpha = 0.25) +
+  scale_x_continuous(breaks = seq(-500, 500, by = 25)) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
+  labs(x = "Run Differential", y = "Win Percentage",
+       title = "Win Percentage v. Run Differential",
+       subtitle = "Teams above dashed line have a better record than run differential")
+```
 
 
 

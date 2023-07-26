@@ -31,6 +31,8 @@
 - [First Inning Scoring](#first-inning-scoring)
 - [Home and Away Performance](#home-and-away-performance)
 - [Monthly v Season Win Percentages](#monthly-v-season-win-percentages)
+- [Win Percentage v Run
+  Differential](#win-percentage-v-run-differential)
 
 ### Team Rankings
 
@@ -115,3 +117,7 @@
 ### Monthly v Season Win Percentages
 
 ![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+
+### Win Percentage v Run Differential
+
+![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
