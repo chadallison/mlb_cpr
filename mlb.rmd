@@ -30,7 +30,7 @@ ___
 - [First Inning Scoring]
 - [Home and Away Performance]
 - [Monthly v Season Win Percentages]
-- [Win Percentage v Run Differential]
+- [Win Percentage v Run Differential as Percent of Runs Scored]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -820,7 +820,7 @@ get_away_first_inning_runs = function(fpk) {
 }
 
 new_fir = all_game_pks |>
-  filter(!game_pk %in% bad_pks & !game_pk %in% all_fir$game_pk) |>
+  filter(!game_pk %in% bad_pks & !game_pk %in% all_fir$game_pk & date == Sys.Date() - 1) |>
   mutate(home_fir = sapply(game_pk, get_home_first_inning_runs),
          away_fir = sapply(game_pk, get_away_first_inning_runs))
 
@@ -869,6 +869,15 @@ team_fir_metrics |>
   scale_y_continuous(breaks = seq(0, 100, by = 5)) +
   labs(x = "Total First Inning Runs Scored", y = "Total First Inning Runs Allowed",
        title = "First Inning Runs Scored v. Allowed")
+
+ydaypk = all_game_pks |>
+  filter(date == Sys.Date() - 1) |>
+  pull(game_pk)
+
+for (i in 1:length(ydaypk)) {
+  get_away_first_inning_runs(ydaypk[i])
+  print(i)
+}
 ```
 
 ### First Inning Runs Scored v Allowed Rates
@@ -968,7 +977,7 @@ team_records |>
        subtitle = "Teams above dashed line are doing better this month")
 ```
 
-### Win Percentage v Run Differential
+### Win Percentage v Run Differential as Percent of Runs Scored
 
 ```{r echo = F}
 get_runs_scored = function(team) {
@@ -992,17 +1001,19 @@ scored_allowed_df |>
   inner_join(team_records |>
   select(team, win_pct), by = "team") |>
   inner_join(team_abbrevs, by = "team") |>
-  ggplot(aes(diff, win_pct)) +
+  mutate(diff_pct = round(diff / scored, 3)) |>
+  ggplot(aes(diff_pct, win_pct)) +
   geom_point(aes(col = team), size = 4, show.legend = F) +
   ggrepel::geom_text_repel(aes(label = abb), size = 3.5, max.overlaps = 30) +
   scale_color_manual(values = team_color_codes) +
   geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
-  geom_vline(aes(xintercept = 0), alpha = 0.25) +
-  scale_x_continuous(breaks = seq(-500, 500, by = 25)) +
+  geom_hline(aes(yintercept = 0.5), alpha = 0.1) +
+  geom_vline(aes(xintercept = 0), alpha = 0.1) +
+  scale_x_continuous(breaks = seq(-5, 5, by = 0.1), labels = scales::percent) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
-  labs(x = "Run Differential", y = "Win Percentage",
-       title = "Win Percentage v. Run Differential",
-       subtitle = "Teams above dashed line have a better record than run differential")
+  labs(x = "Run Differential as Percentage of Runs Scored", y = "Win Percentage",
+       title = "Win Percentage v. Run Differential as Percent of Runs Scored",
+       subtitle = "Teams above dashed line have a better record than they 'should'")
 ```
 
 
