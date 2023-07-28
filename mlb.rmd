@@ -568,12 +568,17 @@ get_date_pks = function(fdate) {
   return(df)
 }
 
-all_game_pks = data.frame(game_pk = NULL, date = NULL, away_team = NULL, home_team = NULL)
+# all_game_pks = data.frame(game_pk = NULL, date = NULL, away_team = NULL, home_team = NULL)
+all_game_pks = read_csv("all_game_pks.csv", col_types = cols())
+this_loop_dates = loop_dates[!loop_dates %in% all_game_pks$date]
 
-for (i in 1:length(loop_dates)) {
+for (i in 1:length(this_loop_dates)) {
+  if (length(this_loop_dates) == 0) break
   df = get_date_pks(loop_dates[i])
   all_game_pks = rbind(all_game_pks, df)
 }
+
+write_csv(all_game_pks, "all_game_pks.csv")
 
 max_home_team = end_games |>
   filter(date == Sys.Date() - 1) |>
@@ -584,7 +589,8 @@ max_home_team = end_games |>
 max_pk = all_game_pks |>
   filter(date == Sys.Date() - 1) |>
   filter(home_team == max_home_team) |>
-  pull(game_pk)
+  pull(game_pk) |>
+  sample(1)
 
 vis_df = mlb_pbp(game_pk = max_pk) |>
   filter(count.outs.end == 3) |>
