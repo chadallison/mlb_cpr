@@ -38,6 +38,7 @@
 - [Win Percentage by Home Runs](#win-percentage-by-home-runs)
 - [Win Percentage by Strikeouts](#win-percentage-by-strikeouts)
 - [Home Runs by Strikeouts](#home-runs-by-strikeouts)
+- [Home Runs in Wins and Losses](#home-runs-in-wins-and-losses)
 
 ### Team Rankings
 
@@ -209,44 +210,6 @@ wl_sa |>
 
 ![](README_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
-# DOING THIS FOR EVERY TEAM MIGHT BE INTERESTING
+# Home Runs in Wins and Losses
 
-``` r
-braves_homers = all_homers |>
-  filter(team == "Atlanta Braves") |>
-  select(-team)
-
-win_homers = all_game_pks |>
-  inner_join(end_games, by = c("date", "away_team", "home_team")) |>
-  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
-         lose_team = ifelse(home_score > away_score, away_team, home_team)) |>
-  filter(win_team == "Atlanta Braves") |>
-  left_join(braves_homers, by = "game_pk") |>
-  summarise(homers = sum(hrs, na.rm = T),
-            n = n())
-
-loss_homers = all_game_pks |>
-  inner_join(end_games, by = c("date", "away_team", "home_team")) |>
-  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
-         lose_team = ifelse(home_score > away_score, away_team, home_team)) |>
-  filter(lose_team == "Atlanta Braves") |>
-  left_join(braves_homers, by = "game_pk") |>
-  summarise(homers = sum(hrs, na.rm = T),
-            n = n())
-
-paste0("atlanta braves")
-```
-
-    ## [1] "atlanta braves"
-
-``` r
-paste0("average # of HRs in wins: ", round(win_homers$homers / win_homers$n, 3))
-```
-
-    ## [1] "average # of HRs in wins: 2.218"
-
-``` r
-paste0("average # of HRs in losses: ", round(loss_homers$homers / loss_homers$n, 3))
-```
-
-    ## [1] "average # of HRs in losses: 1.184"
+![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
