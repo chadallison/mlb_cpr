@@ -2,6 +2,8 @@
 
 **Data: MLB.com via {baseballr}**
 
+------------------------------------------------------------------------
+
 # Contents
 
 - [Team Rankings](#team-rankings)
@@ -34,6 +36,8 @@
 - [Win Percentage v Run Differential as Percent of Runs
   Scored](#win-percentage-v-run-differential-as-percent-of-runs-scored)
 - [Win Percentage by Home Runs](#win-percentage-by-home-runs)
+- [Win Percentage by Strikeouts](#win-percentage-by-strikeouts)
+- [Home Runs by Strikeouts](#home-runs-by-strikeouts)
 
 ### Team Rankings
 
@@ -197,49 +201,13 @@ wl_sa |>
 
 ![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
-### Win Percentage by Number of Strikeouts
-
-*in progress*
-
-``` r
-all_ks = read_csv("all_game_ks.csv", col_types = cols())
-# all_ks = data.frame(game_pk = NULL, team = NULL, ks = NULL)
-
-get_game_ks = function(pk) {
-  return(mlb_pbp(pk) |>
-    filter(result.event == "Strikeout" & details.isOut) |>
-    group_by(game_pk, team = batting_team) |>
-    summarise(ks = n(),
-              .groups = "drop"))
-}
-
-pk_list = all_game_pks |>
-  filter(date < Sys.Date() & !game_pk %in% bad_pks & !game_pk %in% all_ks$game_pk) |>
-  pull(game_pk)
-
-if (length(pk_list) > 0) {
-  for (i in 1:length(pk_list)) {
-    ks = get_game_ks(pk_list[i])
-    if (nrow(ks) == 0) ks = data.frame(game_pk = pk_list[i], team = "Chicago Cubs", ks = 0)
-    all_ks = rbind(all_ks, ks)
-    if (i %% 25 == 0) print(i)
-  }
-}
-
-write_csv(all_ks, "all_game_ks.csv")
-
-all_ks |>
-  group_by(team) |>
-  summarise(ks = sum(ks)) |>
-  inner_join(all_homers |>
-  group_by(team) |>
-  summarise(hrs = sum(hrs)), by = "team") |>
-  ggplot(aes(hrs, ks)) +
-  geom_point(size = 4) +
-  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5)
-```
+### Win Percentage by Strikeouts
 
 ![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+
+### Home Runs by Strikeouts
+
+![](README_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 # DOING THIS FOR EVERY TEAM MIGHT BE INTERESTING
 

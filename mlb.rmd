@@ -34,6 +34,8 @@ ___
 - [Monthly v Season Win Percentages]
 - [Win Percentage v Run Differential as Percent of Runs Scored]
 - [Win Percentage by Home Runs]
+- [Win Percentage by Strikeouts]
+- [Home Runs by Strikeouts]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -1144,11 +1146,9 @@ all_homers |>
   scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
 ```
 
-### Win Percentage by Number of Strikeouts
+### Win Percentage by Strikeouts
 
-*in progress*
-
-```{r}
+```{r echo = F}
 all_ks = read_csv("all_game_ks.csv", col_types = cols())
 # all_ks = data.frame(game_pk = NULL, team = NULL, ks = NULL)
 
@@ -1175,17 +1175,62 @@ if (length(pk_list) > 0) {
 
 write_csv(all_ks, "all_game_ks.csv")
 
+cor_df = all_ks |>
+  group_by(team) |>
+  summarise(ks = sum(ks)) |>
+  inner_join(team_records |>
+  select(team, win_pct), by = "team")
+
+cor_lab = round(cor(cor_df$ks, cor_df$win_pct), 3)
+
+all_ks |>
+  group_by(team) |>
+  summarise(ks = sum(ks)) |>
+  inner_join(team_records |>
+  select(team, win_pct), by = "team") |>
+  inner_join(team_abbrevs, by = "team") |>
+  ggplot(aes(ks, win_pct)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
+  scale_color_manual(values = team_color_codes) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  labs(x = "Strikeouts", y = "Win Percentage",
+       title = "Scatterplot of Strikeouts and Win Percentage by Team",
+       subtitle = paste0("Correlation ", cor_lab)) +
+  scale_x_continuous(breaks = seq(0, 2500, by = 25)) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
+```
+
+### Home Runs by Strikeouts
+
+```{r echo = F}
+cor_df = all_ks |>
+  group_by(team) |>
+  summarise(ks = sum(ks)) |>
+  inner_join(all_homers |>
+  group_by(team) |>
+  summarise(hrs = sum(hrs)), by = "team")
+
+cor_lab = round(cor(cor_df$ks, cor_df$hrs), 3)
+
 all_ks |>
   group_by(team) |>
   summarise(ks = sum(ks)) |>
   inner_join(all_homers |>
   group_by(team) |>
   summarise(hrs = sum(hrs)), by = "team") |>
+  inner_join(team_abbrevs, by = "team") |>
   ggplot(aes(hrs, ks)) +
-  geom_point(size = 4) +
-  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5)
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
+  scale_color_manual(values = team_color_codes) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  labs(x = "Home Runs", y = "Strikeouts",
+       title = "Scatterplot of Home Runs and Strikeouts by Team",
+       subtitle = paste0("Correlation: ", cor_lab)) +
+  scale_x_continuous(breaks = seq(0, 500, by = 10)) +
+  scale_y_continuous(breaks = seq(0, 2500, by = 50))
 ```
-
 
 # DOING THIS FOR EVERY TEAM MIGHT BE INTERESTING
 
