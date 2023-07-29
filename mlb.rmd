@@ -7,6 +7,8 @@ ___
 
 **Data: MLB.com via {baseballr}**
 
+___
+
 # Contents
 
 - [Team Rankings]
@@ -31,6 +33,7 @@ ___
 - [Home and Away Performance]
 - [Monthly v Season Win Percentages]
 - [Win Percentage v Run Differential as Percent of Runs Scored]
+- [Win Percentage by Home Runs]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -574,7 +577,7 @@ this_loop_dates = loop_dates[!loop_dates %in% all_game_pks$date]
 
 for (i in 1:length(this_loop_dates)) {
   if (length(this_loop_dates) == 0) break
-  df = get_date_pks(loop_dates[i])
+  df = get_date_pks(this_loop_dates[i])
   all_game_pks = rbind(all_game_pks, df)
 }
 
@@ -587,10 +590,9 @@ max_home_team = end_games |>
   pull(home_team)
 
 max_pk = all_game_pks |>
-  filter(date == Sys.Date() - 1) |>
-  filter(home_team == max_home_team) |>
-  pull(game_pk) |>
-  sample(1)
+  filter(date == Sys.Date() - 1 & home_team == max_home_team) |>
+  head(1) |>
+  pull(game_pk)
 
 vis_df = mlb_pbp(game_pk = max_pk) |>
   filter(count.outs.end == 3) |>
@@ -879,11 +881,6 @@ team_fir_metrics |>
 ydaypk = all_game_pks |>
   filter(date == Sys.Date() - 1) |>
   pull(game_pk)
-
-for (i in 1:length(ydaypk)) {
-  get_away_first_inning_runs(ydaypk[i])
-  print(i)
-}
 ```
 
 ### First Inning Runs Scored v Allowed Rates
@@ -1021,6 +1018,207 @@ scored_allowed_df |>
        title = "Win Percentage v. Run Differential as Percent of Runs Scored",
        subtitle = "Teams above dashed line have a better record than they 'should'")
 ```
+
+
+```{r}
+# runs scored in wins and losses + runs allowed in wins and losses
+end_wl = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         win_score = ifelse(home_score > away_score, home_score, away_score),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         lose_score = ifelse(home_score > away_score, away_score, home_score))
+
+# function to find games played
+get_games_played = function(team) {
+  return(end_wl |>
+    filter(home_team == team | away_team == team) |>
+    nrow())
+}
+
+# function to find runs scored in wins
+get_win_scored = function(team) {
+  return(end_wl |>
+    filter(win_team == team) |>
+    pull(win_score) |>
+    sum() / get_games_played(team))
+}
+
+# function to find runs allowed in wins
+get_win_allowed = function(team) {
+  return(end_wl |>
+    filter(win_team == team) |>
+    pull(lose_score) |>
+    sum() / get_games_played(team))
+}
+
+# function to find runs scored in losses
+get_loss_scored = function(team) {
+  return(end_wl |>
+    filter(lose_team == team) |>
+    pull(lose_score) |>
+    sum() / get_games_played(team))
+}
+
+# function to find runs allowed in losses
+get_loss_allowed = function(team) {
+  return(end_wl |>
+    filter(lose_team == team) |>
+    pull(win_score) |>
+    sum() / get_games_played(team))
+}
+
+wl_sa = data.frame(team = all_teams) |>
+  mutate(win_scored = sapply(team, get_win_scored),
+         win_allowed = sapply(team, get_win_allowed),
+         loss_scored = sapply(team, get_loss_scored),
+         loss_allowed = sapply(team, get_loss_allowed)) |>
+  mutate_if(is.numeric, ~round(., 3))
+
+wl_sa |>
+  inner_join(team_abbrevs, by = "team") |>
+  ggplot(aes(win_scored, loss_scored)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  scale_color_manual(values = team_color_codes) +
+  labs(x = "Avg. Runs Scored in Wins", y = "Avg. Runs Scored in Losses",
+       title = "Scatterplot of Runs Scored in Wins v. Losses",
+       subtitle = "Teams above dashed line are scoring above-average runs in losses") +
+  scale_x_continuous(breaks = seq(0, 10, by = 0.25)) +
+  scale_y_continuous(breaks = seq(0, 5, by = 0.25))
+```
+
+### Win Percentage by Home Runs
+
+```{r echo = F}
+all_homers = read_csv("all_game_hrs.csv", col_types = cols())
+# all_homers = data.frame(game_pk = NULL, team = NULL, hrs = NULL)
+
+get_game_hrs = function(pk) {
+  return(mlb_pbp(pk) |>
+    filter(!is.na(hitData.hardness) & result.event == "Home Run") |>
+    group_by(game_pk, team = batting_team) |>
+    summarise(hrs = n(),
+              .groups = "drop"))
+}
+
+pk_list = all_game_pks |>
+  filter(date < Sys.Date() & !game_pk %in% bad_pks & !game_pk %in% all_homers$game_pk) |>
+  pull(game_pk)
+
+if (length(pk_list) > 0) {
+  for (i in 1:length(pk_list)) {
+    homers = get_game_hrs(pk_list[i])
+    if (nrow(homers) == 0) homers = data.frame(game_pk = pk_list[i], team = "Chicago Cubs", hrs = 0)
+    all_homers = rbind(all_homers, homers)
+    # if (i %% 10 == 0) print(i)
+  }
+}
+
+write_csv(all_homers, "all_game_hrs.csv")
+
+cor_df = all_homers |>
+  group_by(team) |>
+  summarise(hrs = sum(hrs)) |>
+  inner_join(team_records, by = "team") |>
+  select(team, hrs, win_pct)
+
+cor_lab = round(cor(cor_df$hrs, cor_df$win_pct), 3)
+
+all_homers |>
+  group_by(team) |>
+  summarise(hrs = sum(hrs)) |>
+  inner_join(team_records |>
+  select(team, win_pct), by = "team") |>
+  inner_join(team_abbrevs, by = "team") |>
+  ggplot(aes(hrs, win_pct)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5, max.overlaps = 30) +
+  scale_color_manual(values = team_color_codes) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  geom_hline(aes(yintercept = 0.5), alpha = 0.1) +
+  labs(x = "Home Runs", y = "Win Percentage",
+       title = "Win Percentage by Number of Home Runs",
+       subtitle = paste0("Correlation: ", cor_lab)) +
+  scale_x_continuous(breaks = seq(0, 500, by = 10)) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
+```
+
+### Win Percentage by Number of Strikeouts
+
+*in progress*
+
+```{r}
+all_ks = read_csv("all_game_ks.csv", col_types = cols())
+# all_ks = data.frame(game_pk = NULL, team = NULL, ks = NULL)
+
+get_game_ks = function(pk) {
+  return(mlb_pbp(pk) |>
+    filter(result.event == "Strikeout" & details.isOut) |>
+    group_by(game_pk, team = batting_team) |>
+    summarise(ks = n(),
+              .groups = "drop"))
+}
+
+pk_list = all_game_pks |>
+  filter(date < Sys.Date() & !game_pk %in% bad_pks & !game_pk %in% all_ks$game_pk) |>
+  pull(game_pk)
+
+if (length(pk_list) > 0) {
+  for (i in 1:length(pk_list)) {
+    ks = get_game_ks(pk_list[i])
+    if (nrow(ks) == 0) ks = data.frame(game_pk = pk_list[i], team = "Chicago Cubs", ks = 0)
+    all_ks = rbind(all_ks, ks)
+    if (i %% 25 == 0) print(i)
+  }
+}
+
+write_csv(all_ks, "all_game_ks.csv")
+
+all_ks |>
+  group_by(team) |>
+  summarise(ks = sum(ks)) |>
+  inner_join(all_homers |>
+  group_by(team) |>
+  summarise(hrs = sum(hrs)), by = "team") |>
+  ggplot(aes(hrs, ks)) +
+  geom_point(size = 4) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5)
+```
+
+
+# DOING THIS FOR EVERY TEAM MIGHT BE INTERESTING
+
+```{r message = F, warning = F}
+braves_homers = all_homers |>
+  filter(team == "Atlanta Braves") |>
+  select(-team)
+
+win_homers = all_game_pks |>
+  inner_join(end_games, by = c("date", "away_team", "home_team")) |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team)) |>
+  filter(win_team == "Atlanta Braves") |>
+  left_join(braves_homers, by = "game_pk") |>
+  summarise(homers = sum(hrs, na.rm = T),
+            n = n())
+
+loss_homers = all_game_pks |>
+  inner_join(end_games, by = c("date", "away_team", "home_team")) |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team)) |>
+  filter(lose_team == "Atlanta Braves") |>
+  left_join(braves_homers, by = "game_pk") |>
+  summarise(homers = sum(hrs, na.rm = T),
+            n = n())
+
+paste0("atlanta braves")
+paste0("average # of HRs in wins: ", round(win_homers$homers / win_homers$n, 3))
+paste0("average # of HRs in losses: ", round(loss_homers$homers / loss_homers$n, 3))
+```
+
+
+
 
 
 
