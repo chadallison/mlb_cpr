@@ -33,6 +33,7 @@ ___
 - [Home and Away Performance]
 - [Monthly v Season Win Percentages]
 - [Win Percentage v Run Differential as Percent of Runs Scored]
+- [Runs Scored in Wins and Losses]
 - [Win Percentage by Home Runs]
 - [Win Percentage by Strikeouts]
 - [Home Runs by Strikeouts]
@@ -40,10 +41,7 @@ ___
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
-library(tidymodels)
 library(tvthemes)
-library(janitor)
-library(patchwork)
 library(baseballr)
 library(retrosheet)
 
@@ -1022,8 +1020,9 @@ scored_allowed_df |>
        subtitle = "Teams above dashed line have a better record than they 'should'")
 ```
 
+### Runs Scored in Wins and Losses
 
-```{r}
+```{r echo = F}
 # runs scored in wins and losses + runs allowed in wins and losses
 end_wl = end_games |>
   mutate(win_team = ifelse(home_score > away_score, home_team, away_team),

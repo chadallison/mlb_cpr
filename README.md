@@ -35,6 +35,7 @@
 - [Monthly v Season Win Percentages](#monthly-v-season-win-percentages)
 - [Win Percentage v Run Differential as Percent of Runs
   Scored](#win-percentage-v-run-differential-as-percent-of-runs-scored)
+- [Runs Scored in Wins and Losses](#runs-scored-in-wins-and-losses)
 - [Win Percentage by Home Runs](#win-percentage-by-home-runs)
 - [Win Percentage by Strikeouts](#win-percentage-by-strikeouts)
 - [Home Runs by Strikeouts](#home-runs-by-strikeouts)
@@ -128,73 +129,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
-``` r
-# runs scored in wins and losses + runs allowed in wins and losses
-end_wl = end_games |>
-  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
-         win_score = ifelse(home_score > away_score, home_score, away_score),
-         lose_team = ifelse(home_score > away_score, away_team, home_team),
-         lose_score = ifelse(home_score > away_score, away_score, home_score))
-
-# function to find games played
-get_games_played = function(team) {
-  return(end_wl |>
-    filter(home_team == team | away_team == team) |>
-    nrow())
-}
-
-# function to find runs scored in wins
-get_win_scored = function(team) {
-  return(end_wl |>
-    filter(win_team == team) |>
-    pull(win_score) |>
-    sum() / get_games_played(team))
-}
-
-# function to find runs allowed in wins
-get_win_allowed = function(team) {
-  return(end_wl |>
-    filter(win_team == team) |>
-    pull(lose_score) |>
-    sum() / get_games_played(team))
-}
-
-# function to find runs scored in losses
-get_loss_scored = function(team) {
-  return(end_wl |>
-    filter(lose_team == team) |>
-    pull(lose_score) |>
-    sum() / get_games_played(team))
-}
-
-# function to find runs allowed in losses
-get_loss_allowed = function(team) {
-  return(end_wl |>
-    filter(lose_team == team) |>
-    pull(win_score) |>
-    sum() / get_games_played(team))
-}
-
-wl_sa = data.frame(team = all_teams) |>
-  mutate(win_scored = sapply(team, get_win_scored),
-         win_allowed = sapply(team, get_win_allowed),
-         loss_scored = sapply(team, get_loss_scored),
-         loss_allowed = sapply(team, get_loss_allowed)) |>
-  mutate_if(is.numeric, ~round(., 3))
-
-wl_sa |>
-  inner_join(team_abbrevs, by = "team") |>
-  ggplot(aes(win_scored, loss_scored)) +
-  geom_point(aes(col = team), size = 4, show.legend = F) +
-  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
-  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
-  scale_color_manual(values = team_color_codes) +
-  labs(x = "Avg. Runs Scored in Wins", y = "Avg. Runs Scored in Losses",
-       title = "Scatterplot of Runs Scored in Wins v. Losses",
-       subtitle = "Teams above dashed line are scoring above-average runs in losses") +
-  scale_x_continuous(breaks = seq(0, 10, by = 0.25)) +
-  scale_y_continuous(breaks = seq(0, 5, by = 0.25))
-```
+### Runs Scored in Wins and Losses
 
 ![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
@@ -210,6 +145,6 @@ wl_sa |>
 
 ![](README_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
-# Home Runs in Wins and Losses
+### Home Runs in Wins and Losses
 
 ![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
