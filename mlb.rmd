@@ -633,7 +633,7 @@ vis_df |>
 ### Best Records This Month
 
 ```{r echo = F}
-this_month = as.character(month(Sys.Date(), label = T, abbr = F))
+this_month = as.character(month(Sys.Date() - 1, label = T, abbr = F))
 
 this_month_end_games = end_games |>
   filter(month(date, label = T, abbr = F) == this_month) |>
@@ -684,7 +684,9 @@ this_month_scored_allowed = data.frame(team = all_teams) |>
          diff = scored - allowed)
 
 get_n_games_month = function(team) {
-  return(end_games |> filter(month(date) == month(Sys.Date()) & (home_team == team | away_team == team)) |> nrow())
+  return(end_games |>
+    filter(month(date, label = T, abbr = F) == this_month &
+             (home_team == team | away_team == team)) |> nrow())
 }
 
 msas = this_month_scored_allowed |>
@@ -1286,6 +1288,7 @@ team_wl_homers |>
   scale_x_continuous(breaks = seq(0, 5, by = 0.1)) +
   scale_y_continuous(breaks = seq(0, 5, by = 0.1))
 ```
+
 
 
 
