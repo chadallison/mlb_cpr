@@ -95,6 +95,9 @@
 
 ### Runs Scored v Runs Allowed This Month
 
+    ## Warning: ggrepel: 6 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
+
 ![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ### Sudden Death Records
@@ -122,6 +125,9 @@
 ![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 ### Monthly v Season Win Percentages
+
+    ## Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
 
 ![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 

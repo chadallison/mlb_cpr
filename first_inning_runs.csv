@@ -1634,3 +1634,18 @@ game_pk,date,away_team,home_team,home_fir,away_fir
 717167,2023-08-01,Boston Red Sox,Seattle Mariners,1,0
 717180,2023-08-01,Arizona Diamondbacks,San Francisco Giants,0,0
 717171,2023-08-01,Oakland Athletics,Los Angeles Dodgers,0,0
+717165,2023-08-02,Los Angeles Angels,Atlanta Braves,0,0
+717166,2023-08-02,Detroit Tigers,Pittsburgh Pirates,0,1
+717162,2023-08-02,Milwaukee Brewers,Washington Nationals,0,0
+717163,2023-08-02,Cleveland Guardians,Houston Astros,0,0
+717158,2023-08-02,San Diego Padres,Colorado Rockies,0,0
+717161,2023-08-02,Boston Red Sox,Seattle Mariners,0,0
+717159,2023-08-02,Philadelphia Phillies,Miami Marlins,0,0
+717160,2023-08-02,Tampa Bay Rays,New York Yankees,0,2
+717157,2023-08-02,Baltimore Orioles,Toronto Blue Jays,0,0
+717155,2023-08-02,Minnesota Twins,St. Louis Cardinals,0,0
+717153,2023-08-02,Cincinnati Reds,Chicago Cubs,0,2
+717152,2023-08-02,Chicago White Sox,Texas Rangers,2,0
+717156,2023-08-02,New York Mets,Kansas City Royals,2,0
+717164,2023-08-02,Arizona Diamondbacks,San Francisco Giants,0,2
+717154,2023-08-02,Oakland Athletics,Los Angeles Dodgers,1,0
