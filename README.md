@@ -75,6 +75,9 @@
 
 ### Scatterplot of Margins of Victory and Defeat
 
+    ## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
+
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ### Margins of Victory and Defeat
@@ -94,9 +97,6 @@
 ![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 ### Runs Scored v Runs Allowed This Month
-
-    ## Warning: ggrepel: 6 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
 
 ![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
@@ -125,9 +125,6 @@
 ![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 ### Monthly v Season Win Percentages
-
-    ## Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
 
 ![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
