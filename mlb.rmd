@@ -38,6 +38,7 @@ ___
 - [Win Percentage by Strikeouts]
 - [Home Runs by Strikeouts]
 - [Home Runs in Wins and Losses]
+- [Home Run Leaders]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -1287,8 +1288,10 @@ team_wl_homers |>
   scale_y_continuous(breaks = seq(0, 5, by = 0.1))
 ```
 
-```{r eval = F, include = F}
-# player_hrs_df = read_csv("player_hrs.csv", col_types = cols())
+### Home Run Leaders
+
+```{r message = F, warning = F, echo = F}
+player_hrs_df = read_csv("player_hrs.csv", col_types = cols())
 
 loop_pks = all_game_pks |>
   filter(date <= Sys.Date() - 1 & !game_pk %in% bad_pks) |>
@@ -1296,25 +1299,79 @@ loop_pks = all_game_pks |>
 
 loop_pks = loop_pks[!loop_pks %in% player_hrs_df$game_pk]
 
-player_hrs_df = data.frame()
+# player_hrs_df = data.frame()
 
 for (i in 1:length(loop_pks)) {
-  loop_data = mlb_pbp(loop_pks[i]) |>
-    filter(details.isInPlay & result.event == "Home Run") |>
-    count(game_pk, matchup.batter.fullName, batting_team) |>
-    setNames(c("game_pk", "hitter_name", "hitter_team", "hrs"))
-  
-  if (nrow(loop_data) > 0) player_hrs_df = rbind(player_hrs_df, loop_data)
+  if (length(loop_pks) > 0) {
+    loop_data = mlb_pbp(loop_pks[i]) |>
+      filter(details.isInPlay & result.event == "Home Run") |>
+      count(game_pk, matchup.batter.fullName, batting_team) |>
+      setNames(c("game_pk", "hitter_name", "hitter_team", "hrs"))
+    
+    if (nrow(loop_data) == 0) {
+      loop_data = data.frame(game_pk = loop_pks[i], hitter_name = "Shohei Ohtani", hitter_team = "Los Angeles Angels", hrs = 0)
+      player_hrs_df = rbind(player_hrs_df, loop_data)
+    } else if (nrow(loop_data) > 0) {
+      player_hrs_df = rbind(player_hrs_df, loop_data)
+    }
+  }
 }
+
+player_hrs_df = player_hrs_df |>
+  distinct(game_pk, hitter_name, hitter_team, hrs)
 
 write_csv(player_hrs_df, "player_hrs.csv")
 
-# note that this could have duplicates if a player has hit hrs with multiple teams this season
+top_hr_players = player_hrs_df |>
+  group_by(hitter_name) |>
+  summarise(hrs = sum(hrs)) |>
+  slice_max(hrs, n = 5) |>
+  pull(hitter_name)
+
+# vis_colors = player_hrs_df |>
+#   filter(hitter_name %in% top_hr_players) |>
+#   inner_join(all_game_pks |>
+#   filter(date <= Sys.Date() - 1 & !game_pk %in% bad_pks) |>
+#   select(game_pk, date), by = "game_pk") |>
+#   group_by(hitter_name) |>
+#   slice_max(date, n = 1) |>
+#   ungroup() |>
+#   mutate(hitter_name = factor(hitter_name, levels = top_hr_players)) |>
+#   arrange(hitter_name) |>
+#   inner_join(team_colors, by = c("hitter_team" = "team")) |>
+#   pull(hex)
+
+player_labels = player_hrs_df |>
+  group_by(hitter_name) |>
+  summarise(hrs = sum(hrs)) |>
+  slice_max(hrs, n = 5) |>
+  transmute(hitter_name, label = paste0(hitter_name, " (", hrs, ")"))
+
 player_hrs_df |>
-  group_by(hitter_name, hitter_team) |>
+  filter(hitter_name %in% top_hr_players) |>
+  inner_join(all_game_pks |>
+  filter(date <= Sys.Date() - 1 & !game_pk %in% bad_pks) |>
+  select(game_pk, date), by = "game_pk") |>
+  group_by(hitter_name, date) |>
   summarise(hrs = sum(hrs),
             .groups = "drop") |>
-  arrange(desc(hrs))
+  group_by(hitter_name) |>
+  mutate(cum_hrs = cumsum(hrs),
+         hitter_name = factor(hitter_name, levels = top_hr_players)) |>
+  group_by(hitter_name) |>
+  mutate(max_date = max(date)) |>
+  ungroup() |>
+  group_by(hitter_name) |>
+  mutate(total_hrs = max(cum_hrs)) |>
+  ungroup() |>
+  inner_join(player_labels, by = "hitter_name") |>
+  mutate(label = factor(label, levels = player_labels$label)) |>
+  ggplot(aes(date, cum_hrs)) +
+  geom_line(aes(col = label), linewidth = 2) +
+  labs(x = NULL, y = "Home Runs", title = "2023 Home Run Leaders", col = NULL) +
+  scale_y_continuous(breaks = seq(0, 100, by = 5)) +
+  # scale_color_manual(values = vis_colors) +
+  theme(legend.position = "right")
 ```
 
 
