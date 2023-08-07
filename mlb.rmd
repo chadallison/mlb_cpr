@@ -1287,6 +1287,58 @@ team_wl_homers |>
   scale_y_continuous(breaks = seq(0, 5, by = 0.1))
 ```
 
+```{r eval = F, include = F}
+# player_hrs_df = read_csv("player_hrs.csv", col_types = cols())
+
+loop_pks = all_game_pks |>
+  filter(date <= Sys.Date() - 1 & !game_pk %in% bad_pks) |>
+  pull(game_pk)
+
+loop_pks = loop_pks[!loop_pks %in% player_hrs_df$game_pk]
+
+player_hrs_df = data.frame()
+
+for (i in 1:length(loop_pks)) {
+  loop_data = mlb_pbp(loop_pks[i]) |>
+    filter(details.isInPlay & result.event == "Home Run") |>
+    count(game_pk, matchup.batter.fullName, batting_team) |>
+    setNames(c("game_pk", "hitter_name", "hitter_team", "hrs"))
+  
+  if (nrow(loop_data) > 0) player_hrs_df = rbind(player_hrs_df, loop_data)
+}
+
+write_csv(player_hrs_df, "player_hrs.csv")
+
+# note that this could have duplicates if a player has hit hrs with multiple teams this season
+player_hrs_df |>
+  group_by(hitter_name, hitter_team) |>
+  summarise(hrs = sum(hrs),
+            .groups = "drop") |>
+  arrange(desc(hrs))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

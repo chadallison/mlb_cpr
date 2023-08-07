@@ -1,0 +1,585 @@
+game_pk,hitter_name,hitter_team,hrs
+718781,Aaron Judge,New York Yankees,1
+718781,Gleyber Torres,New York Yankees,1
+718782,Adley Rutschman,Baltimore Orioles,1
+718782,Ramon Urias,Baltimore Orioles,1
+718776,Jose Siri,Tampa Bay Rays,1
+718776,Wander Franco,Tampa Bay Rays,1
+718779,Alec Bohm,Philadelphia Phillies,1
+718779,Brad Miller,Texas Rangers,1
+718779,Robbie Grossman,Texas Rangers,1
+718773,Oneil Cruz,Pittsburgh Pirates,1
+718773,Spencer Steer,Cincinnati Reds,1
+718772,Brendan Donovan,St. Louis Cardinals,1
+718772,Tyler O'Neill,St. Louis Cardinals,1
+718774,Garrett Cooper,Miami Marlins,1
+718768,Yasmani Grandal,Chicago White Sox,1
+718768,Yordan Alvarez,Houston Astros,1
+718778,C.J. Cron,Colorado Rockies,2
+718778,Elehuris Montero,Colorado Rockies,1
+718770,James Outman,Los Angeles Dodgers,1
+718767,Ty France,Seattle Mariners,1
+718771,Jazz Chisholm Jr.,Miami Marlins,1
+718771,Jorge Soler,Miami Marlins,1
+718771,Pete Alonso,New York Mets,1
+718764,Kyle Tucker,Houston Astros,1
+718766,Charlie Blackmon,Colorado Rockies,1
+718765,Kyle Lewis,Arizona Diamondbacks,1
+718765,Mookie Betts,Los Angeles Dodgers,1
+718760,Seby Zavala,Chicago White Sox,1
+718760,Yoan Moncada,Chicago White Sox,1
+718758,Ian Happ,Chicago Cubs,1
+718752,Marcus Semien,Texas Rangers,1
+718752,Mitch Garver,Texas Rangers,2
+718753,Keibert Ruiz,Washington Nationals,1
+718753,Marcell Ozuna,Atlanta Braves,1
+718753,Matt Olson,Atlanta Braves,2
+718753,Ronald Acuna Jr.,Atlanta Braves,1
+718762,Brandon Crawford,San Francisco Giants,1
+718762,Giancarlo Stanton,New York Yankees,1
+718762,Joc Pederson,San Francisco Giants,1
+718762,Josh Donaldson,New York Yankees,1
+718757,Ramon Laureano,Oakland Athletics,1
+718757,Taylor Ward,Los Angeles Angels,1
+718761,Adam Duvall,Boston Red Sox,2
+718761,Alex Verdugo,Boston Red Sox,1
+718761,Austin Hays,Baltimore Orioles,1
+718761,Cedric Mullins,Baltimore Orioles,1
+718761,Enrique Hernandez,Boston Red Sox,1
+718761,Ryan Mountcastle,Baltimore Orioles,1
+718756,Jake Fraley,Cincinnati Reds,1
+718756,Jonathan India,Cincinnati Reds,1
+718756,Kevin Newman,Cincinnati Reds,1
+718754,Yandy Diaz,Tampa Bay Rays,1
+718755,Mark Canha,New York Mets,1
+718755,Nick Fortes,Miami Marlins,1
+718750,C.J. Cron,Colorado Rockies,1
+718750,Xander Bogaerts,San Diego Padres,1
+718749,Christian Walker,Arizona Diamondbacks,1
+718749,J.D. Martinez,Los Angeles Dodgers,1
+718749,Trayce Thompson,Los Angeles Dodgers,3
+718746,Andres Gimenez,Cleveland Guardians,1
+718746,Josh Naylor,Cleveland Guardians,1
+718742,Jake Rogers,Detroit Tigers,1
+718742,Randy Arozarena,Tampa Bay Rays,1
+718748,Adam Frazier,Baltimore Orioles,1
+718748,Cedric Mullins,Baltimore Orioles,1
+718748,Enrique Hernandez,Boston Red Sox,1
+718747,Aaron Judge,New York Yankees,1
+718747,Giancarlo Stanton,New York Yankees,1
+718747,Kyle Higashioka,New York Yankees,1
+718744,Bryan Reynolds,Pittsburgh Pirates,1
+718744,Jason Vosler,Cincinnati Reds,1
+718744,TJ Friedl,Cincinnati Reds,1
+718741,Tommy Pham,New York Mets,1
+718745,Edward Olivares,Kansas City Royals,1
+718745,Joey Gallo,Minnesota Twins,2
+718745,Matt Duffy,Kansas City Royals,1
+718740,Luis Robert Jr.,Chicago White Sox,1
+718740,Yoan Moncada,Chicago White Sox,1
+718737,Alec Burleson,St. Louis Cardinals,1
+718737,Brendan Donovan,St. Louis Cardinals,1
+718737,Nolan Gorman,St. Louis Cardinals,2
+718738,Patrick Wisdom,Chicago Cubs,2
+718734,Logan O'Hoppe,Los Angeles Angels,1
+718734,Mike Trout,Los Angeles Angels,1
+718734,Shohei Ohtani,Los Angeles Angels,1
+718736,Will Smith,Los Angeles Dodgers,1
+718733,Ryan McMahon,Colorado Rockies,1
+718733,Trent Grisham,San Diego Padres,1
+718733,Xander Bogaerts,San Diego Padres,1
+718735,Julio Rodriguez,Seattle Mariners,1
+718735,Mike Zunino,Cleveland Guardians,1
+718739,Josh Jung,Texas Rangers,1
+718731,Brian Anderson,Milwaukee Brewers,1
+718731,Brice Turang,Milwaukee Brewers,1
+718730,Bryce Johnson,San Francisco Giants,1
+718730,David Villar,San Francisco Giants,2
+718730,Joc Pederson,San Francisco Giants,1
+718730,Luis Robert Jr.,Chicago White Sox,1
+718730,Michael Conforto,San Francisco Giants,1
+718730,Mike Yastrzemski,San Francisco Giants,1
+718730,Thairo Estrada,San Francisco Giants,1
+718728,Cody Bellinger,Chicago Cubs,1
+718728,Jason Vosler,Cincinnati Reds,1
+718729,Joey Gallo,Minnesota Twins,1
+718729,Max Kepler,Minnesota Twins,1
+718729,Ryan Jeffers,Minnesota Twins,1
+718729,Trevor Larnach,Minnesota Twins,1
+718732,Isaac Paredes,Tampa Bay Rays,1
+718732,Jeimer Candelario,Washington Nationals,1
+718732,Luke Raley,Tampa Bay Rays,2
+718725,Anthony Rizzo,New York Yankees,1
+718725,Gleyber Torres,New York Yankees,1
+718724,Bryan Reynolds,Pittsburgh Pirates,2
+718724,Jason Delay,Pittsburgh Pirates,1
+718724,Masataka Yoshida,Boston Red Sox,1
+718724,Rafael Devers,Boston Red Sox,1
+718724,Triston Casas,Boston Red Sox,1
+718719,Bo Bichette,Toronto Blue Jays,1
+718719,MJ Melendez,Kansas City Royals,1
+718727,Austin Riley,Atlanta Braves,1
+718727,Ozzie Albies,Atlanta Braves,1
+718727,Paul Goldschmidt,St. Louis Cardinals,1
+718727,Ronald Acuna Jr.,Atlanta Braves,1
+718726,Gunnar Henderson,Baltimore Orioles,1
+718726,Jorge Mateo,Baltimore Orioles,1
+718723,Matt Vierling,Detroit Tigers,1
+718723,Riley Greene,Detroit Tigers,1
+718723,Yordan Alvarez,Houston Astros,1
+718721,Jace Peterson,Oakland Athletics,1
+718721,Josh Naylor,Cleveland Guardians,1
+718721,Ramon Laureano,Oakland Athletics,1
+718721,Seth Brown,Oakland Athletics,1
+718722,Corbin Carroll,Arizona Diamondbacks,1
+718722,David Dahl,San Diego Padres,1
+718722,Evan Longoria,Arizona Diamondbacks,1
+718722,Ha-Seong Kim,San Diego Padres,1
+718722,Juan Soto,San Diego Padres,1
+718720,Shohei Ohtani,Los Angeles Angels,1
+718720,Taylor Ward,Los Angeles Angels,1
+718718,Chris Taylor,Los Angeles Dodgers,1
+718718,Jason Heyward,Los Angeles Dodgers,1
+718718,Will Smith,Los Angeles Dodgers,1
+718717,Nelson Cruz,San Diego Padres,1
+718717,Trent Grisham,San Diego Padres,1
+718717,Xander Bogaerts,San Diego Padres,1
+718716,Jason Vosler,Cincinnati Reds,1
+718716,Stuart Fairchild,Cincinnati Reds,1
+718716,TJ Friedl,Cincinnati Reds,1
+718714,Avisail Garcia,Miami Marlins,1
+718715,Jose Siri,Tampa Bay Rays,1
+718715,Josh Lowe,Tampa Bay Rays,1
+718715,Luke Raley,Tampa Bay Rays,1
+718715,Yandy Diaz,Tampa Bay Rays,1
+718710,Brandon Marsh,Philadelphia Phillies,1
+718710,DJ LeMahieu,New York Yankees,1
+718710,Kyle Schwarber,Philadelphia Phillies,1
+718713,Bryan Reynolds,Pittsburgh Pirates,1
+718713,Ji Hwan Bae,Pittsburgh Pirates,1
+718708,Daulton Varsho,Toronto Blue Jays,1
+718708,Franmil Reyes,Kansas City Royals,1
+718712,Brian Anderson,Milwaukee Brewers,2
+718712,Garrett Mitchell,Milwaukee Brewers,2
+718712,Rowdy Tellez,Milwaukee Brewers,1
+718711,Austin Riley,Atlanta Braves,1
+718711,Orlando Arcia,Atlanta Braves,1
+718709,Adolis Garcia,Texas Rangers,1
+718709,Jorge Mateo,Baltimore Orioles,1
+718709,Nathaniel Lowe,Texas Rangers,1
+718709,Ryan Mountcastle,Baltimore Orioles,1
+718705,Kyle Tucker,Houston Astros,1
+718705,Spencer Torkelson,Detroit Tigers,1
+718707,Gabriel Arias,Cleveland Guardians,1
+718706,AJ Pollock,Seattle Mariners,2
+718706,Teoscar Hernandez,Seattle Mariners,2
+718703,Jason Heyward,Los Angeles Dodgers,1
+718703,Max Muncy,Los Angeles Dodgers,1
+718703,Will Smith,Los Angeles Dodgers,1
+718704,Harold Ramirez,Tampa Bay Rays,1
+718704,Wander Franco,Tampa Bay Rays,1
+718699,Jose Trevino,New York Yankees,1
+718699,Kyle Schwarber,Philadelphia Phillies,1
+718701,Jorge Soler,Miami Marlins,2
+718697,Jordan Walker,St. Louis Cardinals,1
+718697,Matt Olson,Atlanta Braves,1
+718702,Carlos Santana,Pittsburgh Pirates,1
+718698,Garrett Mitchell,Milwaukee Brewers,1
+718698,Joey Wiemer,Milwaukee Brewers,1
+718698,Pete Alonso,New York Mets,2
+718694,Josh Jung,Texas Rangers,1
+718696,Chas McCormick,Houston Astros,1
+718696,Jeremy Pena,Houston Astros,1
+718696,Kyle Tucker,Houston Astros,1
+718695,J.D. Davis,San Francisco Giants,1
+718689,Jesus Aguilar,Oakland Athletics,1
+718689,Ryan Noda,Oakland Athletics,1
+718691,Logan O'Hoppe,Los Angeles Angels,1
+718692,Vladimir Guerrero Jr.,Toronto Blue Jays,1
+718690,Adam Duvall,Boston Red Sox,1
+718690,Jake Rogers,Detroit Tigers,1
+718690,Rafael Devers,Boston Red Sox,1
+718686,Bobby Witt Jr.,Kansas City Royals,1
+718686,Cavan Biggio,Toronto Blue Jays,1
+718686,Vladimir Guerrero Jr.,Toronto Blue Jays,1
+718687,Blake Sabol,San Francisco Giants,1
+718687,J.D. Davis,San Francisco Giants,1
+718687,Michael Conforto,San Francisco Giants,1
+718687,Mike Yastrzemski,San Francisco Giants,1
+718687,Wilmer Flores,San Francisco Giants,1
+718681,Jake Cronenworth,San Diego Padres,1
+718681,Matt Carpenter,San Diego Padres,1
+718681,Orlando Arcia,Atlanta Braves,1
+718683,Freddie Freeman,Los Angeles Dodgers,1
+718693,Francisco Lindor,New York Mets,1
+718693,Garrett Cooper,Miami Marlins,1
+718693,Pete Alonso,New York Mets,1
+718693,Starling Marte,New York Mets,1
+718685,Edmundo Sosa,Philadelphia Phillies,1
+718685,J.T. Realmuto,Philadelphia Phillies,1
+718688,Franchy Cordero,New York Yankees,1
+718693,Francisco Lindor,New York Mets,1
+718693,Garrett Cooper,Miami Marlins,1
+718693,Pete Alonso,New York Mets,1
+718693,Starling Marte,New York Mets,1
+718685,Edmundo Sosa,Philadelphia Phillies,1
+718685,J.T. Realmuto,Philadelphia Phillies,1
+718688,Franchy Cordero,New York Yankees,1
+718677,Julio Rodriguez,Seattle Mariners,1
+718679,Bryan Reynolds,Pittsburgh Pirates,1
+718679,Carlos Santana,Pittsburgh Pirates,1
+718679,Jake Burger,Chicago White Sox,1
+718679,Luis Robert Jr.,Chicago White Sox,2
+718679,Oscar Colas,Chicago White Sox,1
+718680,Salvador Perez,Kansas City Royals,1
+718680,Vinnie Pasquantino,Kansas City Royals,1
+718678,Christian Bethancourt,Tampa Bay Rays,1
+718678,Harold Ramirez,Tampa Bay Rays,1
+718678,Isaac Paredes,Tampa Bay Rays,1
+718678,Manuel Margot,Tampa Bay Rays,1
+718678,Ryan Noda,Oakland Athletics,1
+718678,Shea Langeliers,Oakland Athletics,1
+718678,Wander Franco,Tampa Bay Rays,1
+718676,Marcell Ozuna,Atlanta Braves,1
+718674,Willy Adames,Milwaukee Brewers,1
+718673,Alex Call,Washington Nationals,1
+718673,Jeimer Candelario,Washington Nationals,1
+718673,Ryan McMahon,Colorado Rockies,1
+718670,Bo Bichette,Toronto Blue Jays,1
+718670,Mike Trout,Los Angeles Angels,1
+718671,Chris Taylor,Los Angeles Dodgers,1
+718671,Corbin Carroll,Arizona Diamondbacks,1
+718671,Evan Longoria,Arizona Diamondbacks,1
+718671,James Outman,Los Angeles Dodgers,1
+718666,Byron Buxton,Minnesota Twins,1
+718666,Jeremy Pena,Houston Astros,1
+718666,Kyle Farmer,Minnesota Twins,1
+718666,Yordan Alvarez,Houston Astros,1
+718672,Bobby Witt Jr.,Kansas City Royals,1
+718672,Franmil Reyes,Kansas City Royals,1
+718672,LaMonte Wade Jr.,San Francisco Giants,1
+718672,Salvador Perez,Kansas City Royals,1
+718669,Patrick Wisdom,Chicago Cubs,1
+718669,Yan Gomes,Chicago Cubs,1
+718668,Spencer Steer,Cincinnati Reds,1
+718667,Adam Duvall,Boston Red Sox,1
+718667,Rafael Devers,Boston Red Sox,2
+718667,Raimel Tapia,Boston Red Sox,1
+718665,Brandon Lowe,Tampa Bay Rays,1
+718665,Manuel Margot,Tampa Bay Rays,1
+718665,Randy Arozarena,Tampa Bay Rays,1
+718661,Eduardo Escobar,New York Mets,1
+718661,Jazz Chisholm Jr.,Miami Marlins,1
+718661,Pete Alonso,New York Mets,1
+718662,Andrew McCutchen,Pittsburgh Pirates,1
+718664,Giancarlo Stanton,New York Yankees,1
+718660,Jordan Walker,St. Louis Cardinals,1
+718660,Nolan Arenado,St. Louis Cardinals,1
+718659,Juan Soto,San Diego Padres,1
+718656,Geraldo Perdomo,Arizona Diamondbacks,1
+718656,James Outman,Los Angeles Dodgers,1
+718656,Jason Heyward,Los Angeles Dodgers,1
+718656,Ketel Marte,Arizona Diamondbacks,1
+718658,Mike Moustakas,Colorado Rockies,1
+718658,Stone Garrett,Washington Nationals,1
+718657,Bo Bichette,Toronto Blue Jays,1
+718657,George Springer,Toronto Blue Jays,1
+718657,Hunter Renfroe,Los Angeles Angels,1
+718657,Luis Rengifo,Los Angeles Angels,1
+718657,Matt Chapman,Toronto Blue Jays,1
+718657,Mike Trout,Los Angeles Angels,1
+718652,Alec Bohm,Philadelphia Phillies,1
+718654,Triston Casas,Boston Red Sox,1
+718655,Brandon Lowe,Tampa Bay Rays,1
+718655,Harold Ramirez,Tampa Bay Rays,1
+718655,Wander Franco,Tampa Bay Rays,1
+718651,Aaron Judge,New York Yankees,2
+718651,Adley Rutschman,Baltimore Orioles,1
+718651,Franchy Cordero,New York Yankees,1
+718646,Cal Raleigh,Seattle Mariners,1
+718647,Bryan De La Cruz,Miami Marlins,1
+718647,Garrett Cooper,Miami Marlins,1
+718649,Chas McCormick,Houston Astros,1
+718650,Christian Yelich,Milwaukee Brewers,1
+718650,Willy Adames,Milwaukee Brewers,1
+718642,Edwin Rios,Chicago Cubs,1
+718645,Elias Diaz,Colorado Rockies,1
+718645,Jurickson Profar,Colorado Rockies,1
+718643,Michael Conforto,San Francisco Giants,1
+718644,Brandon Drury,Los Angeles Angels,1
+718644,Hunter Renfroe,Los Angeles Angels,1
+718644,Logan O'Hoppe,Los Angeles Angels,1
+718644,Matt Chapman,Toronto Blue Jays,1
+718644,Shohei Ohtani,Los Angeles Angels,1
+718648,Ha-Seong Kim,San Diego Padres,1
+718648,Nelson Cruz,San Diego Padres,1
+718648,Trent Grisham,San Diego Padres,1
+718640,Hanser Alberto,Chicago White Sox,1
+718635,Adley Rutschman,Baltimore Orioles,1
+718635,Austin Hays,Baltimore Orioles,1
+718635,Ryan Mountcastle,Baltimore Orioles,1
+718632,Ji Man Choi,Pittsburgh Pirates,1
+718638,Brandon Lowe,Tampa Bay Rays,1
+718633,Alec Bohm,Philadelphia Phillies,1
+718633,Brandon Marsh,Philadelphia Phillies,1
+718633,Jake Cave,Philadelphia Phillies,1
+718633,Yuli Gurriel,Miami Marlins,1
+718636,Sean Murphy,Atlanta Braves,1
+718628,Jarred Kelenic,Seattle Mariners,1
+718630,Adolis Garcia,Texas Rangers,1
+718630,Corey Seager,Texas Rangers,1
+718630,Hunter Dozier,Kansas City Royals,1
+718630,Jonah Heim,Texas Rangers,1
+718631,Hunter Renfroe,Los Angeles Angels,1
+718627,Christian Walker,Arizona Diamondbacks,1
+718641,Max Muncy,Los Angeles Dodgers,2
+718641,Mookie Betts,Los Angeles Dodgers,1
+718641,Wilmer Flores,San Francisco Giants,1
+718626,Franchy Cordero,New York Yankees,1
+718618,Austin Hays,Baltimore Orioles,1
+718618,Ryan Mountcastle,Baltimore Orioles,2
+718618,Shea Langeliers,Oakland Athletics,1
+718623,Alex Bregman,Houston Astros,1
+718623,Jack Suwinski,Pittsburgh Pirates,1
+718623,Ji Hwan Bae,Pittsburgh Pirates,1
+718623,Ji Man Choi,Pittsburgh Pirates,1
+718623,Kyle Tucker,Houston Astros,1
+718625,Brandon Lowe,Tampa Bay Rays,1
+718625,Isaac Paredes,Tampa Bay Rays,1
+718625,Josh Lowe,Tampa Bay Rays,1
+718625,Yandy Diaz,Tampa Bay Rays,1
+718619,Jon Berti,Miami Marlins,1
+718619,Kyle Schwarber,Philadelphia Phillies,1
+718619,Luis Arraez,Miami Marlins,1
+718622,Alejandro Kirk,Toronto Blue Jays,1
+718622,Bo Bichette,Toronto Blue Jays,1
+718622,George Springer,Toronto Blue Jays,1
+718622,Kevin Kiermaier,Toronto Blue Jays,1
+718622,Matt Chapman,Toronto Blue Jays,1
+718622,Nick Maton,Detroit Tigers,1
+718621,Xander Bogaerts,San Diego Padres,1
+718620,Jose Barrero,Cincinnati Reds,1
+718620,Matt Olson,Atlanta Braves,1
+718620,Ozzie Albies,Atlanta Braves,1
+718617,Eugenio Suarez,Seattle Mariners,1
+718617,Jarred Kelenic,Seattle Mariners,1
+718617,Nelson Velazquez,Chicago Cubs,1
+718617,Trey Mancini,Chicago Cubs,1
+718616,Byron Buxton,Minnesota Twins,1
+718616,Luis Robert Jr.,Chicago White Sox,1
+718616,Michael A. Taylor,Minnesota Twins,1
+718615,Jonah Heim,Texas Rangers,1
+718613,C.J. Cron,Colorado Rockies,1
+718613,Elias Diaz,Colorado Rockies,1
+718613,Juan Yepez,St. Louis Cardinals,1
+718613,Nolan Gorman,St. Louis Cardinals,1
+718613,Ryan McMahon,Colorado Rockies,1
+718613,Tommy Edman,St. Louis Cardinals,1
+718614,Logan O'Hoppe,Los Angeles Angels,1
+718611,Mike Brosseau,Milwaukee Brewers,1
+718611,Rowdy Tellez,Milwaukee Brewers,1
+718611,Willy Adames,Milwaukee Brewers,1
+718624,Brandon Crawford,San Francisco Giants,1
+718624,David Villar,San Francisco Giants,1
+718608,Alex Bregman,Houston Astros,1
+718608,Corey Julks,Houston Astros,1
+718610,Francisco Lindor,New York Mets,1
+718610,Juan Soto,San Diego Padres,1
+718610,Pete Alonso,New York Mets,1
+718605,Lenyn Sosa,Chicago White Sox,1
+718604,Amed Rosario,Cleveland Guardians,1
+718604,Franchy Cordero,New York Yankees,1
+718606,Cody Bellinger,Chicago Cubs,1
+718606,Jarred Kelenic,Seattle Mariners,1
+718606,Teoscar Hernandez,Seattle Mariners,1
+718607,Jurickson Profar,Colorado Rockies,1
+718607,Nolan Arenado,St. Louis Cardinals,1
+718607,Nolan Gorman,St. Louis Cardinals,1
+718607,Tyler O'Neill,St. Louis Cardinals,1
+718598,Corbin Carroll,Arizona Diamondbacks,1
+718598,Lourdes Gurriel Jr.,Arizona Diamondbacks,1
+718609,Jorge Soler,Miami Marlins,1
+718599,Brent Rooker,Oakland Athletics,1
+718599,Carlos Perez,Oakland Athletics,1
+718600,Rafael Devers,Boston Red Sox,1
+718600,Randy Arozarena,Tampa Bay Rays,1
+718603,Kerry Carpenter,Detroit Tigers,1
+718603,Nick Maton,Detroit Tigers,1
+718601,Eddie Rosario,Atlanta Braves,1
+718595,Nathaniel Lowe,Texas Rangers,1
+718595,Vinnie Pasquantino,Kansas City Royals,1
+718612,Max Muncy,Los Angeles Dodgers,2
+718612,Thairo Estrada,San Francisco Giants,1
+718612,Trayce Thompson,Los Angeles Dodgers,1
+718596,Adley Rutschman,Baltimore Orioles,1
+718596,Brent Rooker,Oakland Athletics,2
+718596,Ryan Mountcastle,Baltimore Orioles,1
+718594,Brandon Lowe,Tampa Bay Rays,1
+718594,Rob Refsnyder,Boston Red Sox,1
+718594,Yandy Diaz,Tampa Bay Rays,1
+718597,Kyle Schwarber,Philadelphia Phillies,1
+718590,Anthony Rizzo,New York Yankees,2
+718590,Carlos Correa,Minnesota Twins,1
+718590,Edouard Julien,Minnesota Twins,1
+718590,Michael A. Taylor,Minnesota Twins,2
+718591,Connor Joe,Pittsburgh Pirates,1
+718591,Rodolfo Castro,Pittsburgh Pirates,1
+718589,Manny Machado,San Diego Padres,1
+718589,Mike Brosseau,Milwaukee Brewers,1
+718589,Rowdy Tellez,Milwaukee Brewers,1
+718589,Trent Grisham,San Diego Padres,1
+718585,J.D. Davis,San Francisco Giants,1
+718585,Nick Maton,Detroit Tigers,1
+718585,Thairo Estrada,San Francisco Giants,1
+718586,Edmundo Sosa,Philadelphia Phillies,1
+718592,Josh Bell,Cleveland Guardians,1
+718592,Luis Garcia,Washington Nationals,1
+718588,Aaron Judge,New York Yankees,1
+718588,Anthony Volpe,New York Yankees,1
+718588,Carlos Correa,Minnesota Twins,1
+718588,Giancarlo Stanton,New York Yankees,1
+718588,Kyle Garlick,Minnesota Twins,1
+718587,Christian Bethancourt,Tampa Bay Rays,1
+718587,George Springer,Toronto Blue Jays,1
+718587,Josh Lowe,Tampa Bay Rays,1
+718580,Rafael Devers,Boston Red Sox,1
+718583,Jake Burger,Chicago White Sox,1
+718581,Adolis Garcia,Texas Rangers,1
+718581,Martin Maldonado,Houston Astros,1
+718581,Yordan Alvarez,Houston Astros,1
+718579,Austin Riley,Atlanta Braves,1
+718579,Matt Olson,Atlanta Braves,1
+718579,Ronald Acuna Jr.,Atlanta Braves,1
+718579,Sam Hilliard,Atlanta Braves,1
+718579,Sean Murphy,Atlanta Braves,1
+718578,Aledmys Diaz,Oakland Athletics,1
+718578,Brent Rooker,Oakland Athletics,1
+718578,Francisco Lindor,New York Mets,1
+718578,Shea Langeliers,Oakland Athletics,1
+718574,Christian Yelich,Milwaukee Brewers,1
+718574,Luis Campusano,San Diego Padres,1
+718574,Rowdy Tellez,Milwaukee Brewers,2
+718575,Chris Taylor,Los Angeles Dodgers,1
+718575,Ian Happ,Chicago Cubs,1
+718575,Max Muncy,Los Angeles Dodgers,1
+718575,Patrick Wisdom,Chicago Cubs,1
+718575,Seiya Suzuki,Chicago Cubs,1
+718575,Yan Gomes,Chicago Cubs,2
+718577,Jarred Kelenic,Seattle Mariners,1
+718577,Kris Bryant,Colorado Rockies,1
+718572,Anthony Rizzo,New York Yankees,1
+718572,Kyle Higashioka,New York Yankees,1
+718571,Blake Sabol,San Francisco Giants,1
+718571,J.D. Davis,San Francisco Giants,1
+718571,Kerry Carpenter,Detroit Tigers,1
+718570,Anthony Santander,Baltimore Orioles,1
+718570,Jake Burger,Chicago White Sox,1
+718570,Jorge Mateo,Baltimore Orioles,1
+718568,Andrew McCutchen,Pittsburgh Pirates,1
+718568,Ke'Bryan Hayes,Pittsburgh Pirates,1
+718569,Taylor Walls,Tampa Bay Rays,1
+718573,Jose Ramirez,Cleveland Guardians,1
+718560,Jake Cronenworth,San Diego Padres,2
+718565,Mark Canha,New York Mets,1
+718565,Pete Alonso,New York Mets,1
+718576,Gio Urshela,Los Angeles Angels,1
+718576,Rafael Devers,Boston Red Sox,1
+718576,Yu Chang,Boston Red Sox,1
+718566,Wil Myers,Cincinnati Reds,2
+718563,Sean Murphy,Atlanta Braves,1
+718567,Garrett Hampson,Miami Marlins,1
+718564,Patrick Wisdom,Chicago Cubs,1
+718561,Eugenio Suarez,Seattle Mariners,1
+718559,Justin Turner,Boston Red Sox,1
+718555,Jeimer Candelario,Washington Nationals,1
+718555,Luis Garcia,Washington Nationals,1
+718557,DJ LeMahieu,New York Yankees,1
+718556,Christian Bethancourt,Tampa Bay Rays,1
+718554,Bryson Stott,Philadelphia Phillies,1
+718554,J.T. Realmuto,Philadelphia Phillies,1
+718550,Corbin Carroll,Arizona Diamondbacks,1
+718551,Ozzie Albies,Atlanta Braves,1
+718551,Vinnie Pasquantino,Kansas City Royals,1
+718553,Gavin Sheets,Chicago White Sox,1
+718553,Jake Burger,Chicago White Sox,1
+718548,Lars Nootbaar,St. Louis Cardinals,1
+718546,Francisco Lindor,New York Mets,1
+718546,Pete Alonso,New York Mets,1
+718546,Tommy Pham,New York Mets,1
+718547,Chris Taylor,Los Angeles Dodgers,1
+718547,Cody Bellinger,Chicago Cubs,1
+718547,Patrick Wisdom,Chicago Cubs,1
+718552,Marcus Semien,Texas Rangers,1
+718540,Hunter Renfroe,Los Angeles Angels,1
+718542,Josh Lowe,Tampa Bay Rays,1
+718542,Kevin Newman,Cincinnati Reds,1
+718544,Jorge Soler,Miami Marlins,1
+718539,Josh Jung,Texas Rangers,1
+718539,Marcus Semien,Texas Rangers,1
+718538,Alec Burleson,St. Louis Cardinals,1
+718538,Ketel Marte,Arizona Diamondbacks,1
+718538,Pavin Smith,Arizona Diamondbacks,1
+718537,Corey Julks,Houston Astros,1
+718537,Jake Meyers,Houston Astros,1
+718537,Matt Chapman,Toronto Blue Jays,1
+718537,Santiago Espinal,Toronto Blue Jays,1
+718535,Andrew McCutchen,Pittsburgh Pirates,1
+718535,Jack Suwinski,Pittsburgh Pirates,1
+718535,Kris Bryant,Colorado Rockies,1
+718536,Patrick Wisdom,Chicago Cubs,2
+718533,Austin Riley,Atlanta Braves,1
+718534,Brice Turang,Milwaukee Brewers,1
+718534,Cal Raleigh,Seattle Mariners,1
+718534,Julio Rodriguez,Seattle Mariners,1
+718532,Daniel Vogelbach,New York Mets,1
+718532,Freddie Freeman,Los Angeles Dodgers,2
+718532,Max Muncy,Los Angeles Dodgers,1
+718541,Riley Greene,Detroit Tigers,1
+718543,Jake Burger,Chicago White Sox,1
+718530,Kerry Carpenter,Detroit Tigers,1
+718530,Oscar Gonzalez,Cleveland Guardians,1
+718541,Riley Greene,Detroit Tigers,1
+718525,Josh Harrison,Philadelphia Phillies,1
+718543,Jake Burger,Chicago White Sox,1
+718526,Randy Arozarena,Tampa Bay Rays,1
+718526,Taylor Walls,Tampa Bay Rays,2
+718526,Yandy Diaz,Tampa Bay Rays,1
+718528,Jazz Chisholm Jr.,Miami Marlins,1
+718528,Mike Yastrzemski,San Francisco Giants,1
+718529,Shohei Ohtani,Los Angeles Angels,1
+718524,Max Kepler,Minnesota Twins,1
+718522,Adolis Garcia,Texas Rangers,1
+718522,Marcus Semien,Texas Rangers,1
+718527,Gabriel Moreno,Arizona Diamondbacks,1
+718527,Paul Goldschmidt,St. Louis Cardinals,1
+718527,Willson Contreras,St. Louis Cardinals,2
+718520,Matt Chapman,Toronto Blue Jays,1
+718520,Vladimir Guerrero Jr.,Toronto Blue Jays,1
+718521,Jack Suwinski,Pittsburgh Pirates,2
+718521,Kris Bryant,Colorado Rockies,1
+718519,Matt Olson,Atlanta Braves,1
+718519,Ozzie Albies,Atlanta Braves,1
+718519,Sean Murphy,Atlanta Braves,1
+718517,Christian Yelich,Milwaukee Brewers,1
+718517,Willy Adames,Milwaukee Brewers,1
+718516,J.D. Martinez,Los Angeles Dodgers,2
+718515,Yandy Diaz,Tampa Bay Rays,1
+718513,Jose Ramirez,Cleveland Guardians,1
+718513,Spencer Torkelson,Detroit Tigers,1
+718513,Zach McKinstry,Detroit Tigers,1
+718511,Michael Conforto,San Francisco Giants,1
+718511,Mike Yastrzemski,San Francisco Giants,1
+718512,Alek Thomas,Arizona Diamondbacks,1
+718512,Nolan Gorman,St. Louis Cardinals,1
+718512,Pavin Smith,Arizona Diamondbacks,1
+718512,Tommy Edman,St. Louis Cardinals,1
+718514,Bobby Witt Jr.,Kansas City Royals,1
+718514,Jonah Heim,Texas Rangers,1
+718510,Andrew Vaughn,Chicago White Sox,1
+718510,Brandon Marsh,Philadelphia Phillies,1
+718510,Trea Turner,Philadelphia Phillies,1
+718508,Brandon Nimmo,New York Mets,1
+718508,David Peralta,Los Angeles Dodgers,1
+718509,Andrew McCutchen,Pittsburgh Pirates,1
+718509,Rodolfo Castro,Pittsburgh Pirates,1
+718506,Eric Hosmer,Chicago Cubs,1
