@@ -40,7 +40,7 @@
 - [Win Percentage by Strikeouts](#win-percentage-by-strikeouts)
 - [Home Runs by Strikeouts](#home-runs-by-strikeouts)
 - [Home Runs in Wins and Losses](#home-runs-in-wins-and-losses)
-- [Home Run Leaders](#home-run-leaders)
+- [When are teams scoring?](#when-are-teams-scoring)
 
 ### Team Rankings
 
@@ -153,6 +153,6 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
-### Home Run Leaders
+### When are teams scoring?
 
 ![](README_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
