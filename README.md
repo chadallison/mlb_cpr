@@ -156,3 +156,42 @@
 ### When are teams scoring?
 
 ![](README_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+
+    ## # A tibble: 9 × 3
+    ## # Groups:   game_third [3]
+    ##   batting_team        game_third   runs
+    ##   <chr>               <chr>       <dbl>
+    ## 1 Atlanta Braves      Innings 1-3   259
+    ## 2 Baltimore Orioles   Innings 1-3   221
+    ## 3 Los Angeles Dodgers Innings 1-3   219
+    ## 4 Texas Rangers       Innings 4-6   282
+    ## 5 Los Angeles Dodgers Innings 4-6   223
+    ## 6 Atlanta Braves      Innings 4-6   219
+    ## 7 Los Angeles Dodgers Innings 7+    207
+    ## 8 Toronto Blue Jays   Innings 7+    203
+    ## 9 Houston Astros      Innings 7+    188
+
+![](README_files/figure-gfm/unnamed-chunk-36-2.png)<!-- -->
+
+``` r
+team_igami = function(team) {
+  return(end_games |>
+    filter(away_team == team | home_team == team) |>
+    mutate(team_score = ifelse(home_team == team, home_score, away_score),
+           opp_score = ifelse(home_team == team, away_score, home_score),
+           win_loss = ifelse(team_score > opp_score, "win", "loss"),
+           my_team = ifelse(home_team == team, home_team, away_team)) |>
+    ggplot(aes(team_score, opp_score)) +
+    geom_point(aes(col = win_loss), size = 4, shape = "square", show.legend = F) +
+    geom_abline(alpha = 0.5) +
+    scale_color_manual(values = c("#D89595", "#93AF92")) +
+    labs(x = paste0(team, " Score"), y = "Opponent Score",
+         title = "Unique Scores This Season", subtitle = team) +
+    scale_x_continuous(breaks = seq(0, 50, by = 1)) +
+    scale_y_continuous(breaks = seq(0, 50, by = 1)))
+}
+
+team_igami("Chicago Cubs")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
