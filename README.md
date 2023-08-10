@@ -161,15 +161,15 @@
     ## # Groups:   game_third [3]
     ##   batting_team        game_third   runs
     ##   <chr>               <chr>       <dbl>
-    ## 1 Atlanta Braves      Innings 1-3   259
+    ## 1 Atlanta Braves      Innings 1-3   261
     ## 2 Baltimore Orioles   Innings 1-3   221
     ## 3 Los Angeles Dodgers Innings 1-3   219
     ## 4 Texas Rangers       Innings 4-6   282
     ## 5 Los Angeles Dodgers Innings 4-6   223
-    ## 6 Atlanta Braves      Innings 4-6   219
-    ## 7 Los Angeles Dodgers Innings 7+    207
+    ## 6 Atlanta Braves      Innings 4-6   222
+    ## 7 Los Angeles Dodgers Innings 7+    209
     ## 8 Toronto Blue Jays   Innings 7+    203
-    ## 9 Houston Astros      Innings 7+    188
+    ## 9 Houston Astros      Innings 7+    193
 
 ![](README_files/figure-gfm/unnamed-chunk-36-2.png)<!-- -->
 
