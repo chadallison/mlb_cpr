@@ -1337,50 +1337,22 @@ runs_scored_thirds |>
   labs(x = NULL, y = "Percent of Total Runs Scored",
        title = "When are teams scoring their runs?")
 
-runs_scored_thirds |>
-  group_by(batting_team, game_third) |>
-  summarise(runs = sum(runs),
-            .groups = "drop") |>
-  group_by(game_third) |>
-  slice_max(runs, n = 3)
-
-runs_scored_thirds |>
-  mutate(start_finish = ifelse(game_third == "Innings 7+", "finish", "start")) |>
-  group_by(batting_team, start_finish) |>
-  summarise(runs = sum(runs),
-            .groups = "drop") |>
-  pivot_wider(batting_team, names_from = "start_finish", values_from = "runs") |>
-  inner_join(team_abbrevs, by = c("batting_team" = "team")) |>
-  ggplot(aes(start, finish)) +
-  geom_point(aes(col = batting_team), size = 4, show.legend = F) +
-  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
-  scale_color_manual(values = team_color_codes) +
-  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
-  labs(x = "Runs before 7th inning", y = "Runs in 7th inning or later",
-       title = "Who is scoring more runs at the end of the game?")
+# runs_scored_thirds |>
+#   mutate(start_finish = ifelse(game_third == "Innings 7+", "finish", "start")) |>
+#   group_by(batting_team, start_finish) |>
+#   summarise(runs = sum(runs),
+#             .groups = "drop") |>
+#   pivot_wider(batting_team, names_from = "start_finish", values_from = "runs") |>
+#   inner_join(team_abbrevs, by = c("batting_team" = "team")) |>
+#   ggplot(aes(start, finish)) +
+#   geom_point(aes(col = batting_team), size = 4, show.legend = F) +
+#   ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
+#   scale_color_manual(values = team_color_codes) +
+#   geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+#   labs(x = "Runs before 7th inning", y = "Runs in 7th inning or later",
+#        title = "Who is scoring more runs at the end of the game?")
 ```
 
-
-```{r}
-team_igami = function(team) {
-  return(end_games |>
-    filter(away_team == team | home_team == team) |>
-    mutate(team_score = ifelse(home_team == team, home_score, away_score),
-           opp_score = ifelse(home_team == team, away_score, home_score),
-           win_loss = ifelse(team_score > opp_score, "win", "loss"),
-           my_team = ifelse(home_team == team, home_team, away_team)) |>
-    ggplot(aes(team_score, opp_score)) +
-    geom_point(aes(col = win_loss), size = 4, shape = "square", show.legend = F) +
-    geom_abline(alpha = 0.5) +
-    scale_color_manual(values = c("#D89595", "#93AF92")) +
-    labs(x = paste0(team, " Score"), y = "Opponent Score",
-         title = "Unique Scores This Season", subtitle = team) +
-    scale_x_continuous(breaks = seq(0, 50, by = 1)) +
-    scale_y_continuous(breaks = seq(0, 50, by = 1)))
-}
-
-team_igami("Chicago Cubs")
-```
 
 
 
