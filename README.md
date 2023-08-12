@@ -153,3 +153,5 @@
 ### When are teams scoring?
 
 ![](README_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
