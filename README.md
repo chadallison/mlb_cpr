@@ -154,4 +154,46 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
 
+### Which teams play the closest games?
+
 ![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+
+### Pythagorean Wins
+
+``` r
+get_pythag_wins = function(team) {
+  home_scored = end_games |> filter(home_team == team) |> pull(home_score)
+  away_scored = end_games |> filter(away_team == team) |> pull(away_score)
+  home_allow = end_games |> filter(home_team == team) |> pull(away_score)
+  away_allow = end_games |> filter(away_team == team) |> pull(home_score)
+  scored = sum(home_scored) + sum(away_scored)
+  allowed = sum(home_allow) + sum(away_allow)
+  x = scored ^ 2 / (scored ^ 2 + allowed ^ 2)
+  return(round(x, 3))
+}
+
+team_records |>
+  select(team, win_pct) |>
+  mutate(py_wins = sapply(team, get_pythag_wins)) |>
+  inner_join(team_abbrevs, by = "team") |>
+  ggplot(aes(py_wins, win_pct)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  scale_color_manual(values = team_color_codes) +
+  geom_abline(linetype = "dashed", alpha = 0.5) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
+  labs(x = "Pythagorean Win Percentage", y = "Actual Win Percentage",
+       title = "Win Percentage by Pythagorean Wins",
+       subtitle = "Teams above the dashed line have better records than they 'should'") +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+
+``` r
+# team_records |>
+#   select(team, win_pct) |>
+#   mutate(py_wins = sapply(team, get_pythag_wins),
+#          diff = py_wins - win_pct) |>
+#   arrange(desc(diff))
+```
