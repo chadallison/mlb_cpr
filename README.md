@@ -41,6 +41,7 @@
 - [Home Runs by Strikeouts](#home-runs-by-strikeouts)
 - [Home Runs in Wins and Losses](#home-runs-in-wins-and-losses)
 - [When are teams scoring?](#when-are-teams-scoring)
+- [Pythagorean Wins](#pythagorean-wins)
 
 ### Team Rankings
 
@@ -75,6 +76,9 @@
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ### Scatterplot of Margins of Victory and Defeat
+
+    ## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
 
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
@@ -160,40 +164,34 @@
 
 ### Pythagorean Wins
 
-``` r
-get_pythag_wins = function(team) {
-  home_scored = end_games |> filter(home_team == team) |> pull(home_score)
-  away_scored = end_games |> filter(away_team == team) |> pull(away_score)
-  home_allow = end_games |> filter(home_team == team) |> pull(away_score)
-  away_allow = end_games |> filter(away_team == team) |> pull(home_score)
-  scored = sum(home_scored) + sum(away_scored)
-  allowed = sum(home_allow) + sum(away_allow)
-  x = scored ^ 2 / (scored ^ 2 + allowed ^ 2)
-  return(round(x, 3))
-}
-
-team_records |>
-  select(team, win_pct) |>
-  mutate(py_wins = sapply(team, get_pythag_wins)) |>
-  inner_join(team_abbrevs, by = "team") |>
-  ggplot(aes(py_wins, win_pct)) +
-  geom_point(aes(col = team), size = 4, show.legend = F) +
-  scale_color_manual(values = team_color_codes) +
-  geom_abline(linetype = "dashed", alpha = 0.5) +
-  ggrepel::geom_text_repel(aes(label = abb), size = 3.5) +
-  labs(x = "Pythagorean Win Percentage", y = "Actual Win Percentage",
-       title = "Win Percentage by Pythagorean Wins",
-       subtitle = "Teams above the dashed line have better records than they 'should'") +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
-```
-
 ![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.93 vs. 0.927)"
+
 ``` r
-# team_records |>
-#   select(team, win_pct) |>
-#   mutate(py_wins = sapply(team, get_pythag_wins),
-#          diff = py_wins - win_pct) |>
-#   arrange(desc(diff))
+get_run_adj_margin = function(team) {
+  scored = get_runs_scored(team)
+  allowed = get_runs_allowed(team)
+  diff = scored - allowed
+  adj = round(diff / scored, 3)
+  return(adj)
+}
+
+team_ram = data.frame(team = all_teams) |>
+  mutate(RAM = sapply(team, get_run_adj_margin)) |>
+  arrange(desc(RAM))
+
+ram_res = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team)) |>
+  inner_join(team_ram, by = c("home_team" = "team")) |>
+  rename(home_RAM = RAM) |>
+  inner_join(team_ram, by = c("away_team" = "team")) |>
+  rename(away_RAM = RAM) |>
+  mutate(RAM_win = ifelse(home_RAM > away_RAM, home_team, away_team)) |>
+  count(win_team == RAM_win) |>
+  pull(n)
+
+paste0("RAM-only game prediction accuracy: ", round(ram_res[2] / sum(ram_res), 4) * 100, "%")
 ```
+
+    ## [1] "RAM-only game prediction accuracy: 57.21%"

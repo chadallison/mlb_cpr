@@ -39,6 +39,7 @@ ___
 - [Home Runs by Strikeouts]
 - [Home Runs in Wins and Losses]
 - [When are teams scoring?]
+- [Pythagorean Wins]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -1393,7 +1394,7 @@ data.frame(team = all_teams) |>
 
 ### Pythagorean Wins
 
-```{r}
+```{r echo = F}
 get_pythag_wins = function(team) {
   home_scored = end_games |> filter(home_team == team) |> pull(home_score)
   away_scored = end_games |> filter(away_team == team) |> pull(away_score)
@@ -1428,7 +1429,52 @@ team_records |>
 ```
 
 
+```{r echo = F}
+cor_df = data.frame(team = all_teams) |>
+  mutate(scored = sapply(team, get_runs_scored),
+         allowed = sapply(team, get_runs_allowed),
+         diff = scored - allowed,
+         pythag = sapply(team, get_pythag_wins),
+         adj_margin = round(diff / scored, 3)) |>
+  select(team, pythag, adj_margin) |>
+  inner_join(team_records |>
+  select(team, win_pct), by = "team")
 
+adj_margin = round(cor(cor_df$adj_margin, cor_df$win_pct), 3)
+pythag = round(cor(cor_df$pythag, cor_df$win_pct), 3)
+
+if (adj_margin > pythag) {
+  print(paste0("Run-adjusted margin is more correlated than pythagorean wins (", adj_margin, " vs. ", pythag, ")"))
+} else {
+  print(paste0("Pythagorean wins is more correlated than run-adjusted margin (", pythag, " vs. ", adj_margin, ")"))
+}
+```
+
+```{r}
+get_run_adj_margin = function(team) {
+  scored = get_runs_scored(team)
+  allowed = get_runs_allowed(team)
+  diff = scored - allowed
+  adj = round(diff / scored, 3)
+  return(adj)
+}
+
+team_ram = data.frame(team = all_teams) |>
+  mutate(RAM = sapply(team, get_run_adj_margin)) |>
+  arrange(desc(RAM))
+
+ram_res = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team)) |>
+  inner_join(team_ram, by = c("home_team" = "team")) |>
+  rename(home_RAM = RAM) |>
+  inner_join(team_ram, by = c("away_team" = "team")) |>
+  rename(away_RAM = RAM) |>
+  mutate(RAM_win = ifelse(home_RAM > away_RAM, home_team, away_team)) |>
+  count(win_team == RAM_win) |>
+  pull(n)
+
+paste0("RAM-only game prediction accuracy: ", round(ram_res[2] / sum(ram_res), 4) * 100, "%")
+```
 
 
 

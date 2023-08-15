@@ -6724,3 +6724,36 @@ game_pk,date,batting_team,game_third,runs
 717013,2023-08-13,Atlanta Braves,Innings 7+,3
 717013,2023-08-13,New York Mets,Innings 1-3,1
 717013,2023-08-13,New York Mets,Innings 4-6,6
+717000,2023-08-14,Houston Astros,Innings 7+,1
+717000,2023-08-14,Miami Marlins,Innings 1-3,1
+717000,2023-08-14,Miami Marlins,Innings 7+,3
+717002,2023-08-14,New York Mets,Innings 1-3,3
+717002,2023-08-14,New York Mets,Innings 4-6,4
+717002,2023-08-14,Pittsburgh Pirates,Innings 1-3,2
+717001,2023-08-14,Atlanta Braves,Innings 1-3,8
+717001,2023-08-14,Atlanta Braves,Innings 7+,2
+717001,2023-08-14,New York Yankees,Innings 1-3,2
+717001,2023-08-14,New York Yankees,Innings 7+,1
+716995,2023-08-14,Oakland Athletics,Innings 4-6,2
+716995,2023-08-14,Oakland Athletics,Innings 7+,3
+716995,2023-08-14,St. Louis Cardinals,Innings 1-3,1
+716995,2023-08-14,St. Louis Cardinals,Innings 4-6,2
+716995,2023-08-14,St. Louis Cardinals,Innings 7+,4
+716997,2023-08-15,Texas Rangers,Innings 1-3,4
+716997,2023-08-15,Texas Rangers,Innings 4-6,1
+716997,2023-08-15,Texas Rangers,Innings 7+,6
+716994,2023-08-15,Kansas City Royals,Innings 1-3,3
+716994,2023-08-15,Kansas City Royals,Innings 4-6,1
+716994,2023-08-15,Kansas City Royals,Innings 7+,2
+716994,2023-08-15,Seattle Mariners,Innings 7+,6
+716998,2023-08-15,Arizona Diamondbacks,Innings 1-3,2
+716998,2023-08-15,Arizona Diamondbacks,Innings 4-6,2
+716998,2023-08-15,Colorado Rockies,Innings 4-6,2
+716998,2023-08-15,Colorado Rockies,Innings 7+,4
+716996,2023-08-15,Baltimore Orioles,Innings 1-3,1
+716996,2023-08-15,Baltimore Orioles,Innings 4-6,3
+716996,2023-08-15,San Diego Padres,Innings 4-6,1
+716999,2023-08-15,San Francisco Giants,Innings 4-6,1
+716999,2023-08-15,San Francisco Giants,Innings 7+,1
+716999,2023-08-15,Tampa Bay Rays,Innings 4-6,5
+716999,2023-08-15,Tampa Bay Rays,Innings 7+,4
