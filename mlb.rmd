@@ -40,6 +40,7 @@ ___
 - [Home Runs in Wins and Losses]
 - [When are teams scoring?]
 - [Pythagorean Wins]
+- [Close Games]
 
 ```{r message = F, warning = F, include = F}
 library(tidyverse)
@@ -1448,6 +1449,21 @@ if (adj_margin > pythag) {
 } else {
   print(paste0("Pythagorean wins is more correlated than run-adjusted margin (", pythag, " vs. ", adj_margin, ")"))
 }
+
+cor_df |>
+  inner_join(team_abbrevs, by = "team") |>
+  ggplot(aes(adj_margin, win_pct)) +
+  geom_point(aes(col = team), size = 4, show.legend = F) +
+  ggrepel::geom_text_repel(aes(label = abb), size = 3.5, max.overlaps = 30) +
+  scale_color_manual(values = team_color_codes) +
+  geom_line(stat = "smooth", formula = y ~ x, method = "lm", linetype = "dashed", alpha = 0.5) +
+  geom_hline(aes(yintercept = 0.5), linetype = "dotted", alpha = 0.25) +
+  geom_vline(aes(xintercept = 0), linetype = "dotted", alpha = 0.25) +
+  labs(x = "Run-Adjusted Margin", y = "Win Percentage",
+       title = "Win Percentage by Run-Adjusted Margin",
+       subtitle = "Run-Adjusted Margin = Run Differential / Runs Scored") +
+  scale_x_continuous(breaks = seq(-1, 1, by = 0.1)) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
 ```
 
 ```{r}
@@ -1476,6 +1492,54 @@ ram_res = end_games |>
 paste0("RAM-only game prediction accuracy: ", round(ram_res[2] / sum(ram_res), 4) * 100, "%")
 ```
 
+### Close Games
+
+```{r echo = F}
+runs_threshold = 3
+
+close_df = end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         diff = abs(home_score - away_score)) |>
+  filter(diff <= runs_threshold) |>
+  count(win_team) |>
+  rename(team = win_team, wins = n) |>
+  inner_join(end_games |>
+  mutate(win_team = ifelse(home_score > away_score, home_team, away_team),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         diff = abs(home_score - away_score)) |>
+  filter(diff <= runs_threshold) |>
+  count(lose_team) |>
+  rename(team = lose_team, losses = n), by = "team") |>
+  transmute(team,
+            gp = wins + losses,
+            record = paste0(wins, "-", losses),
+            win_pct = round(wins / (wins + losses), 3))
+
+if (runs_threshold == 1) {
+  close_df |>
+    mutate(team2 = paste0(team, " (", gp, ")")) |>
+    ggplot(aes(reorder(team2, win_pct), win_pct)) +
+    geom_col(aes(fill = team), show.legend = F) +
+    scale_fill_manual(values = team_color_codes) +
+    coord_flip(ylim = c(0, max(close_df$win_pct) * 1.1)) +
+    geom_text(aes(label = record), size = 3, hjust = -0.25) +
+    scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
+    labs(x = NULL, y = "Win Percentage",
+         title = "MLB Standings in One-Run Games")
+} else {
+  close_df |>
+    mutate(team2 = paste0(team, " (", gp, ")")) |>
+    ggplot(aes(reorder(team2, win_pct), win_pct)) +
+    geom_col(aes(fill = team), show.legend = F) +
+    scale_fill_manual(values = team_color_codes) +
+    coord_flip(ylim = c(0, max(close_df$win_pct) * 1.1)) +
+    geom_text(aes(label = record), size = 3, hjust = -0.25) +
+    scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
+    labs(x = NULL, y = "Win Percentage",
+         title = paste0("MLB Standings in Games Decided by ", runs_threshold, " or Less"))
+}
+```
 
 
 

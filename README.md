@@ -42,6 +42,7 @@
 - [Home Runs in Wins and Losses](#home-runs-in-wins-and-losses)
 - [When are teams scoring?](#when-are-teams-scoring)
 - [Pythagorean Wins](#pythagorean-wins)
+- [Close Games](#close-games)
 
 ### Team Rankings
 
@@ -166,7 +167,9 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.93 vs. 0.927)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.929)"
+
+![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 ``` r
 get_run_adj_margin = function(team) {
@@ -194,4 +197,8 @@ ram_res = end_games |>
 paste0("RAM-only game prediction accuracy: ", round(ram_res[2] / sum(ram_res), 4) * 100, "%")
 ```
 
-    ## [1] "RAM-only game prediction accuracy: 57.21%"
+    ## [1] "RAM-only game prediction accuracy: 56.45%"
+
+### Close Games
+
+![](README_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
