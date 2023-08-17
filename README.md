@@ -78,9 +78,6 @@
 
 ### Scatterplot of Margins of Victory and Defeat
 
-    ## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
-
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ### Margins of Victory and Defeat
@@ -167,7 +164,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.929)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.933 vs. 0.928)"
 
 ![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
@@ -197,7 +194,7 @@ ram_res = end_games |>
 paste0("RAM-only game prediction accuracy: ", round(ram_res[2] / sum(ram_res), 4) * 100, "%")
 ```
 
-    ## [1] "RAM-only game prediction accuracy: 56.45%"
+    ## [1] "RAM-only game prediction accuracy: 56.65%"
 
 ### Close Games
 
