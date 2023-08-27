@@ -164,7 +164,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.93 vs. 0.928)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.933 vs. 0.93)"
 
 ![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
@@ -194,7 +194,7 @@ ram_res = end_games |>
 paste0("RAM-only game prediction accuracy: ", round(ram_res[2] / sum(ram_res), 4) * 100, "%")
 ```
 
-    ## [1] "RAM-only game prediction accuracy: 56.95%"
+    ## [1] "RAM-only game prediction accuracy: 57.13%"
 
 ### Close Games
 
