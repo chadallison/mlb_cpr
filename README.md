@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}**
+**Data: MLB.com via {baseballr}** \| Last Updated: August 30, 2023 at
+15:28:39
 
 ------------------------------------------------------------------------
 
@@ -168,94 +169,14 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
-``` r
-get_run_adj_margin = function(team) {
-  scored = get_runs_scored(team)
-  allowed = get_runs_allowed(team)
-  diff = scored - allowed
-  adj = round(diff / scored, 3)
-  return(adj)
-}
-
-team_ram = data.frame(team = all_teams) |>
-  mutate(RAM = sapply(team, get_run_adj_margin)) |>
-  arrange(desc(RAM))
-
-ram_res = end_games |>
-  mutate(win_team = ifelse(home_score > away_score, home_team, away_team)) |>
-  inner_join(team_ram, by = c("home_team" = "team")) |>
-  rename(home_RAM = RAM) |>
-  inner_join(team_ram, by = c("away_team" = "team")) |>
-  rename(away_RAM = RAM) |>
-  mutate(RAM_win = ifelse(home_RAM > away_RAM, home_team, away_team)) |>
-  count(win_team == RAM_win) |>
-  pull(n)
-
-paste0("RAM-only game prediction accuracy: ", round(ram_res[2] / sum(ram_res), 4) * 100, "%")
-```
-
-    ## [1] "RAM-only game prediction accuracy: 57.82%"
-
 ### Close Games
 
 ![](README_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
-``` r
-monthly_winners = end_games |>
-  filter(month(date) != 3) |>
-  transmute(month = month(date, label = T, abbr = F),
-            win_team = ifelse(home_score > away_score, home_team, away_team))
-
-monthly_winners |>
-  group_by(month) |>
-  count(win_team) |>
-  rename(team = win_team, month_wins = n) |>
-  inner_join(monthly_winners |>
-  count(win_team) |>
-  rename(team = win_team, wins = n), by = "team") |>
-  mutate(month_pct = month_wins / wins) |>
-  ggplot(aes(month, month_pct)) +
-  geom_line(aes(col = team, group = team), linewidth = 1.5, show.legend = F) +
-  scale_color_manual(values = team_color_codes) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.025), labels = scales::percent) +
-  facet_wrap(vars(team))
-```
+### Monthly Win Trends
 
 ![](README_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
-``` r
-get_team_monthly_runs = function(team) {
-  return(end_games |>
-    filter(home_team == team | away_team == team) |>
-    mutate(team_score = ifelse(home_team == team, home_score, away_score),
-           opp_score = ifelse(home_team == team, away_score, home_score),
-           month = month(date, label = T, abbr = T),
-           team = team) |>
-    group_by(team, month) |>
-    summarise(team_runs = sum(team_score),
-              opp_runs = sum(opp_score),
-              .groups = "drop"))
-}
-
-monthly_runs = data.frame()
-
-for (i in 1:length(all_teams)) {
-  data = get_team_monthly_runs(all_teams[i])
-  monthly_runs = rbind(monthly_runs, data)
-}
-
-monthly_runs |>
-  mutate(total_runs = team_runs + opp_runs,
-         pct = team_runs / total_runs) |>
-  filter(month != "Mar") |>
-  ggplot(aes(month, pct)) +
-  geom_line(aes(col = team, group = team), linewidth = 2, show.legend = F) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.5) +
-  scale_color_manual(values = team_color_codes) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent) +
-  facet_wrap(vars(team)) +
-  labs(x = NULL, y = "Runs Scored / (Runs Scored + Runs Allowed)",
-       title = "Monthly Scoring Trends")
-```
+### Monthly Scoring Trends
 
 ![](README_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->

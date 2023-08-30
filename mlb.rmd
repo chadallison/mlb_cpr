@@ -5,7 +5,29 @@ knit: (function(input, ...) { rmarkdown::render(input, output_file = "README.md"
 
 ___
 
-**Data: MLB.com via {baseballr}**
+```{r message = F, warning = F, include = F}
+library(tidyverse)
+library(tvthemes)
+library(baseballr)
+library(retrosheet)
+
+theme_custom = theme_avatar() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5, size = 9, vjust = 2.5, face = "italic"),
+        plot.caption = element_text(face = "italic"),
+        panel.grid.major = element_line(linewidth = 0.5, colour = "#DFDAD1"),
+        panel.grid.minor = element_line(linewidth = 0.5, colour = "#DFDAD1"))
+
+theme_set(theme_custom)
+
+better_date = function(date) {
+  return(paste0(month(date, label = T, abbr = F), " ", day(date), ", ", year(date)))
+}
+
+sys_time = substr(Sys.time(), 12, 19)
+```
+
+**Data: MLB.com via {baseballr}** | Last Updated: `r better_date(Sys.Date())` at `r sys_time`
 
 ___
 
@@ -41,22 +63,6 @@ ___
 - [When are teams scoring?]
 - [Pythagorean Wins]
 - [Close Games]
-
-```{r message = F, warning = F, include = F}
-library(tidyverse)
-library(tvthemes)
-library(baseballr)
-library(retrosheet)
-
-theme_custom = theme_avatar() +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5, size = 9, vjust = 2.5, face = "italic"),
-        plot.caption = element_text(face = "italic"),
-        panel.grid.major = element_line(linewidth = 0.5, colour = "#DFDAD1"),
-        panel.grid.minor = element_line(linewidth = 0.5, colour = "#DFDAD1"))
-
-theme_set(theme_custom)
-```
 
 ```{r include = F}
 asg_dates = seq.Date(from = as_date("2023-07-10"), to = as_date("2023-07-13"), by = 1)
@@ -1466,7 +1472,7 @@ cor_df |>
   scale_y_continuous(breaks = seq(0, 1, by = 0.05), labels = scales::percent)
 ```
 
-```{r}
+```{r include = F}
 get_run_adj_margin = function(team) {
   scored = get_runs_scored(team)
   allowed = get_runs_allowed(team)
@@ -1545,9 +1551,9 @@ if (runs_threshold == 1) {
 
 
 
+### Monthly Win Trends
 
-
-```{r}
+```{r echo = F}
 monthly_winners = end_games |>
   filter(month(date) != 3) |>
   transmute(month = month(date, label = T, abbr = F),
@@ -1568,7 +1574,9 @@ monthly_winners |>
   facet_wrap(vars(team))
 ```
 
-```{r}
+### Monthly Scoring Trends
+
+```{r echo = F}
 get_team_monthly_runs = function(team) {
   return(end_games |>
     filter(home_team == team | away_team == team) |>
