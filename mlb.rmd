@@ -1435,7 +1435,6 @@ team_records |>
 #   arrange(desc(diff))
 ```
 
-
 ```{r echo = F}
 cor_df = data.frame(team = all_teams) |>
   mutate(scored = sapply(team, get_runs_scored),
@@ -1546,10 +1545,6 @@ if (runs_threshold == 1) {
          title = paste0("MLB Standings in Games Decided by ", runs_threshold, " or Less"))
 }
 ```
-
-
-
-
 
 ### Monthly Win Trends
 
