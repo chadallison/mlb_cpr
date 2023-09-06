@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 5, 2023 at
-09:50:07
+**Data: MLB.com via {baseballr}** \| Last Updated: September 6, 2023 at
+09:39:15
 
 ------------------------------------------------------------------------
 
@@ -165,7 +165,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.929)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.93)"
 
 ![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
