@@ -1722,6 +1722,56 @@ for (i in 1:upper_limit) {
 }
 ```
 
+```{r message = F, warning = F}
+end_games |>
+  mutate(diff = win_score - lose_score) |>
+  filter(diff >= 3) |>
+  count(win_team) |>
+  arrange(desc(n)) |>
+  rename(`Team` = win_team,
+         `Wins by 3+` = n)
+```
+
+```{r message = F, warning = F}
+reg23 = end_games |>
+  mutate(total_score = home_score + away_score)
+
+post22 = mlb_schedule(season = 2022, level_ids = "1") |>
+  filter(teams_away_team_name %in% all_teams &
+           teams_home_team_name %in% all_teams &
+           series_description %in% c("Division Series", "League Championship Series", "Wild Card Game", "World Series") &
+           status_detailed_state == "Final") |>
+  select(date, game_pk,
+         away_team = teams_away_team_name, away_score = teams_away_score,
+         home_score = teams_home_score, home_team = teams_home_team_name) |>
+  mutate(date = as_date(date),
+         win_team = ifelse(home_score > away_score, home_team, away_team),
+         win_score = ifelse(home_score > away_score, home_score, away_score),
+         lose_score = ifelse(home_score > away_score, away_score, home_score),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         final_score = paste0(win_score, "-", lose_score),
+         description = paste0(win_team, " def. ", lose_team, " ", final_score),
+         total_score = home_score + away_score)
+```
+
+```{r message = F, warning = F}
+# most postseason games had six or less runs scored
+# post22 |>
+#   count(total_score <= 6)
+
+reg23 |>
+  filter(total_score <= 6) |>
+  count(win_team) |>
+  rename(team = win_team, wins = n) |>
+  inner_join(reg23 |>
+  filter(total_score <= 6) |>
+  count(lose_team) |>
+  rename(team = lose_team, losses = n), by = "team") |>
+  mutate(win_pct = round(wins / (wins + losses), 3)) |>
+  arrange(desc(win_pct))
+```
+
+
 
 
 

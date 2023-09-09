@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 8, 2023 at
-10:07:56
+**Data: MLB.com via {baseballr}** \| Last Updated: September 9, 2023 at
+12:06:37
 
 ------------------------------------------------------------------------
 
@@ -165,7 +165,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.931 vs. 0.929)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.928 vs. 0.927)"
 
 ![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
@@ -293,15 +293,15 @@ for (i in 1:upper_limit) {
 ```
 
     ## [1] "Cincinnati Reds win by 1 (31)"
-    ## [1] "Miami Marlins win by 1 (28)"
+    ## [1] "Miami Marlins win by 1 (29)"
     ## [1] "Milwaukee Brewers win by 1 (27)"
     ## [1] "Baltimore Orioles win by 1 (25)"
     ## [1] "Cleveland Guardians win by 1 (24)"
     ## [1] "Washington Nationals win by 1 (24)"
     ## [1] "New York Mets win by 1 (23)"
     ## [1] "Philadelphia Phillies win by 1 (23)"
+    ## [1] "Toronto Blue Jays win by 1 (23)"
     ## [1] "Seattle Mariners win by 1 (22)"
-    ## [1] "Toronto Blue Jays win by 1 (22)"
 
 ``` r
 print("========================================")
@@ -325,3 +325,82 @@ for (i in 1:upper_limit) {
     ## [1] "Tampa Bay Rays lose by 1 (23)"
     ## [1] "Kansas City Royals lose by 2 (22)"
     ## [1] "Minnesota Twins lose by 1 (22)"
+
+``` r
+end_games |>
+  mutate(diff = win_score - lose_score) |>
+  filter(diff >= 3) |>
+  count(win_team) |>
+  arrange(desc(n)) |>
+  rename(`Team` = win_team,
+         `Wins by 3+` = n)
+```
+
+    ## # A tibble: 30 × 2
+    ##    Team                `Wins by 3+`
+    ##    <chr>                      <int>
+    ##  1 Los Angeles Dodgers           62
+    ##  2 Tampa Bay Rays                58
+    ##  3 Atlanta Braves                55
+    ##  4 Texas Rangers                 52
+    ##  5 Baltimore Orioles             48
+    ##  6 Chicago Cubs                  48
+    ##  7 San Diego Padres              48
+    ##  8 Houston Astros                46
+    ##  9 Toronto Blue Jays             46
+    ## 10 Boston Red Sox                42
+    ## # ℹ 20 more rows
+
+``` r
+reg23 = end_games |>
+  mutate(total_score = home_score + away_score)
+
+post22 = mlb_schedule(season = 2022, level_ids = "1") |>
+  filter(teams_away_team_name %in% all_teams &
+           teams_home_team_name %in% all_teams &
+           series_description %in% c("Division Series", "League Championship Series", "Wild Card Game", "World Series") &
+           status_detailed_state == "Final") |>
+  select(date, game_pk,
+         away_team = teams_away_team_name, away_score = teams_away_score,
+         home_score = teams_home_score, home_team = teams_home_team_name) |>
+  mutate(date = as_date(date),
+         win_team = ifelse(home_score > away_score, home_team, away_team),
+         win_score = ifelse(home_score > away_score, home_score, away_score),
+         lose_score = ifelse(home_score > away_score, away_score, home_score),
+         lose_team = ifelse(home_score > away_score, away_team, home_team),
+         final_score = paste0(win_score, "-", lose_score),
+         description = paste0(win_team, " def. ", lose_team, " ", final_score),
+         total_score = home_score + away_score)
+```
+
+``` r
+# most postseason games had six or less runs scored
+# post22 |>
+#   count(total_score <= 6)
+
+reg23 |>
+  filter(total_score <= 6) |>
+  count(win_team) |>
+  rename(team = win_team, wins = n) |>
+  inner_join(reg23 |>
+  filter(total_score <= 6) |>
+  count(lose_team) |>
+  rename(team = lose_team, losses = n), by = "team") |>
+  mutate(win_pct = round(wins / (wins + losses), 3)) |>
+  arrange(desc(win_pct))
+```
+
+    ## # A tibble: 30 × 4
+    ##    team                   wins losses win_pct
+    ##    <chr>                 <int>  <int>   <dbl>
+    ##  1 Los Angeles Dodgers      24      8   0.75 
+    ##  2 Atlanta Braves           23      9   0.719
+    ##  3 Baltimore Orioles        25     14   0.641
+    ##  4 Arizona Diamondbacks     23     14   0.622
+    ##  5 Toronto Blue Jays        27     18   0.6  
+    ##  6 Seattle Mariners         27     19   0.587
+    ##  7 Los Angeles Angels       23     17   0.575
+    ##  8 Chicago Cubs             24     18   0.571
+    ##  9 Tampa Bay Rays           23     18   0.561
+    ## 10 Philadelphia Phillies    24     19   0.558
+    ## # ℹ 20 more rows
