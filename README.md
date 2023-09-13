@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 11, 2023 at
-09:46:08
+**Data: MLB.com via {baseballr}** \| Last Updated: September 13, 2023 at
+14:50:10
 
 ------------------------------------------------------------------------
 
@@ -11,7 +11,6 @@
 - [Runs Scored v Runs Allowed](#runs-scored-v-runs-allowed)
 - [Composite Performance Rating (CPR)
   Rankings](#composite-performance-rating-cpr-rankings)
-- [Records x CPR Ranks](#records-x-cpr-ranks)
 - [Scorigami (2023 Only)](#scorigami-2023-only)
 - [Historic MLB Scorigami (Since
   1901)](#historic-mlb-scorigami-since-1901)
@@ -21,27 +20,14 @@
   Defeat](#scatterplot-of-margins-of-victory-and-defeat)
 - [Margins of Victory and Defeat](#margins-of-victory-and-defeat)
 - [One-Run Games](#one-run-games)
-- [Yesterday’s Highest-Scoring Game](#yesterdays-highest-scoring-game)
 - [Best Records This Month](#best-records-this-month)
 - [Runs Scored v Runs Allowed This
   Month](#runs-scored-v-runs-allowed-this-month)
-- [Sudden Death Records](#sudden-death-records)
 - [Eras Records](#eras-records)
-- [First Inning Runs Scored v
-  Allowed](#first-inning-runs-scored-v-allowed)
-- [First Inning Runs Scored v Allowed
-  Rates](#first-inning-runs-scored-v-allowed-rates)
-- [First Inning Scoring](#first-inning-scoring)
 - [Home and Away Performance](#home-and-away-performance)
 - [Monthly v Season Win Percentages](#monthly-v-season-win-percentages)
 - [Win Percentage v Run Differential as Percent of Runs
   Scored](#win-percentage-v-run-differential-as-percent-of-runs-scored)
-- [Runs Scored in Wins and Losses](#runs-scored-in-wins-and-losses)
-- [Win Percentage by Home Runs](#win-percentage-by-home-runs)
-- [Win Percentage by Strikeouts](#win-percentage-by-strikeouts)
-- [Home Runs by Strikeouts](#home-runs-by-strikeouts)
-- [Home Runs in Wins and Losses](#home-runs-in-wins-and-losses)
-- [When are teams scoring?](#when-are-teams-scoring)
 - [Pythagorean Wins](#pythagorean-wins)
 - [Close Games](#close-games)
 
@@ -57,129 +43,81 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
-### Records x CPR Ranks
+### Scorigami (2023 Only)
 
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-### Scorigami (2023 Only)
+### Historic MLB Scorigami (Since 1901)
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-### Historic MLB Scorigami (Since 1901)
+### Top Team Analysis
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
-### Top Team Analysis
+### Team Margins Plot
 
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
-### Team Margins Plot
-
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
-
 ### Scatterplot of Margins of Victory and Defeat
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ### Margins of Victory and Defeat
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ### One-Run Games
 
-![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
-
-### Yesterday’s Highest-Scoring Game
-
-![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ### Best Records This Month
 
-![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ### Runs Scored v Runs Allowed This Month
 
-![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
-
-### Sudden Death Records
-
-![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 ### Eras Records
 
-![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
-
-### First Inning Runs Scored v Allowed
-
-![](README_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
-
-### First Inning Runs Scored v Allowed Rates
-
-![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
-
-### First Inning Scoring
-
-![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 ### Home and Away Performance
 
-![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ### Monthly v Season Win Percentages
 
-![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 ### Win Percentage v Run Differential as Percent of Runs Scored
 
-![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
-
-### Runs Scored in Wins and Losses
-
-![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
-
-### Win Percentage by Home Runs
-
-![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
-
-### Win Percentage by Strikeouts
-
-![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
-
-### Home Runs by Strikeouts
-
-![](README_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
-
-### Home Runs in Wins and Losses
-
-![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
-
-### When are teams scoring?
-
-![](README_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 ### Which teams play the closest games?
 
-![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 ### Pythagorean Wins
 
-![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.931 vs. 0.929)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.93)"
 
-![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ### Close Games
 
-![](README_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 ### Monthly Win Trends
 
-![](README_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
 ### Monthly Scoring Trends
 
-![](README_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
 ### Best Team of Past Month?
 
@@ -264,7 +202,7 @@ past_month_ram |>
        subtitle = "RAM = (Runs Scored - Runs Allowed) / Runs Scored")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
 ``` r
 margin_results = end_games |>
@@ -292,7 +230,7 @@ for (i in 1:upper_limit) {
 }
 ```
 
-    ## [1] "Cincinnati Reds win by 1 (31)"
+    ## [1] "Cincinnati Reds win by 1 (32)"
     ## [1] "Miami Marlins win by 1 (30)"
     ## [1] "Milwaukee Brewers win by 1 (27)"
     ## [1] "Baltimore Orioles win by 1 (26)"
@@ -315,16 +253,16 @@ for (i in 1:upper_limit) {
 }
 ```
 
-    ## [1] "Cleveland Guardians lose by 1 (27)"
+    ## [1] "Cleveland Guardians lose by 1 (28)"
     ## [1] "Oakland Athletics lose by 1 (27)"
+    ## [1] "Chicago White Sox lose by 1 (26)"
     ## [1] "Cincinnati Reds lose by 1 (26)"
-    ## [1] "Chicago White Sox lose by 1 (25)"
+    ## [1] "New York Mets lose by 1 (25)"
     ## [1] "Seattle Mariners lose by 1 (25)"
-    ## [1] "New York Mets lose by 1 (24)"
     ## [1] "St. Louis Cardinals lose by 1 (24)"
-    ## [1] "Tampa Bay Rays lose by 1 (23)"
+    ## [1] "Tampa Bay Rays lose by 1 (24)"
+    ## [1] "Boston Red Sox lose by 1 (22)"
     ## [1] "Kansas City Royals lose by 2 (22)"
-    ## [1] "Minnesota Twins lose by 1 (22)"
 
 ``` r
 end_games |>
@@ -339,13 +277,13 @@ end_games |>
     ## # A tibble: 30 × 2
     ##    Team                `Wins by 3+`
     ##    <chr>                      <int>
-    ##  1 Los Angeles Dodgers           63
-    ##  2 Tampa Bay Rays                59
+    ##  1 Los Angeles Dodgers           64
+    ##  2 Tampa Bay Rays                60
     ##  3 Atlanta Braves                56
-    ##  4 Texas Rangers                 53
-    ##  5 Chicago Cubs                  49
-    ##  6 Baltimore Orioles             48
-    ##  7 San Diego Padres              48
+    ##  4 Texas Rangers                 55
+    ##  5 Baltimore Orioles             49
+    ##  6 Chicago Cubs                  49
+    ##  7 San Diego Padres              49
     ##  8 Toronto Blue Jays             48
     ##  9 Houston Astros                47
     ## 10 Boston Red Sox                43
@@ -391,16 +329,16 @@ reg23 |>
 ```
 
     ## # A tibble: 30 × 4
-    ##    team                  wins losses win_pct
-    ##    <chr>                <int>  <int>   <dbl>
-    ##  1 Los Angeles Dodgers     24      8   0.75 
-    ##  2 Atlanta Braves          23      9   0.719
-    ##  3 Baltimore Orioles       25     14   0.641
-    ##  4 Arizona Diamondbacks    24     14   0.632
-    ##  5 Toronto Blue Jays       28     18   0.609
-    ##  6 Seattle Mariners        27     19   0.587
-    ##  7 Los Angeles Angels      24     17   0.585
-    ##  8 Tampa Bay Rays          23     18   0.561
-    ##  9 Texas Rangers           19     15   0.559
-    ## 10 Chicago Cubs            24     19   0.558
+    ##    team                   wins losses win_pct
+    ##    <chr>                 <int>  <int>   <dbl>
+    ##  1 Los Angeles Dodgers      24      8   0.75 
+    ##  2 Atlanta Braves           23      9   0.719
+    ##  3 Baltimore Orioles        25     14   0.641
+    ##  4 Arizona Diamondbacks     24     14   0.632
+    ##  5 Toronto Blue Jays        28     18   0.609
+    ##  6 Seattle Mariners         27     19   0.587
+    ##  7 Los Angeles Angels       24     17   0.585
+    ##  8 Texas Rangers            19     15   0.559
+    ##  9 Chicago Cubs             24     19   0.558
+    ## 10 Philadelphia Phillies    24     19   0.558
     ## # ℹ 20 more rows
