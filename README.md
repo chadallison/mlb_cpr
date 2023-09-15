@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 14, 2023 at
-09:36:43
+**Data: MLB.com via {baseballr}** \| Last Updated: September 15, 2023 at
+09:08:36
 
 ------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.931 vs. 0.93)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.93)"
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
@@ -280,13 +280,13 @@ end_games |>
     ##  1 Los Angeles Dodgers           64
     ##  2 Tampa Bay Rays                60
     ##  3 Atlanta Braves                57
-    ##  4 Texas Rangers                 56
+    ##  4 Texas Rangers                 57
     ##  5 San Diego Padres              50
     ##  6 Baltimore Orioles             49
     ##  7 Chicago Cubs                  49
     ##  8 Houston Astros                48
     ##  9 Toronto Blue Jays             48
-    ## 10 Boston Red Sox                43
+    ## 10 Boston Red Sox                44
     ## # ℹ 20 more rows
 
 ``` r
@@ -338,7 +338,7 @@ reg23 |>
     ##  5 Toronto Blue Jays       28     18   0.609
     ##  6 Seattle Mariners        28     19   0.596
     ##  7 Los Angeles Angels      24     18   0.571
-    ##  8 Texas Rangers           19     15   0.559
-    ##  9 Chicago Cubs            24     19   0.558
-    ## 10 Pittsburgh Pirates      25     20   0.556
+    ##  8 Pittsburgh Pirates      26     20   0.565
+    ##  9 Texas Rangers           19     15   0.559
+    ## 10 Chicago Cubs            24     19   0.558
     ## # ℹ 20 more rows
