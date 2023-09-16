@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 15, 2023 at
-09:08:36
+**Data: MLB.com via {baseballr}** \| Last Updated: September 16, 2023 at
+10:58:06
 
 ------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.93)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.932 vs. 0.931)"
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
@@ -236,8 +236,8 @@ for (i in 1:upper_limit) {
     ## [1] "Baltimore Orioles win by 1 (26)"
     ## [1] "Washington Nationals win by 1 (25)"
     ## [1] "Cleveland Guardians win by 1 (24)"
+    ## [1] "Philadelphia Phillies win by 1 (24)"
     ## [1] "New York Mets win by 1 (23)"
-    ## [1] "Philadelphia Phillies win by 1 (23)"
     ## [1] "Seattle Mariners win by 1 (23)"
     ## [1] "Toronto Blue Jays win by 1 (23)"
 
@@ -259,7 +259,7 @@ for (i in 1:upper_limit) {
     ## [1] "Cincinnati Reds lose by 1 (26)"
     ## [1] "New York Mets lose by 1 (25)"
     ## [1] "Seattle Mariners lose by 1 (25)"
-    ## [1] "St. Louis Cardinals lose by 1 (24)"
+    ## [1] "St. Louis Cardinals lose by 1 (25)"
     ## [1] "Tampa Bay Rays lose by 1 (24)"
     ## [1] "Minnesota Twins lose by 1 (23)"
     ## [1] "Boston Red Sox lose by 1 (22)"
@@ -277,15 +277,15 @@ end_games |>
     ## # A tibble: 30 × 2
     ##    Team                `Wins by 3+`
     ##    <chr>                      <int>
-    ##  1 Los Angeles Dodgers           64
-    ##  2 Tampa Bay Rays                60
+    ##  1 Los Angeles Dodgers           65
+    ##  2 Tampa Bay Rays                61
     ##  3 Atlanta Braves                57
     ##  4 Texas Rangers                 57
-    ##  5 San Diego Padres              50
+    ##  5 San Diego Padres              51
     ##  6 Baltimore Orioles             49
     ##  7 Chicago Cubs                  49
-    ##  8 Houston Astros                48
-    ##  9 Toronto Blue Jays             48
+    ##  8 Toronto Blue Jays             49
+    ##  9 Houston Astros                48
     ## 10 Boston Red Sox                44
     ## # ℹ 20 more rows
 
@@ -335,7 +335,7 @@ reg23 |>
     ##  2 Atlanta Braves          24      9   0.727
     ##  3 Arizona Diamondbacks    24     14   0.632
     ##  4 Baltimore Orioles       25     15   0.625
-    ##  5 Toronto Blue Jays       28     18   0.609
+    ##  5 Toronto Blue Jays       29     18   0.617
     ##  6 Seattle Mariners        28     19   0.596
     ##  7 Los Angeles Angels      24     18   0.571
     ##  8 Pittsburgh Pirates      26     20   0.565
