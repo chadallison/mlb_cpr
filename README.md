@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 20, 2023 at
-08:35:57
+**Data: MLB.com via {baseballr}** \| Last Updated: September 22, 2023 at
+09:25:02
 
 ------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-    ## [1] "Pythagorean wins is more correlated than run-adjusted margin (0.93 vs. 0.93)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.934 vs. 0.933)"
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
@@ -235,10 +235,10 @@ for (i in 1:upper_limit) {
     ## [1] "Baltimore Orioles win by 1 (28)"
     ## [1] "Milwaukee Brewers win by 1 (27)"
     ## [1] "Washington Nationals win by 1 (27)"
+    ## [1] "Philadelphia Phillies win by 1 (26)"
     ## [1] "Cleveland Guardians win by 1 (25)"
     ## [1] "Toronto Blue Jays win by 1 (25)"
     ## [1] "New York Mets win by 1 (24)"
-    ## [1] "Philadelphia Phillies win by 1 (24)"
     ## [1] "San Francisco Giants win by 1 (23)"
 
 ``` r
@@ -254,8 +254,8 @@ for (i in 1:upper_limit) {
 ```
 
     ## [1] "Cleveland Guardians lose by 1 (30)"
+    ## [1] "New York Mets lose by 1 (28)"
     ## [1] "Chicago White Sox lose by 1 (27)"
-    ## [1] "New York Mets lose by 1 (27)"
     ## [1] "Oakland Athletics lose by 1 (27)"
     ## [1] "Cincinnati Reds lose by 1 (26)"
     ## [1] "Seattle Mariners lose by 1 (25)"
@@ -277,14 +277,14 @@ end_games |>
     ## # A tibble: 30 × 2
     ##    Team                `Wins by 3+`
     ##    <chr>                      <int>
-    ##  1 Los Angeles Dodgers           68
+    ##  1 Los Angeles Dodgers           69
     ##  2 Tampa Bay Rays                62
-    ##  3 Atlanta Braves                58
-    ##  4 Texas Rangers                 57
+    ##  3 Atlanta Braves                59
+    ##  4 Texas Rangers                 58
     ##  5 San Diego Padres              53
     ##  6 Baltimore Orioles             51
-    ##  7 Chicago Cubs                  50
-    ##  8 Toronto Blue Jays             50
+    ##  7 Toronto Blue Jays             51
+    ##  8 Chicago Cubs                  50
     ##  9 Houston Astros                49
     ## 10 New York Yankees              45
     ## # ℹ 20 more rows
@@ -331,11 +331,11 @@ reg23 |>
     ## # A tibble: 30 × 4
     ##    team                  wins losses win_pct
     ##    <chr>                <int>  <int>   <dbl>
-    ##  1 Los Angeles Dodgers     25      8   0.758
+    ##  1 Los Angeles Dodgers     25      9   0.735
     ##  2 Atlanta Braves          24      9   0.727
     ##  3 Arizona Diamondbacks    24     14   0.632
-    ##  4 Baltimore Orioles       25     15   0.625
-    ##  5 Toronto Blue Jays       30     18   0.625
+    ##  4 Toronto Blue Jays       30     18   0.625
+    ##  5 Baltimore Orioles       25     16   0.61 
     ##  6 Seattle Mariners        29     19   0.604
     ##  7 Pittsburgh Pirates      27     20   0.574
     ##  8 Los Angeles Angels      24     18   0.571
