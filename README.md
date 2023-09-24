@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 22, 2023 at
-09:25:02
+**Data: MLB.com via {baseballr}** \| Last Updated: September 24, 2023 at
+10:27:59
 
 ------------------------------------------------------------------------
 
@@ -231,12 +231,12 @@ for (i in 1:upper_limit) {
 ```
 
     ## [1] "Cincinnati Reds win by 1 (34)"
-    ## [1] "Miami Marlins win by 1 (31)"
-    ## [1] "Baltimore Orioles win by 1 (28)"
+    ## [1] "Miami Marlins win by 1 (32)"
+    ## [1] "Baltimore Orioles win by 1 (29)"
     ## [1] "Milwaukee Brewers win by 1 (27)"
+    ## [1] "Philadelphia Phillies win by 1 (27)"
     ## [1] "Washington Nationals win by 1 (27)"
-    ## [1] "Philadelphia Phillies win by 1 (26)"
-    ## [1] "Cleveland Guardians win by 1 (25)"
+    ## [1] "Cleveland Guardians win by 1 (26)"
     ## [1] "Toronto Blue Jays win by 1 (25)"
     ## [1] "New York Mets win by 1 (24)"
     ## [1] "San Francisco Giants win by 1 (23)"
@@ -253,16 +253,16 @@ for (i in 1:upper_limit) {
 }
 ```
 
-    ## [1] "Cleveland Guardians lose by 1 (30)"
-    ## [1] "New York Mets lose by 1 (28)"
-    ## [1] "Chicago White Sox lose by 1 (27)"
+    ## [1] "Cleveland Guardians lose by 1 (31)"
+    ## [1] "New York Mets lose by 1 (29)"
+    ## [1] "Chicago White Sox lose by 1 (28)"
+    ## [1] "Cincinnati Reds lose by 1 (27)"
     ## [1] "Oakland Athletics lose by 1 (27)"
-    ## [1] "Cincinnati Reds lose by 1 (26)"
+    ## [1] "Boston Red Sox lose by 1 (25)"
+    ## [1] "Minnesota Twins lose by 1 (25)"
     ## [1] "Seattle Mariners lose by 1 (25)"
     ## [1] "St. Louis Cardinals lose by 1 (25)"
     ## [1] "Tampa Bay Rays lose by 1 (25)"
-    ## [1] "Boston Red Sox lose by 1 (24)"
-    ## [1] "Minnesota Twins lose by 1 (24)"
 
 ``` r
 end_games |>
@@ -277,16 +277,16 @@ end_games |>
     ## # A tibble: 30 × 2
     ##    Team                `Wins by 3+`
     ##    <chr>                      <int>
-    ##  1 Los Angeles Dodgers           69
+    ##  1 Los Angeles Dodgers           70
     ##  2 Tampa Bay Rays                62
-    ##  3 Atlanta Braves                59
-    ##  4 Texas Rangers                 58
+    ##  3 Atlanta Braves                60
+    ##  4 Texas Rangers                 59
     ##  5 San Diego Padres              53
-    ##  6 Baltimore Orioles             51
-    ##  7 Toronto Blue Jays             51
-    ##  8 Chicago Cubs                  50
+    ##  6 Chicago Cubs                  52
+    ##  7 Toronto Blue Jays             52
+    ##  8 Baltimore Orioles             51
     ##  9 Houston Astros                49
-    ## 10 New York Yankees              45
+    ## 10 New York Yankees              46
     ## # ℹ 20 more rows
 
 ``` r
@@ -331,14 +331,14 @@ reg23 |>
     ## # A tibble: 30 × 4
     ##    team                  wins losses win_pct
     ##    <chr>                <int>  <int>   <dbl>
-    ##  1 Los Angeles Dodgers     25      9   0.735
-    ##  2 Atlanta Braves          24      9   0.727
+    ##  1 Atlanta Braves          24      9   0.727
+    ##  2 Los Angeles Dodgers     25     10   0.714
     ##  3 Arizona Diamondbacks    24     14   0.632
     ##  4 Toronto Blue Jays       30     18   0.625
-    ##  5 Baltimore Orioles       25     16   0.61 
-    ##  6 Seattle Mariners        29     19   0.604
-    ##  7 Pittsburgh Pirates      27     20   0.574
-    ##  8 Los Angeles Angels      24     18   0.571
-    ##  9 Chicago Cubs            24     19   0.558
+    ##  5 Baltimore Orioles       26     16   0.619
+    ##  6 Seattle Mariners        29     20   0.592
+    ##  7 Los Angeles Angels      25     18   0.581
+    ##  8 Pittsburgh Pirates      27     20   0.574
+    ##  9 Chicago Cubs            25     19   0.568
     ## 10 Tampa Bay Rays          23     19   0.548
     ## # ℹ 20 more rows
