@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 24, 2023 at
-10:27:59
+**Data: MLB.com via {baseballr}** \| Last Updated: September 25, 2023 at
+19:07:07
 
 ------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.934 vs. 0.933)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.935 vs. 0.933)"
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
@@ -233,9 +233,9 @@ for (i in 1:upper_limit) {
     ## [1] "Cincinnati Reds win by 1 (34)"
     ## [1] "Miami Marlins win by 1 (32)"
     ## [1] "Baltimore Orioles win by 1 (29)"
+    ## [1] "Washington Nationals win by 1 (28)"
     ## [1] "Milwaukee Brewers win by 1 (27)"
     ## [1] "Philadelphia Phillies win by 1 (27)"
-    ## [1] "Washington Nationals win by 1 (27)"
     ## [1] "Cleveland Guardians win by 1 (26)"
     ## [1] "Toronto Blue Jays win by 1 (25)"
     ## [1] "New York Mets win by 1 (24)"
@@ -258,9 +258,9 @@ for (i in 1:upper_limit) {
     ## [1] "Chicago White Sox lose by 1 (28)"
     ## [1] "Cincinnati Reds lose by 1 (27)"
     ## [1] "Oakland Athletics lose by 1 (27)"
+    ## [1] "Seattle Mariners lose by 1 (26)"
     ## [1] "Boston Red Sox lose by 1 (25)"
     ## [1] "Minnesota Twins lose by 1 (25)"
-    ## [1] "Seattle Mariners lose by 1 (25)"
     ## [1] "St. Louis Cardinals lose by 1 (25)"
     ## [1] "Tampa Bay Rays lose by 1 (25)"
 
@@ -279,12 +279,12 @@ end_games |>
     ##    <chr>                      <int>
     ##  1 Los Angeles Dodgers           70
     ##  2 Tampa Bay Rays                62
-    ##  3 Atlanta Braves                60
+    ##  3 Atlanta Braves                61
     ##  4 Texas Rangers                 59
-    ##  5 San Diego Padres              53
-    ##  6 Chicago Cubs                  52
-    ##  7 Toronto Blue Jays             52
-    ##  8 Baltimore Orioles             51
+    ##  5 San Diego Padres              54
+    ##  6 Toronto Blue Jays             53
+    ##  7 Baltimore Orioles             52
+    ##  8 Chicago Cubs                  52
     ##  9 Houston Astros                49
     ## 10 New York Yankees              46
     ## # ℹ 20 more rows
@@ -331,14 +331,27 @@ reg23 |>
     ## # A tibble: 30 × 4
     ##    team                  wins losses win_pct
     ##    <chr>                <int>  <int>   <dbl>
-    ##  1 Atlanta Braves          24      9   0.727
-    ##  2 Los Angeles Dodgers     25     10   0.714
+    ##  1 Los Angeles Dodgers     26     10   0.722
+    ##  2 Atlanta Braves          24     10   0.706
     ##  3 Arizona Diamondbacks    24     14   0.632
-    ##  4 Toronto Blue Jays       30     18   0.625
-    ##  5 Baltimore Orioles       26     16   0.619
+    ##  4 Baltimore Orioles       27     16   0.628
+    ##  5 Toronto Blue Jays       30     18   0.625
     ##  6 Seattle Mariners        29     20   0.592
     ##  7 Los Angeles Angels      25     18   0.581
-    ##  8 Pittsburgh Pirates      27     20   0.574
-    ##  9 Chicago Cubs            25     19   0.568
+    ##  8 Chicago Cubs            25     19   0.568
+    ##  9 Pittsburgh Pirates      27     21   0.562
     ## 10 Tampa Bay Rays          23     19   0.548
     ## # ℹ 20 more rows
+
+``` r
+end_games |>
+  mutate(runs_scored = home_score + away_score) |>
+  count(runs_scored) |>
+  ggplot(aes(runs_scored, n)) +
+  geom_col(fill = "springgreen4") +
+  scale_x_continuous(breaks = seq(0, 30, by = 1)) +
+  scale_y_continuous(breaks = seq(0, 250, by = 25)) +
+  labs(x = "Runs Scored", y = "Number of Games")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
