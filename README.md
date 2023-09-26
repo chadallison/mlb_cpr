@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 
-**Data: MLB.com via {baseballr}** \| Last Updated: September 25, 2023 at
-19:07:07
+**Data: MLB.com via {baseballr}** \| Last Updated: September 26, 2023 at
+10:25:26
 
 ------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@
 
 ![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
-    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.935 vs. 0.933)"
+    ## [1] "Run-adjusted margin is more correlated than pythagorean wins (0.934 vs. 0.933)"
 
 ![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
@@ -239,7 +239,7 @@ for (i in 1:upper_limit) {
     ## [1] "Cleveland Guardians win by 1 (26)"
     ## [1] "Toronto Blue Jays win by 1 (25)"
     ## [1] "New York Mets win by 1 (24)"
-    ## [1] "San Francisco Giants win by 1 (23)"
+    ## [1] "San Francisco Giants win by 1 (24)"
 
 ``` r
 print("========================================")
@@ -280,12 +280,12 @@ end_games |>
     ##  1 Los Angeles Dodgers           70
     ##  2 Tampa Bay Rays                62
     ##  3 Atlanta Braves                61
-    ##  4 Texas Rangers                 59
+    ##  4 Texas Rangers                 60
     ##  5 San Diego Padres              54
     ##  6 Toronto Blue Jays             53
     ##  7 Baltimore Orioles             52
     ##  8 Chicago Cubs                  52
-    ##  9 Houston Astros                49
+    ##  9 Houston Astros                50
     ## 10 New York Yankees              46
     ## # ℹ 20 more rows
 
@@ -336,11 +336,11 @@ reg23 |>
     ##  3 Arizona Diamondbacks    24     14   0.632
     ##  4 Baltimore Orioles       27     16   0.628
     ##  5 Toronto Blue Jays       30     18   0.625
-    ##  6 Seattle Mariners        29     20   0.592
-    ##  7 Los Angeles Angels      25     18   0.581
-    ##  8 Chicago Cubs            25     19   0.568
+    ##  6 Seattle Mariners        29     21   0.58 
+    ##  7 Chicago Cubs            25     19   0.568
+    ##  8 Los Angeles Angels      25     19   0.568
     ##  9 Pittsburgh Pirates      27     21   0.562
-    ## 10 Tampa Bay Rays          23     19   0.548
+    ## 10 Texas Rangers           21     17   0.553
     ## # ℹ 20 more rows
 
 ``` r
